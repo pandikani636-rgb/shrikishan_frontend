@@ -139,11 +139,11 @@ const DiseasesCategories = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                             <Box sx={{
-                                background: 'rgba(59, 130, 246, 0.1)',
+                                background: 'rgba(22, 163, 74, 0.1)',
                                 px: 2,
                                 py: 0.75,
                                 borderRadius: '12px',
-                                border: '1px solid rgba(59, 130, 246, 0.2)'
+                                border: '1px solid rgba(22, 163, 74, 0.2)'
                             }}>
                                 <Typography variant="body2" sx={{ color: '#60a5fa', fontWeight: 700, fontSize: '13px' }}>
                                     TOTAL AGENTS: {categories?.length || 0}
@@ -176,7 +176,7 @@ const DiseasesCategories = () => {
                                             borderColor: 'rgba(255, 255, 255, 0.1)',
                                         },
                                         '&.Mui-focused fieldset': {
-                                            borderColor: '#3b82f6',
+                                            borderColor: '#16a34a',
                                         }
                                     }
                                 }}
@@ -194,11 +194,11 @@ const DiseasesCategories = () => {
                                 fontSize: '14px',
                                 px: 3,
                                 py: 1.2,
-                                background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-                                boxShadow: '0 8px 20px -6px rgba(59, 130, 246, 0.5)',
+                                background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)',
+                                boxShadow: '0 8px 20px -6px rgba(22, 163, 74, 0.5)',
                                 '&:hover': {
-                                    background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
-                                    boxShadow: '0 12px 24px -6px rgba(59, 130, 246, 0.6)',
+                                    background: 'linear-gradient(135deg, #15803d 0%, #1d4ed8 100%)',
+                                    boxShadow: '0 12px 24px -6px rgba(22, 163, 74, 0.6)',
                                 }
                             }}
                         >
@@ -260,8 +260,8 @@ const DiseasesCategories = () => {
                                                             size="small"
                                                             sx={{
                                                                 color: '#60a5fa',
-                                                                background: 'rgba(59, 130, 246, 0.1)',
-                                                                '&:hover': { background: 'rgba(59, 130, 246, 0.2)' }
+                                                                background: 'rgba(22, 163, 74, 0.1)',
+                                                                '&:hover': { background: 'rgba(22, 163, 74, 0.2)' }
                                                             }}
                                                         >
                                                             <EditIcon sx={{ fontSize: 16 }} />

@@ -52,11 +52,11 @@ const ProductSlider = ({ title, tagline, productId }) => {
                 <div className="title flex flex-col gap-1">
                     <div className="flex items-center gap-3">
                         <span className="w-8 h-1 bg-blue-600 rounded-full"></span>
-                        <h1 className="text-2xl font-black text-blue-950 uppercase tracking-tighter leading-none">{title}</h1>
+                        <h1 className="text-2xl font-semibold text-blue-950 uppercase tracking-tighter leading-none">{title}</h1>
                     </div>
-                    <p className="text-[10px] font-black text-blue-800/40 uppercase tracking-[0.3em] ml-11">{tagline}</p>
+                    <p className="text-[10px] font-semibold text-blue-800/40 uppercase tracking-[0.3em] ml-11">{tagline}</p>
                 </div>
-                <Link to="/products" className="bg-blue-600 hover:bg-blue-800 text-[10px] font-black text-white px-8 py-4 rounded-2xl shadow-2xl shadow-blue-600/30 uppercase tracking-[0.2em] transition-all duration-500 active:scale-95 leading-none">View All</Link>
+                <Link to="/products" className="bg-blue-600 hover:bg-blue-800 text-[10px] font-semibold text-white px-8 py-4 rounded-2xl shadow-2xl shadow-blue-600/30 uppercase tracking-[0.2em] transition-all duration-500 active:scale-95 leading-none">View All</Link>
             </div>
 
             <div className="px-1 shadow-inner bg-blue-50/20">
@@ -78,7 +78,7 @@ const ProductSlider = ({ title, tagline, productId }) => {
                             <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center text-blue-200 mb-2">
                                 <ShoppingBagIcon sx={{ fontSize: 32 }} />
                             </div>
-                            <p className="text-sm font-bold text-slate-400 uppercase tracking-[0.2em]">No Similar Products Available</p>
+                            <p className="text-sm font-semibold text-slate-400 uppercase tracking-[0.2em]">No Similar Products Available</p>
                         </div>
                     )
                 )}

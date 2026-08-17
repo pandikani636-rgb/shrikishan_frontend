@@ -7,7 +7,7 @@ const OrderItem = (props) => {
 
     const { orderId, name, image, price, quantity, createdAt, deliveredAt, orderStatus } = props;
 
-    const BASE_URL = "http://localhost:4000/";
+    const BASE_URL = "/";
 
     // Construct proper image URL
     const getImageUrl = () => {
@@ -25,50 +25,53 @@ const OrderItem = (props) => {
     };
 
     return (
-        <Link to={`/order_details/${orderId}`} className="group flex flex-col md:flex-row p-8 items-center bg-white/80 backdrop-blur-3xl border border-blue-50 rounded-[2.5rem] gap-8 hover:shadow-2xl hover:shadow-blue-900/10 transition-all duration-700 hover:-translate-y-1 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl -mr-16 -mt-16 opacity-50 group-hover:bg-blue-100 transition-colors duration-700"></div>
+        <Link to={`/order_details/${orderId}`} className="group flex flex-col p-5 bg-white border border-gray-100 rounded-[1.5rem] hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.08)] hover:border-emerald-100 transition-all duration-300 relative overflow-hidden">
+            
+            <div className="flex gap-5">
+                {/* Image Widget */}
+                <div className="w-20 h-20 rounded-[1rem] bg-gray-50 p-2.5 border border-gray-100 shrink-0 group-hover:scale-105 transition-transform duration-500">
+                    <img draggable="false" className="h-full w-full object-contain mix-blend-multiply" src={getImageUrl()} alt={name} />
+                </div>
+                
+                {/* Main Details */}
+                <div className="flex flex-col flex-1 min-w-0 py-0.5">
+                    <p className="text-sm font-semibold text-gray-900 uppercase tracking-wide truncate">{name}</p>
+                    <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mt-1">ID: {orderId.substring(0, 10)}</p>
+                    
+                    <div className="flex justify-between items-end mt-auto">
+                        <div className="flex flex-col">
+                            <span className="text-[9px] font-semibold text-gray-400 uppercase tracking-widest mb-0.5">Amount</span>
+                            <span className="text-base font-semibold text-[#f97316] leading-none tracking-tight">₹{price.toLocaleString()}</span>
+                        </div>
+                        <span className="px-2.5 py-1 bg-gray-50 border border-gray-200 text-gray-600 text-[9px] font-semibold uppercase tracking-widest rounded-lg shadow-sm">
+                            Qty: {quantity}
+                        </span>
+                    </div>
+                </div>
+            </div>
 
-
-            {/* Status Badge - Top Right Corner */}
-            <div className="absolute top-6 right-6 z-10">
-                <div className={`px-4 py-2 rounded-xl flex items-center gap-2 shadow-lg ${orderStatus === 'Delivered'
-                    ? 'bg-emerald-500'
-                    : orderStatus === 'Shipped'
-                        ? 'bg-blue-500'
-                        : 'bg-orange-500'
+            {/* Footer Status Bar */}
+            <div className="mt-5 pt-4 border-t border-gray-100 flex justify-between items-center">
+                <p className="text-[9px] font-semibold text-gray-400 uppercase tracking-widest">
+                    {orderStatus === "Delivered" ? "Successfully Delivered" : orderStatus === "Shipped" ? "In Transit" : "Processing"}
+                </p>
+                <div className={`px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm ${
+                    orderStatus === 'Delivered' ? 'bg-emerald-50 border border-emerald-100' : 
+                    orderStatus === 'Shipped' ? 'bg-orange-50 border border-orange-100' : 
+                    'bg-slate-50 border border-slate-200'
+                }`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${
+                        orderStatus === 'Delivered' ? 'bg-emerald-500' : 
+                        orderStatus === 'Shipped' ? 'bg-[#f97316]' : 
+                        'bg-slate-500'
+                    }`}></span>
+                    <span className={`text-[10px] font-semibold uppercase tracking-widest ${
+                        orderStatus === 'Delivered' ? 'text-[#064e3b]' : 
+                        orderStatus === 'Shipped' ? 'text-[#c2410c]' : 
+                        'text-slate-700'
                     }`}>
-                    <span className="w-2 h-2 rounded-full bg-black animate-pulse"></span>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-blue">
                         {orderStatus}
                     </span>
-                </div>
-                <p className="text-[8px] font-bold text-gray-700 uppercase tracking-tight mt-1 text-right">
-                    {orderStatus === "Delivered" ? "SUCCESSFULLY DELIVERED" : orderStatus === "Shipped" ? "IN TRANSIT" : "WE ARE PROCESSING YOUR ORDER"}
-                </p>
-            </div>
-
-
-
-            {/* Image Section */}
-            <div className="w-32 h-32 rounded-3xl bg-white p-4 border border-blue-50 shadow-inner group-hover:rotate-6 transition-all duration-700 flex-shrink-0">
-                <img draggable="false" className="h-full w-full object-contain" src={getImageUrl()} alt={name} />
-            </div>
-
-            {/* Description Section */}
-            <div className="flex-1 flex flex-col md:flex-row justify-between w-full gap-8">
-                <div className="flex flex-col gap-2 max-w-md">
-                    <p className="text-sm font-black text-gray-900 uppercase tracking-tight line-clamp-2">{name}</p>
-                    <div className="flex items-center gap-4 mt-2">
-                        <span className="px-3 py-1 bg-blue-50 text-blue-600 text-[9px] font-black uppercase tracking-widest rounded-lg">Qty: {quantity}</span>
-                        <span className="text-[9px] font-black text-gray-600 uppercase tracking-widest">Order ID: {orderId.substring(0, 10)}...</span>
-                    </div>
-                </div>
-
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-10 md:w-1/2">
-                    <div className="flex flex-col">
-                        <span className="text-[9px] font-black text-gray-600 uppercase tracking-widest leading-none mb-1">Price</span>
-                        <span className="text-lg font-black text-gray-900">₹{price.toLocaleString()}</span>
-                    </div>
                 </div>
             </div>
         </Link>

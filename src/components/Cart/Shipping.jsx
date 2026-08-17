@@ -12,8 +12,19 @@ import { saveShippingInfo } from '../../actions/cartAction';
 import { useNavigate } from 'react-router-dom';
 import MetaData from '../Layouts/MetaData';
 import states from '../../utils/states';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import VerifiedIcon from '@mui/icons-material/Verified';
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
+
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import DialpadOutlinedIcon from '@mui/icons-material/DialpadOutlined';
+import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
+import LocationCityOutlinedIcon from '@mui/icons-material/LocationCityOutlined';
+import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
+import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
+import InputAdornment from '@mui/material/InputAdornment';
+import Autocomplete from '@mui/material/Autocomplete';
+// force recompile
+
+import ShoppingCartCheckoutOutlinedIcon from '@mui/icons-material/ShoppingCartCheckoutOutlined';
 
 const Shipping = () => {
 
@@ -31,10 +42,7 @@ const Shipping = () => {
     const [pincode, setPincode] = useState(shippingInfo.pincode || "");
     const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo || "");
 
-    const [prescription, setPrescription] = useState(null);
     const [errors, setErrors] = useState({});
-
-    const hasPrescriptionItem = cartItems.some(item => item.subCategoryType === "Prescription");
 
     // Real-time error clearance
     const handleInputChange = (setter, field, value) => {
@@ -59,7 +67,6 @@ const Shipping = () => {
         }
         if (!city.trim()) newErrors.city = "City name is required";
         if (!state) newErrors.state = "Please select your state";
-        if (!state) newErrors.state = "Please select your state";
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -70,142 +77,260 @@ const Shipping = () => {
 
         if (validateForm()) {
             dispatch(saveShippingInfo({ address, city, country, state, pincode, phoneNo }));
-            enqueueSnackbar("Logistics saved successfully", { variant: "success" });
+            enqueueSnackbar("Address saved successfully", { variant: "success" });
             navigate("/order/confirm");
         } else {
             enqueueSnackbar("Please correct the errors mentioned below", { variant: "error" });
         }
     }
 
+    const premiumInputStyle = {
+        '& .MuiOutlinedInput-root': {
+            borderRadius: '1rem',
+            bgcolor: '#ffffff',
+            fontWeight: '600',
+            color: '#0f172a',
+            transition: 'all 0.3s ease-in-out',
+            boxShadow: '0 2px 10px -2px rgba(0,0,0,0.02)',
+            '& fieldset': {
+                borderColor: '#e2e8f0',
+                borderWidth: '2px',
+                transition: 'all 0.3s ease-in-out',
+            },
+            '&:hover fieldset': {
+                borderColor: '#cbd5e1',
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: '#059669',
+                borderWidth: '2px',
+                boxShadow: '0 4px 20px -4px rgba(5, 150, 105, 0.15)',
+            },
+            '& input:-webkit-autofill, & textarea:-webkit-autofill': {
+                WebkitBoxShadow: '0 0 0 100px #ffffff inset',
+                WebkitTextFillColor: '#0f172a',
+                transition: 'background-color 5000s ease-in-out 0s',
+            }
+        },
+        '& .MuiInputLabel-root': {
+            color: '#64748b',
+            fontWeight: '600',
+            fontSize: '15px'
+        },
+        '& .MuiInputLabel-root.Mui-focused': {
+            color: '#059669',
+            fontWeight: '700'
+        }
+    };
+
     return (
         <>
             <MetaData title="Deployment Logistics | Shree Kishan Aayushi" />
-            <main className="w-full mt-24 sm:mt-28 bg-slate-50 min-h-screen relative overflow-hidden">
+            <main className="min-h-screen pt-28 pb-24 bg-slate-50 font-sans selection:bg-emerald-500 selection:text-white relative overflow-hidden">
 
-                {/* Premium Medical Mesh Background */}
-                <div className="absolute inset-0 pointer-events-none opacity-60">
-                    <div className="absolute top-0 left-[-10%] w-[70%] h-[70%] bg-blue-600/10 blur-[180px] rounded-full animate-float-1"></div>
-                    <div className="absolute bottom-0 right-[-10%] w-[70%] h-[70%] bg-teal-500/10 blur-[180px] rounded-full animate-float-2"></div>
-                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/micro-carbon.png')] opacity-[0.05]"></div>
+                <div className="absolute inset-0 pointer-events-none opacity-40">
+                    <div className="absolute top-[-10%] left-[-5%] w-[50%] h-[50%] bg-emerald-400/20 blur-[120px] rounded-full mix-blend-multiply"></div>
+                    <div className="absolute bottom-[-10%] right-[-5%] w-[50%] h-[50%] bg-teal-400/20 blur-[120px] rounded-full mix-blend-multiply"></div>
                 </div>
 
-                <div className="container-responsive relative z-10 py-12 px-4">
-                    <div className="flex flex-col lg:flex-row gap-12 items-start">
+                <div className="w-full xl:w-[95%] 2xl:w-[90%] max-w-[1800px] mx-auto px-4 sm:px-8 lg:px-12 mt-4 md:mt-8 relative z-10">
+                    
+                    {/* Premium Header */}
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6 animate-fade-in-up mt-2">
+                        <div className="flex items-center gap-5 group">
+                            <div className="relative">
+                                <div className="absolute inset-0 bg-emerald-400 blur-lg opacity-40 rounded-full group-hover:opacity-60 transition-opacity"></div>
+                                <div className="relative w-14 h-14 rounded-[1.25rem] bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-lg shadow-emerald-500/30 transform group-hover:scale-105 group-hover:-rotate-3 transition-all duration-500">
+                                    <ShoppingCartCheckoutOutlinedIcon />
+                                </div>
+                            </div>
+                            <div>
+                                <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 tracking-tight">Checkout</h1>
+                                <div className="flex items-center gap-2 mt-1.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest">Secure Delivery Logistics</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col lg:flex-row gap-12 xl:gap-16 items-start">
 
                         {/* Main Logistics column */}
-                        <div className="flex-1 w-full animate-fade-in-left">
+                        <div className="flex-1 w-full animate-fade-in-up" style={{animationDelay: '100ms'}}>
                             <Stepper activeStep={1}>
-                                <div className="bg-white/80 backdrop-blur-3xl rounded-[3rem] p-10 md:p-16 border border-blue-100 shadow-2xl shadow-blue-900/5 mt-8">
-                                    <div className="flex items-center gap-4 mb-12">
-                                        <div className="w-12 h-1 bg-blue-600 rounded-full"></div>
-                                        <h2 className="text-2xl font-black text-blue-950 uppercase tracking-tighter">Delivery <span className="text-blue-600">Address</span></h2>
-                                    </div>
-
-                                    <form onSubmit={shippingSubmit} autoComplete="off" className="space-y-10">
-
-                                        <TextField
-                                            value={address}
-                                            onChange={(e) => handleInputChange(setAddress, 'address', e.target.value)}
-                                            fullWidth
-                                            label="Full Delivery Address"
-                                            variant="outlined"
-                                            required
-                                            multiline
-                                            rows={2}
-                                            error={!!errors.address}
-                                            helperText={errors.address}
-                                            sx={{
-                                                '& .MuiOutlinedInput-root': { borderRadius: '1.5rem', bgcolor: 'rgba(240,247,255,0.5)', fontWeight: '700' },
-                                                '& .MuiInputLabel-root': { fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '10px' }
-                                            }}
-                                        />
-
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                            <TextField
-                                                value={pincode}
-                                                onChange={(e) => handleInputChange(setPincode, 'pincode', e.target.value)}
-                                                type="number"
-                                                label="Pincode"
-                                                fullWidth
-                                                required
-                                                error={!!errors.pincode}
-                                                helperText={errors.pincode}
-                                                sx={{
-                                                    '& .MuiOutlinedInput-root': { borderRadius: '1.5rem', bgcolor: 'rgba(240,247,255,0.5)', fontWeight: '700' }
-                                                }}
-                                            />
-                                            <TextField
-                                                value={phoneNo}
-                                                onChange={(e) => handleInputChange(setPhoneNo, 'phoneNo', e.target.value)}
-                                                type="number"
-                                                label="Phone Number"
-                                                fullWidth
-                                                required
-                                                error={!!errors.phoneNo}
-                                                helperText={errors.phoneNo}
-                                                sx={{
-                                                    '& .MuiOutlinedInput-root': { borderRadius: '1.5rem', bgcolor: 'rgba(240,247,255,0.5)', fontWeight: '700' }
-                                                }}
-                                            />
+                                <div className="bg-white rounded-b-[2rem] border border-t-0 border-slate-200 shadow-2xl shadow-slate-200/50">
+                                    
+                                    <div className="p-8 md:p-12 lg:p-16">
+                                        <div className="flex items-center gap-5 mb-10 pb-6 border-b border-slate-100">
+                                            <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shadow-sm">
+                                                <LocalShippingOutlinedIcon fontSize="medium" />
+                                            </div>
+                                            <div>
+                                                <h2 className="text-2xl font-semibold text-slate-900 tracking-tight">Delivery Address</h2>
+                                                <p className="text-sm font-medium text-slate-500 mt-1">Please enter your exact shipping location</p>
+                                            </div>
                                         </div>
+                                        
+                                        <form onSubmit={shippingSubmit} autoComplete="off" className="space-y-8">
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                             <TextField
-                                                value={city}
-                                                onChange={(e) => handleInputChange(setCity, 'city', e.target.value)}
-                                                label="City"
+                                                value={address}
+                                                onChange={(e) => handleInputChange(setAddress, 'address', e.target.value)}
                                                 fullWidth
+                                                label="Full Delivery Address"
+                                                variant="outlined"
                                                 required
-                                                error={!!errors.city}
-                                                helperText={errors.city}
-                                                sx={{
-                                                    '& .MuiOutlinedInput-root': { borderRadius: '1.5rem', bgcolor: 'rgba(240,247,255,0.5)', fontWeight: '700' }
+                                                multiline
+                                                rows={2}
+                                                error={!!errors.address}
+                                                helperText={errors.address}
+                                                sx={premiumInputStyle}
+                                                InputProps={{
+                                                    startAdornment: (
+                                                        <InputAdornment position="start" sx={{ alignSelf: 'flex-start', mt: 1.5, mr: 1.5 }}>
+                                                            <LocationOnOutlinedIcon sx={{ color: '#94a3b8' }} />
+                                                        </InputAdornment>
+                                                    ),
                                                 }}
                                             />
-                                            <TextField
-                                                label="Landmark (Optional)"
-                                                fullWidth
-                                                sx={{
-                                                    '& .MuiOutlinedInput-root': { borderRadius: '1.5rem', bgcolor: 'rgba(240,247,255,0.5)', fontWeight: '700' }
-                                                }}
-                                            />
-                                        </div>
 
-                                        <div className="grid grid-cols-1 gap-8">
-                                            <FormControl fullWidth error={!!errors.state}>
-                                                <InputLabel id="state-select">State</InputLabel>
-                                                <Select
-                                                    labelId="state-select"
-                                                    id="state-select"
-                                                    value={state}
-                                                    label="State"
-                                                    onChange={(e) => handleInputChange(setState, 'state', e.target.value)}
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                                <TextField
+                                                    value={pincode}
+                                                    onChange={(e) => handleInputChange(setPincode, 'pincode', e.target.value)}
+                                                    type="number"
+                                                    label="Pincode"
+                                                    fullWidth
                                                     required
-                                                    sx={{ borderRadius: '1.5rem', bgcolor: 'rgba(240,247,255,0.5)', fontWeight: '900' }}
+                                                    error={!!errors.pincode}
+                                                    helperText={errors.pincode}
+                                                    sx={premiumInputStyle}
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <InputAdornment position="start" sx={{ mr: 1 }}>
+                                                                <DialpadOutlinedIcon sx={{ color: '#94a3b8' }} />
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                />
+                                                <TextField
+                                                    value={phoneNo}
+                                                    onChange={(e) => handleInputChange(setPhoneNo, 'phoneNo', e.target.value)}
+                                                    type="number"
+                                                    label="Phone Number"
+                                                    fullWidth
+                                                    required
+                                                    error={!!errors.phoneNo}
+                                                    helperText={errors.phoneNo}
+                                                    sx={premiumInputStyle}
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <InputAdornment position="start" sx={{ mr: 1 }}>
+                                                                <PhoneOutlinedIcon sx={{ color: '#94a3b8' }} />
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                />
+                                            </div>
+
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                                <TextField
+                                                    value={city}
+                                                    onChange={(e) => handleInputChange(setCity, 'city', e.target.value)}
+                                                    label="City"
+                                                    fullWidth
+                                                    required
+                                                    error={!!errors.city}
+                                                    helperText={errors.city}
+                                                    sx={premiumInputStyle}
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <InputAdornment position="start" sx={{ mr: 1 }}>
+                                                                <LocationCityOutlinedIcon sx={{ color: '#94a3b8' }} />
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                />
+                                                <TextField
+                                                    label="Landmark (Optional)"
+                                                    fullWidth
+                                                    sx={premiumInputStyle}
+                                                />
+                                            </div>
+
+                                            <div className="grid grid-cols-1 gap-8">
+                                                <Autocomplete
+                                                    options={states}
+                                                    getOptionLabel={(option) => option.name}
+                                                    value={states.find((s) => s.code === state) || null}
+                                                    onChange={(event, newValue) => {
+                                                        handleInputChange(setState, 'state', newValue ? newValue.code : "");
+                                                    }}
+                                                    isOptionEqualToValue={(option, value) => option.code === value.code}
+                                                    PaperComponent={({ children }) => (
+                                                        <div className="bg-white rounded-[1.25rem] mt-2 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] border border-slate-200 overflow-hidden">
+                                                            {children}
+                                                        </div>
+                                                    )}
+                                                    sx={{
+                                                        '& .MuiAutocomplete-option': {
+                                                            padding: '12px 24px',
+                                                            fontSize: '14px',
+                                                            fontWeight: '600',
+                                                            color: '#475569',
+                                                            transition: 'all 0.2s',
+                                                            '&[aria-selected="true"]': {
+                                                                backgroundColor: '#d1fae5 !important',
+                                                                color: '#047857',
+                                                                fontWeight: '800',
+                                                            },
+                                                            '&:hover, &.Mui-focused': {
+                                                                backgroundColor: '#ecfdf5 !important',
+                                                                color: '#059669',
+                                                            },
+                                                        }
+                                                    }}
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            {...params}
+                                                            label="State"
+                                                            required
+                                                            error={!!errors.state}
+                                                            helperText={errors.state}
+                                                            sx={premiumInputStyle}
+                                                            InputProps={{
+                                                                ...params.InputProps,
+                                                                startAdornment: (
+                                                                    <>
+                                                                        <InputAdornment position="start" sx={{ mr: 1, ml: 1 }}>
+                                                                            <PublicOutlinedIcon sx={{ color: '#94a3b8' }} />
+                                                                        </InputAdornment>
+                                                                        {params.InputProps.startAdornment}
+                                                                    </>
+                                                                ),
+                                                            }}
+                                                        />
+                                                    )}
+                                                />
+                                            </div>
+
+                                            <div className="pt-8 border-t border-slate-100 flex justify-end">
+                                                <button
+                                                    type="submit"
+                                                    className="w-full sm:w-auto flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-700 text-white px-12 py-4 rounded-xl font-semibold transition-all shadow-lg shadow-emerald-600/20 active:scale-95 group"
                                                 >
-                                                    {states.map((item) => (
-                                                        <MenuItem key={item.code} value={item.code} className="text-[11px] font-black uppercase tracking-widest">{item.name}</MenuItem>
-                                                    ))}
-                                                </Select>
-                                                {errors.state && <p className="text-[10px] text-[#d32f2f] font-bold mt-2 ml-4 uppercase tracking-widest">{errors.state}</p>}
-                                            </FormControl>
-                                        </div>
-
-
-
-                                        <button
-                                            type="submit"
-                                            className="w-full md:w-auto px-16 py-6 bg-blue-600 text-white font-black uppercase tracking-[0.4em] text-[11px] rounded-[2rem] hover:bg-blue-800 transition-all duration-700 shadow-2xl shadow-blue-600/30 hover:-translate-y-2 active:scale-95"
-                                        >
-                                            Continue to Payment
-                                        </button>
-                                    </form>
+                                                    <span>Save & Continue</span>
+                                                    <ArrowForwardOutlinedIcon fontSize="small" className="group-hover:translate-x-1 transition-transform" />
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </Stepper>
                         </div>
 
                         {/* Price Breakdown Sidebar */}
-                        <div className="w-full lg:w-[450px]">
+                        <div className="lg:w-[400px] xl:w-[480px] w-full sticky top-32 animate-fade-in-up" style={{animationDelay: '200ms'}}>
                             <PriceSidebar cartItems={cartItems} />
                         </div>
                     </div>

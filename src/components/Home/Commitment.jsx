@@ -9,7 +9,7 @@ const Commitment = () => {
 
     return (
         <section className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100 mt-6">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Commitment</h2>
+            <h2 className="text-3xl font-semibold text-gray-900 mb-6">Our Commitment</h2>
             <div className="space-y-3 text-gray-700">
                 {items.map((i, idx) => (
                     <p key={idx} className="flex items-start gap-3">✓ <span className="ml-1">{i.text}</span></p>

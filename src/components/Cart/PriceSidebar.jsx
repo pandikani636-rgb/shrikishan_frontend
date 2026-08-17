@@ -1,56 +1,65 @@
+import SecurityIcon from '@mui/icons-material/Security';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 
 const PriceSidebar = ({ cartItems }) => {
     return (
-        <div className="sticky top-32 animate-fade-in-right">
-            <div className="glass-card rounded-[2.5rem] overflow-hidden border-white/10 shadow-2xl">
-                <div className="bg-blue-600 px-8 py-6">
-                    <h2 className="text-xs font-black text-white uppercase tracking-[0.2em] flex items-center gap-3">
-                        Price Details
-                    </h2>
-                </div>
-
-                <div className="p-6 space-y-4">
-                    <div className="flex justify-between items-center group">
-                        <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Price ({cartItems.length} items)</span>
-                        <span className="font-black text-blue-950 text-xs">₹{cartItems.reduce((sum, item) => sum + ((item.cuttedPrice || item.price || 0) * item.quantity), 0).toLocaleString()}</span>
-                    </div>
-
-                    <div className="flex justify-between items-center group">
-                        <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest group-hover:text-emerald-600 transition-colors">Discount</span>
-                        <span className="font-black text-emerald-600 text-xs">- ₹{cartItems.reduce((sum, item) => sum + (((item.cuttedPrice || item.price || 0) * item.quantity) - ((item.price || 0) * item.quantity)), 0).toLocaleString()}</span>
-                    </div>
-
-                    <div className="flex justify-between items-center group">
-                        <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Delivery</span>
-                        <span className="font-black text-blue-600 text-[8px] uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
-                            FREE
-                        </span>
-                    </div>
-
-                    <div className="border-t border-slate-100 pt-4">
-                        <div className="flex justify-between items-center bg-blue-50/50 rounded-xl p-4 border border-blue-100/50">
-                            <span className="text-[10px] font-black text-blue-950 uppercase tracking-[0.2em]">Total Price</span>
-                            <span className="text-lg font-black text-blue-600 tracking-tighter">₹{cartItems.reduce((sum, item) => sum + ((item.price || 0) * item.quantity), 0).toLocaleString()}</span>
-                        </div>
-                    </div>
-
-                    <div className="bg-emerald-50 rounded-xl p-3 text-center border border-emerald-100">
-                        <p className="text-[8px] font-black text-emerald-600 uppercase tracking-widest leading-relaxed">
-                            Safe & Secure Payment
-                        </p>
-                    </div>
-
-                    <div className="space-y-4 pt-4">
-                        <div className="flex items-center gap-3 opacity-30">
-                            <div className="w-2 h-2 rounded-full bg-blue-400"></div>
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">End-to-End Encryption Active</span>
-                        </div>
-                        <div className="flex items-center gap-3 opacity-30">
-                            <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Medical Compliance Verified</span>
-                        </div>
+        <div className="bg-white rounded-[2rem] border border-slate-200 p-6 md:p-8 shadow-sm">
+            
+            {/* Highlighted Header */}
+            <div className="flex items-center gap-5 mb-8 pb-6 border-b-2 border-slate-100 group">
+                <div className="relative">
+                    <div className="absolute inset-0 bg-emerald-400 blur-md opacity-40 rounded-full group-hover:opacity-60 transition-opacity"></div>
+                    <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-lg shadow-emerald-500/30 transform -rotate-3 group-hover:rotate-0 group-hover:scale-105 transition-all duration-300">
+                        <ReceiptLongIcon />
                     </div>
                 </div>
+                <div>
+                    <h2 className="text-2xl font-semibold text-slate-900 tracking-tight leading-none">Order Summary</h2>
+                    <div className="flex items-center gap-2 mt-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Price Details</p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="space-y-5 text-slate-600 font-medium">
+                <div className="flex justify-between items-center">
+                    <span>Subtotal</span>
+                    <span className="text-slate-900">₹{cartItems.reduce((sum, item) => sum + ((item.cuttedPrice || item.price || 0) * item.quantity), 0).toLocaleString()}</span>
+                </div>
+
+                <div className="flex justify-between items-center">
+                    <span>Discount</span>
+                    <span className="text-emerald-600 font-semibold">- ₹{cartItems.reduce((sum, item) => sum + (((item.cuttedPrice || item.price || 0) * item.quantity) - ((item.price || 0) * item.quantity)), 0).toLocaleString()}</span>
+                </div>
+
+                <div className="flex justify-between items-center">
+                    <span>Delivery Charges</span>
+                    <span className="text-emerald-600 font-semibold">Free</span>
+                </div>
+
+                <div className="flex justify-between items-center">
+                    <span>GST (Estimated)</span>
+                    <span className="text-slate-900">₹{cartItems.reduce((sum, item) => sum + ((item.price || 0) * (item.gst || 0) / 100 * item.quantity), 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                </div>
+
+                <div className="border-t border-slate-200 pt-6 mt-6">
+                    <div className="flex justify-between items-center bg-slate-50 p-4 rounded-2xl border border-slate-200/60">
+                        <span className="text-sm font-semibold text-slate-900 uppercase tracking-widest">Total</span>
+                        <span className="text-3xl font-semibold text-slate-900">₹{cartItems.reduce((sum, item) => sum + ((item.price || 0) * item.quantity) + ((item.price || 0) * (item.gst || 0) / 100 * item.quantity), 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div className="mt-8 space-y-4">
+                <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-4 flex items-center justify-center gap-2.5 shadow-sm">
+                    <SecurityIcon className="text-emerald-500" fontSize="small" />
+                    <span className="text-[11px] font-semibold text-emerald-800 uppercase tracking-[0.15em]">Safe & Secure Payment</span>
+                </div>
+                
+                <p className="text-[11px] text-slate-400 text-center px-4 leading-relaxed font-medium">
+                    Final taxes will be calculated at checkout.
+                </p>
             </div>
         </div>
     );

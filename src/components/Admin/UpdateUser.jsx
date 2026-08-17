@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllRoles } from '../../actions/rolesActions';
 import { useSnackbar } from 'notistack';
 import {
     Card,
@@ -35,7 +37,14 @@ const UpdateUser = () => {
         address: '123 Main Street, City, State - 12345'
     });
 
-    const roles = ["user", "admin"];
+    const dispatch = useDispatch();
+    const { roles: dynamicRoles } = useSelector(state => state.roles);
+
+    useEffect(() => {
+        dispatch(getAllRoles());
+    }, [dispatch]);
+
+    const baseRoles = ["user", "admin", "doctor"];
 
     // -----------------------------------------
     // Handle Submit
@@ -127,7 +136,7 @@ const UpdateUser = () => {
                                             color: '#f8fafc',
                                             '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.05)' },
                                             '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.1)' },
-                                            '&.Mui-focused fieldset': { borderColor: '#3b82f6' }
+                                            '&.Mui-focused fieldset': { borderColor: '#16a34a' }
                                         }
                                     }}
                                 />
@@ -149,7 +158,7 @@ const UpdateUser = () => {
                                             color: '#f8fafc',
                                             '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.05)' },
                                             '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.1)' },
-                                            '&.Mui-focused fieldset': { borderColor: '#3b82f6' }
+                                            '&.Mui-focused fieldset': { borderColor: '#16a34a' }
                                         }
                                     }}
                                 />
@@ -170,7 +179,7 @@ const UpdateUser = () => {
                                             color: '#f8fafc',
                                             '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.05)' },
                                             '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.1)' },
-                                            '&.Mui-focused fieldset': { borderColor: '#3b82f6' }
+                                            '&.Mui-focused fieldset': { borderColor: '#16a34a' }
                                         }
                                     }}
                                 />
@@ -192,14 +201,19 @@ const UpdateUser = () => {
                                             color: '#f8fafc',
                                             '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.05)' },
                                             '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.1)' },
-                                            '&.Mui-focused fieldset': { borderColor: '#3b82f6' }
+                                            '&.Mui-focused fieldset': { borderColor: '#16a34a' }
                                         },
                                         '& .MuiSvgIcon-root': { color: '#94a3b8' }
                                     }}
                                 >
-                                    {roles.map((role) => (
+                                    {baseRoles.map((role) => (
                                         <MenuItem key={role} value={role}>
                                             {role.toUpperCase()}_PROTOCOL
+                                        </MenuItem>
+                                    ))}
+                                    {dynamicRoles?.map(r => (
+                                        <MenuItem key={r._id} value={r.name}>
+                                            {r.name.toUpperCase()}_PROTOCOL
                                         </MenuItem>
                                     ))}
                                 </TextField>
@@ -213,8 +227,8 @@ const UpdateUser = () => {
                                     onChange={(e) => setUserForm({ ...userForm, gender: e.target.value })}
                                     sx={{ color: '#f8fafc' }}
                                 >
-                                    <FormControlLabel value="male" control={<Radio sx={{ color: '#64748b', '&.Mui-checked': { color: '#3b82f6' } }} />} label="MALE_BIOTYPE" />
-                                    <FormControlLabel value="female" control={<Radio sx={{ color: '#64748b', '&.Mui-checked': { color: '#3b82f6' } }} />} label="FEMALE_BIOTYPE" />
+                                    <FormControlLabel value="male" control={<Radio sx={{ color: '#64748b', '&.Mui-checked': { color: '#16a34a' } }} />} label="MALE_BIOTYPE" />
+                                    <FormControlLabel value="female" control={<Radio sx={{ color: '#64748b', '&.Mui-checked': { color: '#16a34a' } }} />} label="FEMALE_BIOTYPE" />
                                 </RadioGroup>
                             </Grid>
 
@@ -235,7 +249,7 @@ const UpdateUser = () => {
                                             color: '#f8fafc',
                                             '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.05)' },
                                             '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.1)' },
-                                            '&.Mui-focused fieldset': { borderColor: '#3b82f6' }
+                                            '&.Mui-focused fieldset': { borderColor: '#16a34a' }
                                         }
                                     }}
                                 />
@@ -253,11 +267,11 @@ const UpdateUser = () => {
                                     fontWeight: 800,
                                     fontSize: '15px',
                                     py: 1.8,
-                                    background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-                                    boxShadow: '0 8px 25px -5px rgba(59, 130, 246, 0.5)',
+                                    background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)',
+                                    boxShadow: '0 8px 25px -5px rgba(22, 163, 74, 0.5)',
                                     '&:hover': {
-                                        background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
-                                        boxShadow: '0 12px 30px -5px rgba(59, 130, 246, 0.6)',
+                                        background: 'linear-gradient(135deg, #15803d 0%, #1d4ed8 100%)',
+                                        boxShadow: '0 12px 30px -5px rgba(22, 163, 74, 0.6)',
                                     }
                                 }}
                             >

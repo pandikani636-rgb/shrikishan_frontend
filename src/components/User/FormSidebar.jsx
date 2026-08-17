@@ -9,7 +9,7 @@ const FormSidebar = ({ title, tag }) => {
                         <span className="text-6xl animate-pulse">🏥</span>
                     </div>
                 </div>
-                <h1 className="font-bold text-white text-3xl mb-4 drop-shadow-lg">{title}</h1>
+                <h1 className="font-semibold text-white text-3xl mb-4 drop-shadow-lg">{title}</h1>
                 <p className="text-white text-lg leading-relaxed opacity-90 drop-shadow">{tag}</p>
                 
                 <div className="mt-8 flex justify-center space-x-4">

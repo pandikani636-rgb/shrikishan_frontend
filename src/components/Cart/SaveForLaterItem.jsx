@@ -32,18 +32,18 @@ const SaveForLaterItem = ({ product, name, seller, price, cuttedPrice, image, st
                 {/* Specification Details */}
                 <div className="flex-1 space-y-4 text-center lg:text-left">
                     <div className="space-y-1">
-                        <h3 className="text-lg font-black text-white uppercase tracking-tighter">
+                        <h3 className="text-lg font-semibold text-white uppercase tracking-tighter">
                             {name}
                         </h3>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                        <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-500">
                             Deferred Source: {seller}
                         </span>
                     </div>
 
-                    <div className="flex items-center justify-center lg:justify-start gap-4 text-xl font-black text-white tracking-tighter">
+                    <div className="flex items-center justify-center lg:justify-start gap-4 text-xl font-semibold text-white tracking-tighter">
                         <span>₹{(price * quantity).toLocaleString()}</span>
-                        <span className="text-[10px] text-slate-500 line-through font-bold">₹{(cuttedPrice * quantity).toLocaleString()}</span>
-                        <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest bg-emerald-400/10 px-2 py-1 rounded">
+                        <span className="text-[10px] text-slate-500 line-through font-semibold">₹{(cuttedPrice * quantity).toLocaleString()}</span>
+                        <span className="text-[10px] text-emerald-400 font-semibold uppercase tracking-widest bg-emerald-400/10 px-2 py-1 rounded">
                             {getDiscount(price, cuttedPrice)}% Benefit
                         </span>
                     </div>
@@ -51,14 +51,14 @@ const SaveForLaterItem = ({ product, name, seller, price, cuttedPrice, image, st
                     <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 pt-4">
                         <button
                             onClick={() => moveToCartHandler(product, quantity)}
-                            className="text-[10px] font-black uppercase tracking-widest text-blue-400 hover:text-white transition-colors"
+                            className="text-[10px] font-semibold uppercase tracking-widest text-blue-400 hover:text-white transition-colors"
                         >
                             Re-activate Record
                         </button>
                         <div className="w-1 h-1 rounded-full bg-white/10"></div>
                         <button
                             onClick={() => removeFromSaveForLaterHandler(product)}
-                            className="text-[10px] font-black uppercase tracking-widest text-red-500/70 hover:text-red-500 transition-colors"
+                            className="text-[10px] font-semibold uppercase tracking-widest text-red-500/70 hover:text-red-500 transition-colors"
                         >
                             Purge Entry
                         </button>

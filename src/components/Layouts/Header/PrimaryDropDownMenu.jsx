@@ -86,33 +86,33 @@ const PrimaryDropDownMenu = ({ setTogglePrimaryDropDown, user }) => {
         <div className="bg-white/95 backdrop-blur-3xl shadow-[0_40px_100px_rgba(15,82,186,0.1)] rounded-[2.5rem] border border-blue-50/50 flex flex-col p-4 overflow-hidden">
 
             <div className="px-5 py-4 mb-2 bg-blue-50/50 rounded-[1.8rem] border border-blue-100/50">
-                <p className="text-[9px] font-black text-blue-900/30 uppercase tracking-[0.2em] mb-1">Authenticated Asset</p>
-                <p className="text-[13px] font-black text-blue-950 uppercase truncate">{user.name}</p>
+                <p className="text-[9px] font-semibold text-blue-900/30 uppercase tracking-[0.2em] mb-1">Authenticated Asset</p>
+                <p className="text-[13px] font-semibold text-blue-950 uppercase truncate">{user.name}</p>
             </div>
 
             <div className="flex flex-col gap-1">
-                {user.role === "admin" &&
+                {(user.permissions && user.permissions.length > 0) &&
                     <Link className="px-5 py-3.5 flex gap-4 items-center hover:bg-blue-600 hover:text-white rounded-[1.5rem] transition-all duration-300 group" to="/admin/dashboard" onClick={() => setTogglePrimaryDropDown(false)}>
                         <DashboardIcon sx={{ fontSize: "18px" }} className="text-blue-600 group-hover:text-white" />
-                        <span className="text-[10px] font-black uppercase tracking-widest">Administrator</span>
+                        <span className="text-[10px] font-semibold uppercase tracking-widest">Administrator</span>
                     </Link>
                 }
 
                 <Link className="px-5 py-3.5 flex gap-4 items-center hover:bg-blue-600 hover:text-white rounded-[1.5rem] transition-all duration-300 group" to="/account" onClick={() => setTogglePrimaryDropDown(false)}>
                     <AccountCircleIcon sx={{ fontSize: "18px" }} className="text-blue-600 group-hover:text-white" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">My Account</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-widest">My Account</span>
                 </Link>
 
                 <Link className="px-5 py-3.5 flex gap-4 items-center hover:bg-blue-600 hover:text-white rounded-[1.5rem] transition-all duration-300 group" to="/orders" onClick={() => setTogglePrimaryDropDown(false)}>
                     <ShoppingBagIcon sx={{ fontSize: "18px" }} className="text-blue-600 group-hover:text-white" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Order Registry</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-widest">Order Registry</span>
                 </Link>
 
                 <div className="h-px bg-blue-50 my-2 mx-4"></div>
 
                 <div className="px-5 py-3.5 flex gap-4 items-center hover:bg-red-500 hover:text-white rounded-[1.5rem] transition-all duration-300 group cursor-pointer" onClick={handleLogout} >
                     <PowerSettingsNewIcon sx={{ fontSize: "18px" }} className="text-red-500 group-hover:text-white" />
-                    <span className="text-[10px] font-black uppercase tracking-widest">Disconnect</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-widest">Disconnect</span>
                 </div>
             </div>
         </div>

@@ -8,7 +8,7 @@ const DailyHealthTips = () => {
 
     return (
         <section className="bg-white rounded-2xl shadow-sm p-6 mt-6">
-            <h2 className="text-2xl font-bold mb-4 text-gray-900">Daily Health Tips</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900">Daily Health Tips</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 {tips.map((t, i) => (
                     <div key={i} className="p-4 bg-gray-50 rounded-lg border border-gray-100">

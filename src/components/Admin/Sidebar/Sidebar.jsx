@@ -5,10 +5,16 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import GroupIcon from '@mui/icons-material/Group';
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import LogoutIcon from '@mui/icons-material/Logout';
+import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import CategoryIcon from '@mui/icons-material/Category';
 import BadgeIcon from '@mui/icons-material/Badge';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import StoreIcon from '@mui/icons-material/Store';
+import HistoryIcon from '@mui/icons-material/History';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 import Avatar from '@mui/material/Avatar';
 import { useDispatch, useSelector } from 'react-redux';
 import './Sidebar.css';
@@ -25,7 +31,8 @@ const sections = [
                 icon: <EqualizerIcon />,
                 label: "Dashboard",
                 ref: "/admin/dashboard",
-                activeTab: 0
+                activeTab: 0,
+                permission: "dashboard_manage"
             }
         ]
     },
@@ -37,6 +44,7 @@ const sections = [
                 label: "Categories",
                 activeTab: 1,
                 isDropdown: true,
+                permission: "categories_manage",
                 subItems: [
                     { label: "Category List", ref: "/admin/categories" },
                     { label: "Sub Category List", ref: "/admin/subcategories" }
@@ -46,13 +54,52 @@ const sections = [
                 icon: <InventoryIcon />,
                 label: "Products",
                 ref: "/admin/products",
-                activeTab: 3
+                activeTab: 3,
+                permission: "products_manage"
             },
             {
                 icon: <ShoppingBagIcon />,
                 label: "Orders",
                 ref: "/admin/orders",
-                activeTab: 2
+                activeTab: 2,
+                permission: "orders_manage"
+            },
+            {
+                icon: <AccountBalanceIcon />,
+                label: "GST",
+                ref: "/admin/gst",
+                activeTab: 10,
+                permission: "gst_manage"
+            },
+            {
+                icon: <VideoLibraryIcon />,
+                label: "Videos",
+                ref: "/admin/videos",
+                activeTab: 9,
+                permission: "videos_manage"
+            },
+            /*
+            {
+                icon: <StoreIcon />,
+                label: "Branches",
+                ref: "/admin/branches",
+                activeTab: 11,
+                permission: "branches_manage"
+            },
+            */
+            /*
+            {
+                icon: <LocalOfferIcon />,
+                label: "Offers",
+                ref: "/admin/offers",
+                activeTab: 13
+            },
+            */
+            {
+                icon: <ViewCarouselIcon />,
+                label: "Banners",
+                ref: "/admin/banners",
+                activeTab: 14
             }
         ]
     },
@@ -63,19 +110,36 @@ const sections = [
                 icon: <GroupIcon />,
                 label: "Users",
                 ref: "/admin/users",
-                activeTab: 5
+                activeTab: 5,
+                permission: "users_manage"
             },
             {
                 icon: <BadgeIcon />,
                 label: "Roles",
                 ref: "/admin/roles",
-                activeTab: 6
+                activeTab: 6,
+                permission: "roles_manage"
+            },
+            {
+                icon: <ReviewsIcon />,
+                label: "Reviews",
+                ref: "/admin/reviews",
+                activeTab: 7,
+                permission: "reviews_manage"
             },
             {
                 icon: <ReviewsIcon />,
                 label: "Contacts",
                 ref: "/admin/contacts",
-                activeTab: 8
+                activeTab: 8,
+                permission: "contacts_manage"
+            },
+            {
+                icon: <HistoryIcon />,
+                label: "Activity Logs",
+                ref: "/admin/logs",
+                activeTab: 12,
+                permission: "logs_manage"
             }
         ]
     }
@@ -94,6 +158,13 @@ const Sidebar = ({ activeTab, setToggleSidebar }) => {
         return location.pathname === ref || (activeTab !== undefined && activeTab === itemActiveTab);
     };
 
+    const hasPermission = (requiredPermission) => {
+        if (!user) return false;
+        if (user.permissions && user.permissions.includes('all')) return true;
+        if (!requiredPermission) return true;
+        return user.permissions && user.permissions.includes(requiredPermission);
+    };
+
     const handleLogout = () => {
         dispatch(logoutUser());
         Swal.fire({
@@ -103,7 +174,7 @@ const Sidebar = ({ activeTab, setToggleSidebar }) => {
             timer: 1500,
             showConfirmButton: false,
             background: '#ffffff',
-            color: '#0f52ba'
+            color: '#16a34a'
         });
         navigate("/login");
     };
@@ -117,10 +188,10 @@ const Sidebar = ({ activeTab, setToggleSidebar }) => {
                 </div>
                 <div className="flex flex-col">
                     <h2 className="text-[15px] font-[950] leading-none tracking-tight text-slate-900 uppercase whitespace-nowrap">
-                        Shree Kishan <span className="text-[#0f52ba]">Aayushi</span>
+                        Shree Kishan <span className="text-[#16a34a]">Aayushi</span>
                     </h2>
-                    <div className="h-0.5 w-12 bg-blue-600 my-1 rounded-full"></div>
-                    <p className="text-[9px] font-bold text-slate-400 tracking-[0.15em] uppercase">
+                    <div className="h-0.5 w-12 bg-green-600 my-1 rounded-full"></div>
+                    <p className="text-[9px] font-semibold text-slate-400 tracking-[0.15em] uppercase">
                         Clinical Procurement
                     </p>
                 </div>
@@ -134,7 +205,10 @@ const Sidebar = ({ activeTab, setToggleSidebar }) => {
                         </div>
                         <div className="space-y-1">
                             {section.items.map((item, iIndex) => {
-                                const { icon, label, ref, activeTab: itemActiveTab, isDropdown, subItems } = item;
+                                const { icon, label, ref, activeTab: itemActiveTab, isDropdown, subItems, permission } = item;
+                                
+                                if (!hasPermission(permission)) return null;
+
                                 const active = isActive(ref, itemActiveTab);
                                 const isCategoriesOpen = location.pathname.includes('/admin/categories') || location.pathname.includes('/admin/subcategories');
 
@@ -201,7 +275,7 @@ const Sidebar = ({ activeTab, setToggleSidebar }) => {
                 <div className="avatar-wrapper">
                     <Avatar
                         src={user?.avatar?.url}
-                        sx={{ width: 44, height: 44, border: '3px solid #fff', boxShadow: '0 8px 16px rgba(15,82,186,0.1)' }}
+                        sx={{ width: 44, height: 44, border: '3px solid #fff', boxShadow: '0 8px 16px rgba(22,163,74,0.1)' }}
                     >
                         {user?.name?.charAt(0)}
                     </Avatar>

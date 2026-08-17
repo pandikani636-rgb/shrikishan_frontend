@@ -220,7 +220,7 @@ const Categories = () => {
             text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3b82f6",
+            confirmButtonColor: "#16a34a",
             cancelButtonColor: "#6b7280",
             confirmButtonText: "Yes, delete it!",
             cancelButtonText: "Cancel",
@@ -242,52 +242,52 @@ const Categories = () => {
             <Box sx={{ mb: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                 <Box>
                     <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-1 bg-blue-600 rounded-full"></div>
-                        <p className="text-[10px] font-black text-blue-900/40 uppercase tracking-[0.3em]">Management</p>
+                        <div className="w-10 h-1 bg-green-600 rounded-full"></div>
+                        <p className="text-[10px] font-semibold text-green-900/40 uppercase tracking-[0.3em]">Management</p>
                     </div>
                     <Typography variant="h4" sx={{ fontWeight: 950, color: '#020617', letterSpacing: '-0.03em', textTransform: 'uppercase' }}>
-                        All <span style={{ color: '#0f52ba' }}>Categories</span>
+                        All <span style={{ color: '#16a34a' }}>Categories</span>
                     </Typography>
                 </Box>
 
                 <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
                     <div className="relative group">
-                        <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-300 text-sm group-focus-within:text-blue-600 transition-colors" />
+                        <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-300 text-sm group-focus-within:text-green-600 transition-colors" />
                         <input
                             type="text"
                             placeholder="Search Category..."
                             value={searchTerm}
                             onChange={(e) => { setSearchTerm(e.target.value); setPage(0); }}
-                            className="pl-11 pr-6 py-3.5 bg-white border border-slate-100 rounded-[20px] text-[11px] font-black uppercase tracking-widest text-slate-950 outline-none w-64 shadow-sm hover:border-blue-100 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all"
+                            className="pl-11 pr-6 py-3.5 bg-white border border-slate-100 rounded-[20px] text-[11px] font-semibold uppercase tracking-widest text-slate-950 outline-none w-64 shadow-sm hover:border-blue-100 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all"
                         />
                     </div>
 
-                    <Button
-                        variant="contained"
-                        startIcon={<AddIcon />}
-                        onClick={handleOpenAddModal}
-                        sx={{
-                            borderRadius: '20px',
-                            textTransform: 'uppercase',
-                            fontWeight: 900,
-                            letterSpacing: '0.1em',
-                            fontSize: '11px',
-                            px: 4,
-                            py: 2,
-                            background: '#0f52ba',
-                            boxShadow: '0 15px 30px rgba(15, 82, 186, 0.15)',
-                            '&:hover': { background: '#083d8d', transform: 'translateY(-2px)' },
-                            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
-                        }}
-                    >
-                        Add Category
-                    </Button>
+                        <Button
+                            variant="contained"
+                            startIcon={<AddIcon />}
+                            onClick={handleOpenAddModal}
+                            sx={{
+                                borderRadius: '20px',
+                                textTransform: 'uppercase',
+                                fontWeight: 900,
+                                letterSpacing: '0.1em',
+                                fontSize: '11px',
+                                px: 4,
+                                py: 2,
+                                background: '#16a34a',
+                                boxShadow: '0 15px 30px rgba(22, 163, 74, 0.15)',
+                                '&:hover': { background: '#14532d', transform: 'translateY(-2px)' },
+                                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+                            }}
+                        >
+                            Add Category
+                        </Button>
                 </Box>
             </Box>
 
             <Card sx={{
                 borderRadius: '35px',
-                boxShadow: '0 40px 100px rgba(15, 82, 186, 0.04)',
+                boxShadow: '0 40px 100px rgba(22, 163, 74, 0.04)',
                 border: '1px solid #f1f5f9',
                 background: '#ffffff',
                 overflow: 'hidden'
@@ -342,7 +342,7 @@ const Categories = () => {
                                                 key={category._id}
                                                 sx={{
                                                     transition: 'all 0.4s ease',
-                                                    '&:hover': { background: '#f0f7ff' },
+                                                    '&:hover': { background: '#f0fdf4' },
                                                     '& td': { borderBottom: '1px solid #f8fafc', py: 3 }
                                                 }}
                                             >
@@ -361,7 +361,7 @@ const Categories = () => {
                                                             alignItems: 'center',
                                                             justifyContent: 'center',
                                                             fontWeight: 900,
-                                                            color: '#0f52ba',
+                                                            color: '#16a34a',
                                                             border: '1px solid #e2e8f0'
                                                         }}>
                                                             {category.name?.[0].toUpperCase()}
@@ -379,29 +379,29 @@ const Categories = () => {
                                                 <TableCell align="center">
                                                     <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1.5 }}>
                                                         <IconButton
-                                                            onClick={() => handleOpenEditModal(category)}
-                                                            sx={{
-                                                                color: '#0f52ba',
-                                                                background: '#f0f7ff',
-                                                                borderRadius: '12px',
-                                                                '&:hover': { background: '#0f52ba', color: '#fff' },
-                                                                transition: 'all 0.3s ease'
-                                                            }}
-                                                        >
-                                                            <EditIcon sx={{ fontSize: 18 }} />
-                                                        </IconButton>
-                                                        <IconButton
-                                                            onClick={() => handleDelete(category._id)}
-                                                            sx={{
-                                                                color: '#ef4444',
-                                                                background: '#fef2f2',
-                                                                borderRadius: '12px',
-                                                                '&:hover': { background: '#ef4444', color: '#fff' },
-                                                                transition: 'all 0.3s ease'
-                                                            }}
-                                                        >
-                                                            <DeleteIcon sx={{ fontSize: 18 }} />
-                                                        </IconButton>
+                                                                onClick={() => handleOpenEditModal(category)}
+                                                                sx={{
+                                                                    color: '#16a34a',
+                                                                    background: '#f0fdf4',
+                                                                    borderRadius: '12px',
+                                                                    '&:hover': { background: '#16a34a', color: '#fff' },
+                                                                    transition: 'all 0.3s ease'
+                                                                }}
+                                                            >
+                                                                <EditIcon sx={{ fontSize: 18 }} />
+                                                            </IconButton>
+                                                            <IconButton
+                                                                onClick={() => handleDelete(category._id)}
+                                                                sx={{
+                                                                    color: '#ef4444',
+                                                                    background: '#fef2f2',
+                                                                    borderRadius: '12px',
+                                                                    '&:hover': { background: '#ef4444', color: '#fff' },
+                                                                    transition: 'all 0.3s ease'
+                                                                }}
+                                                            >
+                                                                <DeleteIcon sx={{ fontSize: 18 }} />
+                                                            </IconButton>
                                                     </Box>
                                                 </TableCell>
                                             </TableRow>
@@ -455,7 +455,7 @@ const Categories = () => {
                 PaperProps={{
                     sx: {
                         borderRadius: '40px',
-                        boxShadow: '0 50px 100px rgba(15, 82, 186, 0.15)',
+                        boxShadow: '0 50px 100px rgba(22, 163, 74, 0.15)',
                         border: '1px solid #f1f5f9'
                     }
                 }}
@@ -464,11 +464,11 @@ const Categories = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box>
                             <div className="flex items-center gap-3 mb-2">
-                                <div className="w-8 h-1 bg-blue-600 rounded-full"></div>
-                                <p className="text-[9px] font-black text-blue-900/40 uppercase tracking-[0.2em]">{openAddModal ? 'New' : 'Update'} Category</p>
+                                <div className="w-8 h-1 bg-green-600 rounded-full"></div>
+                                <p className="text-[9px] font-semibold text-green-900/40 uppercase tracking-[0.2em]">{openAddModal ? 'New' : 'Update'} Category</p>
                             </div>
                             <Typography variant="h5" sx={{ fontWeight: 950, color: '#020617', textTransform: 'uppercase' }}>
-                                {openAddModal ? 'Add' : 'Edit'} <span style={{ color: '#0f52ba' }}>Category</span>
+                                {openAddModal ? 'Add' : 'Edit'} <span style={{ color: '#16a34a' }}>Category</span>
                             </Typography>
                         </Box>
                         <IconButton onClick={openAddModal ? handleCloseAddModal : handleCloseEditModal}>
@@ -479,7 +479,7 @@ const Categories = () => {
                 <DialogContent sx={{ px: 6, py: 4 }}>
                     <div className="space-y-6">
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-blue-900/30 uppercase tracking-widest ml-1">Category Name</label>
+                            <label className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest ml-1">Category Name</label>
                             <TextField
                                 fullWidth
                                 variant="outlined"
@@ -489,7 +489,7 @@ const Categories = () => {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-blue-900/30 uppercase tracking-widest ml-1">Description</label>
+                            <label className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest ml-1">Description</label>
                             <TextField
                                 fullWidth
                                 multiline
@@ -506,7 +506,7 @@ const Categories = () => {
                     <Button
                         variant="contained"
                         onClick={openAddModal ? handleAddSubmit : handleEditSubmit}
-                        sx={{ borderRadius: '15px', bgcolor: '#0f52ba', fontWeight: 900, fontSize: '11px', px: 6, py: 1.5, boxShadow: '0 10px 20px rgba(15,82,186,0.2)' }}
+                        sx={{ borderRadius: '15px', bgcolor: '#16a34a', fontWeight: 900, fontSize: '11px', px: 6, py: 1.5, boxShadow: '0 10px 20px rgba(22,163,74,0.2)' }}
                     >
                         {openAddModal ? 'Add Category' : 'Update Category'}
                     </Button>

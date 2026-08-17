@@ -10,7 +10,7 @@ const FeaturedProducts = () => {
         <section className="bg-white rounded-2xl shadow-sm p-6 mt-6">
             <div className="flex items-center justify-between mb-4">
                 <div>
-                    <h2 className="text-2xl font-bold text-gray-900">Featured Products</h2>
+                    <h2 className="text-2xl font-semibold text-gray-900">Featured Products</h2>
                     <p className="text-sm text-gray-500">Top picks tailored for you</p>
                 </div>
                 <Link to="/products" className="text-sm text-blue-600 font-semibold">View all</Link>

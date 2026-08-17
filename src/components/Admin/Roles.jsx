@@ -21,7 +21,10 @@ import {
     DialogActions,
     Grid,
     TextField,
-    InputAdornment
+    InputAdornment,
+    Checkbox,
+    FormControlLabel,
+    FormGroup
 } from '@mui/material';
 
 import EditIcon from '@mui/icons-material/Edit';
@@ -34,6 +37,7 @@ import MetaData from '../Layouts/MetaData';
 import { useDispatch, useSelector } from "react-redux";
 import { getAllRoles, deleteRole, createRole, updateRole } from "../../actions/rolesActions";
 import { DELETE_ROLE_RESET, NEW_ROLE_RESET, UPDATE_ROLE_RESET } from "../../constants/rolesConstants";
+import { loadUser } from "../../actions/userAction";
 
 const Roles = () => {
     const dispatch = useDispatch();
@@ -42,13 +46,18 @@ const Roles = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [searchTerm, setSearchTerm] = useState('');
 
+    const availablePermissions = [
+        "dashboard_manage", "users_manage", "roles_manage",
+        "products_manage", "categories_manage", "orders_manage",
+        "contacts_manage", "gst_manage", "reviews_manage", "videos_manage", "branches_manage", "logs_manage"
+    ];
     // Modal states
     const [openAddModal, setOpenAddModal] = useState(false);
     const [openEditModal, setOpenEditModal] = useState(false);
     const [selectedRole, setSelectedRole] = useState(null);
 
     // Form states
-    const [roleForm, setRoleForm] = useState({ name: '' });
+    const [roleForm, setRoleForm] = useState({ name: '', permissions: [] });
     const [validation, setValidation] = useState({});
 
     const { roles, loading, error } = useSelector((state) => state.roles);
@@ -92,6 +101,7 @@ const Roles = () => {
             Swal.fire({ title: "Success!", text: "Role updated successfully!", icon: "success", timer: 2000 });
             dispatch({ type: UPDATE_ROLE_RESET });
             dispatch(getAllRoles());
+            dispatch(loadUser());
             handleCloseEditModal();
         }
 
@@ -103,20 +113,20 @@ const Roles = () => {
     }, [dispatch, error, deleteError, isDeleted, createSuccess, createError, isUpdated, updateError]);
 
     const handleOpenAddModal = () => {
-        setRoleForm({ name: '' });
+        setRoleForm({ name: '', permissions: [] });
         setValidation({});
         setOpenAddModal(true);
     };
 
     const handleCloseAddModal = () => {
         setOpenAddModal(false);
-        setRoleForm({ name: '' });
+        setRoleForm({ name: '', permissions: [] });
         setValidation({});
     };
 
     const handleOpenEditModal = (role) => {
         setSelectedRole(role);
-        setRoleForm({ name: role.name || '' });
+        setRoleForm({ name: role.name || '', permissions: role.permissions || [] });
         setValidation({});
         setOpenEditModal(true);
     };
@@ -124,7 +134,7 @@ const Roles = () => {
     const handleCloseEditModal = () => {
         setOpenEditModal(false);
         setSelectedRole(null);
-        setRoleForm({ name: '' });
+        setRoleForm({ name: '', permissions: [] });
         setValidation({});
     };
 
@@ -140,13 +150,25 @@ const Roles = () => {
     const handleAddSubmit = (e) => {
         e.preventDefault();
         if (!validateForm()) return;
-        dispatch(createRole({ name: roleForm.name }));
+        dispatch(createRole({ name: roleForm.name, permissions: roleForm.permissions }));
     };
 
     const handleEditSubmit = (e) => {
         e.preventDefault();
         if (!validateForm()) return;
-        dispatch(updateRole(selectedRole._id, { name: roleForm.name }));
+        dispatch(updateRole(selectedRole._id, { name: roleForm.name, permissions: roleForm.permissions }));
+    };
+
+    const handlePermissionToggle = (permissionId) => {
+        setRoleForm(prev => {
+            const isSelected = prev.permissions.includes(permissionId);
+            return {
+                ...prev,
+                permissions: isSelected 
+                    ? prev.permissions.filter(p => p !== permissionId)
+                    : [...prev.permissions, permissionId]
+            };
+        });
     };
 
     const handleDelete = (id) => {
@@ -155,7 +177,7 @@ const Roles = () => {
             text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3b82f6",
+            confirmButtonColor: "#16a34a",
             cancelButtonColor: "#6b7280",
             confirmButtonText: "Yes, delete it!",
             cancelButtonText: "Cancel",
@@ -177,23 +199,23 @@ const Roles = () => {
             <Box sx={{ mb: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                 <Box>
                     <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-1 bg-blue-600 rounded-full"></div>
-                        <p className="text-[10px] font-black text-blue-900/40 uppercase tracking-[0.3em]">Management</p>
+                        <div className="w-10 h-1 bg-green-600 rounded-full"></div>
+                        <p className="text-[10px] font-semibold text-green-900/40 uppercase tracking-[0.3em]">Management</p>
                     </div>
                     <Typography variant="h4" sx={{ fontWeight: 950, color: '#020617', letterSpacing: '-0.03em', textTransform: 'uppercase' }}>
-                        All <span style={{ color: '#0f52ba' }}>Roles</span>
+                        All <span style={{ color: '#16a34a' }}>Roles</span>
                     </Typography>
                 </Box>
 
                 <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
                     <div className="relative group">
-                        <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-300 text-sm group-focus-within:text-blue-600 transition-colors" />
+                        <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-300 text-sm group-focus-within:text-green-600 transition-colors" />
                         <input
                             type="text"
                             placeholder="Search Role..."
                             value={searchTerm}
                             onChange={(e) => { setSearchTerm(e.target.value); setPage(0); }}
-                            className="pl-11 pr-6 py-3.5 bg-white border border-slate-100 rounded-[20px] text-[11px] font-black uppercase tracking-widest text-slate-950 outline-none w-64 shadow-sm hover:border-blue-100 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all"
+                            className="pl-11 pr-6 py-3.5 bg-white border border-slate-100 rounded-[20px] text-[11px] font-semibold uppercase tracking-widest text-slate-950 outline-none w-64 shadow-sm hover:border-blue-100 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/5 transition-all"
                         />
                     </div>
 
@@ -209,9 +231,9 @@ const Roles = () => {
                             fontSize: '11px',
                             px: 4,
                             py: 2,
-                            background: '#0f52ba',
-                            boxShadow: '0 15px 30px rgba(15, 82, 186, 0.15)',
-                            '&:hover': { background: '#083d8d', transform: 'translateY(-2px)' },
+                            background: '#16a34a',
+                            boxShadow: '0 15px 30px rgba(22, 163, 74, 0.15)',
+                            '&:hover': { background: '#14532d', transform: 'translateY(-2px)' },
                             transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
                         }}
                     >
@@ -222,7 +244,7 @@ const Roles = () => {
 
             <Card sx={{
                 borderRadius: '35px',
-                boxShadow: '0 40px 100px rgba(15, 82, 186, 0.04)',
+                boxShadow: '0 40px 100px rgba(22, 163, 74, 0.04)',
                 border: '1px solid #f1f5f9',
                 background: '#ffffff',
                 overflow: 'hidden'
@@ -276,7 +298,7 @@ const Roles = () => {
                                                 key={role._id}
                                                 sx={{
                                                     transition: 'all 0.4s ease',
-                                                    '&:hover': { background: '#f0f7ff' },
+                                                    '&:hover': { background: '#f0fdf4' },
                                                     '& td': { borderBottom: '1px solid #f8fafc', py: 3 }
                                                 }}
                                             >
@@ -295,10 +317,10 @@ const Roles = () => {
                                                         <IconButton
                                                             onClick={() => handleOpenEditModal(role)}
                                                             sx={{
-                                                                color: '#0f52ba',
-                                                                background: '#f0f7ff',
+                                                                color: '#16a34a',
+                                                                background: '#f0fdf4',
                                                                 borderRadius: '12px',
-                                                                '&:hover': { background: '#0f52ba', color: '#fff' },
+                                                                '&:hover': { background: '#16a34a', color: '#fff' },
                                                                 transition: 'all 0.3s ease'
                                                             }}
                                                         >
@@ -369,7 +391,7 @@ const Roles = () => {
                 PaperProps={{
                     sx: {
                         borderRadius: '40px',
-                        boxShadow: '0 50px 100px rgba(15, 82, 186, 0.15)',
+                        boxShadow: '0 50px 100px rgba(22, 163, 74, 0.15)',
                         border: '1px solid #f1f5f9'
                     }
                 }}
@@ -378,11 +400,11 @@ const Roles = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box>
                             <div className="flex items-center gap-3 mb-2">
-                                <div className="w-8 h-1 bg-blue-600 rounded-full"></div>
-                                <p className="text-[9px] font-black text-blue-900/40 uppercase tracking-[0.2em]">{openAddModal ? 'New' : 'Update'} Role</p>
+                                <div className="w-8 h-1 bg-green-600 rounded-full"></div>
+                                <p className="text-[9px] font-semibold text-green-900/40 uppercase tracking-[0.2em]">{openAddModal ? 'New' : 'Update'} Role</p>
                             </div>
                             <Typography variant="h5" sx={{ fontWeight: 950, color: '#020617', textTransform: 'uppercase' }}>
-                                {openAddModal ? 'Add' : 'Edit'} <span style={{ color: '#0f52ba' }}>Role</span>
+                                {openAddModal ? 'Add' : 'Edit'} <span style={{ color: '#16a34a' }}>Role</span>
                             </Typography>
                         </Box>
                         <IconButton onClick={openAddModal ? handleCloseAddModal : handleCloseEditModal}>
@@ -393,7 +415,7 @@ const Roles = () => {
                 <DialogContent sx={{ px: 6, py: 4 }}>
                     <div className="space-y-6">
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-blue-900/30 uppercase tracking-widest ml-1">Role Name</label>
+                            <label className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest ml-1">Role Name</label>
                             <TextField
                                 fullWidth
                                 variant="outlined"
@@ -413,6 +435,27 @@ const Roles = () => {
                                 sx={{ '& .MuiOutlinedInput-root': { borderRadius: '15px', bgcolor: '#f8fafc' } }}
                             />
                         </div>
+
+                        <div className="space-y-2 mt-4">
+                            <label className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest ml-1">Permissions</label>
+                            <Box sx={{ p: 2, bgcolor: '#f8fafc', borderRadius: '15px', border: '1px solid #f1f5f9' }}>
+                                <FormGroup row>
+                                    {availablePermissions.map((perm) => (
+                                        <FormControlLabel
+                                            key={perm}
+                                            control={
+                                                <Checkbox
+                                                    checked={roleForm.permissions.includes(perm)}
+                                                    onChange={() => handlePermissionToggle(perm)}
+                                                    color="primary"
+                                                />
+                                            }
+                                            label={perm.replace('_manage', '').toUpperCase()}
+                                        />
+                                    ))}
+                                </FormGroup>
+                            </Box>
+                        </div>
                     </div>
                 </DialogContent>
                 <DialogActions sx={{ px: 6, py: 6, gap: 2 }}>
@@ -420,7 +463,7 @@ const Roles = () => {
                     <Button
                         variant="contained"
                         onClick={openAddModal ? handleAddSubmit : handleEditSubmit}
-                        sx={{ borderRadius: '15px', bgcolor: '#0f52ba', fontWeight: 900, fontSize: '11px', px: 6, py: 1.5, boxShadow: '0 10px 20px rgba(15,82,186,0.2)' }}
+                        sx={{ borderRadius: '15px', bgcolor: '#16a34a', fontWeight: 900, fontSize: '11px', px: 6, py: 1.5, boxShadow: '0 10px 20px rgba(22,163,74,0.2)' }}
                     >
                         {openAddModal ? 'Add Role' : 'Update Role'}
                     </Button>

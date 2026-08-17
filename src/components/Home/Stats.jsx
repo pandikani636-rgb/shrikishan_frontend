@@ -11,7 +11,7 @@ const Stats = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
                     {stats.map((s, i) => (
                         <div key={i}>
-                            <p className="text-4xl sm:text-5xl font-bold mb-2">{s.number}</p>
+                            <p className="text-4xl sm:text-5xl font-semibold mb-2">{s.number}</p>
                             <p className="text-blue-100">{s.label}</p>
                         </div>
                     ))}

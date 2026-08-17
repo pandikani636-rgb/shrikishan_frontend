@@ -16,6 +16,7 @@ import ResetPassword from './components/User/ResetPassword';
 import Account from './components/User/Account';
 import ProtectedRoute from './Routes/ProtectedRoute';
 import Home from './components/Home/Home';
+import LandingPage from './components/Landing/LandingPage';
 import ProductDetails from './components/ProductDetails/ProductDetails';
 import Products from './components/Products/Products';
 import Cart from './components/Cart/Cart';
@@ -29,7 +30,7 @@ import OrderDetails from './components/Order/OrderDetails';
 import Dashboard from './components/Admin/Dashboard';
 import MainData from './components/Admin/MainData';
 import OrderTable from './components/Admin/OrderTable';
-import UpdateOrder from './components/Admin/UpdateOrder';
+
 import ProductTable from './components/Admin/ProductTable';
 import UserTable from './components/Admin/UserTable';
 import UpdateUser from './components/Admin/UpdateUser';
@@ -43,7 +44,16 @@ import Roles from './components/Admin/Roles';
 import About from './components/Pages/About';
 import Contact from './components/Pages/Contact';
 import ContactTable from './components/Admin/ContactTable';
+import VideoList from './components/Admin/VideoList';
+import NewVideo from './components/Admin/NewVideo';
+import GstManager from './components/Admin/GstManager';
+import BranchManager from './components/Admin/BranchManager';
+import ActivityLogs from './components/Admin/ActivityLogs';
+import OfferManager from './components/Admin/OfferManager';
 import FloatingCartBar from './components/Layouts/FloatingCartBar';
+import BannersList from './components/Admin/Banner/BannersList';
+import NewBanner from './components/Admin/Banner/NewBanner';
+import UpdateBanner from './components/Admin/Banner/UpdateBanner';
 
 function App() {
 
@@ -106,15 +116,18 @@ function App() {
 
   // Check if current route is an admin route
   const isAdminRoute = pathname.startsWith('/admin');
+  const isLandingRoute = pathname === '/';
+  const hideLayout = isAdminRoute || isLandingRoute;
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {!isAdminRoute && <Header />}
-      {!isAdminRoute && <FloatingCartBar />}
+      {!hideLayout && <Header />}
+      {!hideLayout && <FloatingCartBar />}
       <Routes>
         {/* ... existing routes ... */}
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
@@ -237,13 +250,7 @@ function App() {
           </ProtectedRoute>
         } ></Route>
 
-        <Route path="/admin/order/:id" element={
-          <ProtectedRoute isAdmin={true}>
-            <Dashboard activeTab={2}>
-              <UpdateOrder />
-            </Dashboard>
-          </ProtectedRoute>
-        } ></Route>
+
 
         <Route path="/admin/products" element={
           <ProtectedRoute isAdmin={true}>
@@ -302,10 +309,82 @@ function App() {
           </ProtectedRoute>
         } ></Route>
 
+        <Route path="/admin/videos" element={
+          <ProtectedRoute isAdmin={true}>
+            <Dashboard activeTab={9}>
+              <VideoList />
+            </Dashboard>
+          </ProtectedRoute>
+        } ></Route>
+
+        <Route path="/admin/video/new" element={
+          <ProtectedRoute isAdmin={true}>
+            <Dashboard activeTab={9}>
+              <NewVideo />
+            </Dashboard>
+          </ProtectedRoute>
+        } ></Route>
+
+        <Route path="/admin/gst" element={
+          <ProtectedRoute isAdmin={true}>
+            <Dashboard activeTab={10}>
+              <GstManager />
+            </Dashboard>
+          </ProtectedRoute>
+        } ></Route>
+
+        <Route path="/admin/branches" element={
+          <ProtectedRoute isAdmin={true}>
+            <Dashboard activeTab={11}>
+              <BranchManager />
+            </Dashboard>
+          </ProtectedRoute>
+        } ></Route>
+
+        <Route path="/admin/logs" element={
+          <ProtectedRoute isAdmin={true}>
+            <Dashboard activeTab={12}>
+              <ActivityLogs />
+            </Dashboard>
+          </ProtectedRoute>
+        } ></Route>
+
+        <Route path="/admin/offers" element={
+          <ProtectedRoute isAdmin={true}>
+            <Dashboard activeTab={13}>
+              <OfferManager />
+            </Dashboard>
+          </ProtectedRoute>
+        } ></Route>
+
+        <Route path="/admin/banners" element={
+          <ProtectedRoute isAdmin={true}>
+            <Dashboard activeTab={14}>
+              <BannersList />
+            </Dashboard>
+          </ProtectedRoute>
+        } ></Route>
+
+        <Route path="/admin/banner/new" element={
+          <ProtectedRoute isAdmin={true}>
+            <Dashboard activeTab={14}>
+              <NewBanner />
+            </Dashboard>
+          </ProtectedRoute>
+        } ></Route>
+
+        <Route path="/admin/banner/:id" element={
+          <ProtectedRoute isAdmin={true}>
+            <Dashboard activeTab={14}>
+              <UpdateBanner />
+            </Dashboard>
+          </ProtectedRoute>
+        } ></Route>
+
         <Route path="*" element={<NotFound />}></Route>
 
       </Routes>
-      {!isAdminRoute && <Footer />}
+      {!hideLayout && <Footer />}
     </ThemeProvider>
   );
 }

@@ -19,14 +19,15 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from 'sweetalert2';
 import MetaData from '../Layouts/MetaData';
-import { useNavigate } from 'react-router-dom';
+
 import { getAllOrders, clearErrors, deleteOrder } from '../../actions/orderAction';
 import { useSnackbar } from 'notistack';
 import { DELETE_ORDER_RESET } from '../../constants/orderConstants';
+import UpdateOrder from './UpdateOrder';
 
 const OrderTable = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+
     const { enqueueSnackbar } = useSnackbar();
 
     const { error, orders, loading } = useSelector((state) => state.allOrders);
@@ -34,6 +35,8 @@ const OrderTable = () => {
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [openUpdateModal, setOpenUpdateModal] = useState(false);
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
 
     useEffect(() => {
         if (error) {
@@ -52,7 +55,8 @@ const OrderTable = () => {
     }, [dispatch, error, deleteError, isDeleted, enqueueSnackbar]);
 
     const handleEdit = (order) => {
-        navigate(`/admin/order/${order._id}`);
+        setSelectedOrderId(order._id);
+        setOpenUpdateModal(true);
     };
 
     const handleDelete = (id) => {
@@ -77,17 +81,17 @@ const OrderTable = () => {
 
             <Box sx={{ mb: 6 }}>
                 <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-1 bg-blue-600 rounded-full"></div>
-                    <p className="text-[10px] font-black text-blue-900/40 uppercase tracking-[0.3em]">Orders</p>
+                    <div className="w-10 h-1 bg-green-600 rounded-full"></div>
+                    <p className="text-[10px] font-semibold text-green-900/40 uppercase tracking-[0.3em]">Orders</p>
                 </div>
                 <Typography variant="h4" sx={{ fontWeight: 950, color: '#020617', letterSpacing: '-0.03em', textTransform: 'uppercase' }}>
-                    All <span style={{ color: '#0f52ba' }}>Orders</span>
+                    All <span style={{ color: '#16a34a' }}>Orders</span>
                 </Typography>
             </Box>
 
             <Card sx={{
                 borderRadius: '35px',
-                boxShadow: '0 40px 100px rgba(15, 82, 186, 0.04)',
+                boxShadow: '0 40px 100px rgba(22, 163, 74, 0.04)',
                 border: '1px solid #f1f5f9',
                 background: '#ffffff',
                 overflow: 'hidden'
@@ -131,8 +135,8 @@ const OrderTable = () => {
                                 {loading ? (
                                     <TableRow>
                                         <TableCell colSpan={6} align="center" sx={{ py: 12 }}>
-                                            <CircularProgress size={30} thickness={5} sx={{ color: '#0f52ba' }} />
-                                            <Typography sx={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '10px', mt: 3, color: '#0f52ba' }}>Loading...</Typography>
+                                            <CircularProgress size={30} thickness={5} sx={{ color: '#16a34a' }} />
+                                            <Typography sx={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '10px', mt: 3, color: '#16a34a' }}>Loading...</Typography>
                                         </TableCell>
                                     </TableRow>
                                 ) : orders?.length > 0 ? (
@@ -143,7 +147,7 @@ const OrderTable = () => {
                                                 key={order._id}
                                                 sx={{
                                                     transition: 'all 0.4s ease',
-                                                    '&:hover': { background: '#f0f7ff' },
+                                                    '&:hover': { background: '#f0fdf4' },
                                                     '& td': { borderBottom: '1px solid #f8fafc', py: 3 }
                                                 }}
                                             >
@@ -173,17 +177,17 @@ const OrderTable = () => {
                                                             item.prescriptionUrl ? (
                                                                 <a
                                                                     key={index}
-                                                                    href={`http://localhost:4000/admin/product/${item.prescriptionUrl}`}
+                                                                    href={`/admin/product/${item.prescriptionUrl}`}
                                                                     target="_blank"
                                                                     rel="noopener noreferrer"
-                                                                    className="text-[9px] font-black text-blue-600 bg-blue-50 px-2 py-1 rounded-lg border border-blue-100 hover:bg-blue-600 hover:text-white transition-all uppercase tracking-widest no-underline"
+                                                                    className="text-[9px] font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-lg border border-blue-100 hover:bg-green-600 hover:text-white transition-all uppercase tracking-widest no-underline"
                                                                 >
                                                                     View
                                                                 </a>
                                                             ) : null
                                                         ))}
                                                         {!order.orderItems.some(item => item.prescriptionUrl) && (
-                                                            <span className="text-[10px] text-slate-400 font-bold">-</span>
+                                                            <span className="text-[10px] text-slate-400 font-semibold">-</span>
                                                         )}
                                                     </Box>
                                                 </TableCell>
@@ -210,29 +214,29 @@ const OrderTable = () => {
                                                 <TableCell align="center">
                                                     <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1.5 }}>
                                                         <IconButton
-                                                            onClick={() => handleEdit(order)}
-                                                            sx={{
-                                                                color: '#0f52ba',
-                                                                background: '#f0f7ff',
-                                                                borderRadius: '12px',
-                                                                '&:hover': { background: '#0f52ba', color: '#fff' },
-                                                                transition: 'all 0.3s ease'
-                                                            }}
-                                                        >
-                                                            <EditIcon sx={{ fontSize: 18 }} />
-                                                        </IconButton>
-                                                        <IconButton
-                                                            onClick={() => handleDelete(order._id)}
-                                                            sx={{
-                                                                color: '#ef4444',
-                                                                background: '#fef2f2',
-                                                                borderRadius: '12px',
-                                                                '&:hover': { background: '#ef4444', color: '#fff' },
-                                                                transition: 'all 0.3s ease'
-                                                            }}
-                                                        >
-                                                            <DeleteIcon sx={{ fontSize: 18 }} />
-                                                        </IconButton>
+                                                                onClick={() => handleEdit(order)}
+                                                                sx={{
+                                                                    color: '#16a34a',
+                                                                    background: '#f0fdf4',
+                                                                    borderRadius: '12px',
+                                                                    '&:hover': { background: '#16a34a', color: '#fff' },
+                                                                    transition: 'all 0.3s ease'
+                                                                }}
+                                                            >
+                                                                <EditIcon sx={{ fontSize: 18 }} />
+                                                            </IconButton>
+                                                            <IconButton
+                                                                onClick={() => handleDelete(order._id)}
+                                                                sx={{
+                                                                    color: '#ef4444',
+                                                                    background: '#fef2f2',
+                                                                    borderRadius: '12px',
+                                                                    '&:hover': { background: '#ef4444', color: '#fff' },
+                                                                    transition: 'all 0.3s ease'
+                                                                }}
+                                                            >
+                                                                <DeleteIcon sx={{ fontSize: 18 }} />
+                                                            </IconButton>
                                                     </Box>
                                                 </TableCell>
                                             </TableRow>
@@ -273,6 +277,12 @@ const OrderTable = () => {
                     />
                 </CardContent>
             </Card>
+
+            <UpdateOrder 
+                open={openUpdateModal} 
+                handleClose={() => setOpenUpdateModal(false)} 
+                orderId={selectedOrderId} 
+            />
         </Box>
     );
 };

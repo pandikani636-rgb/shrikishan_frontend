@@ -37,6 +37,18 @@ import {
     deleteContactusReducer
 } from "./reducers/contactusReducer";
 
+import {
+    videosReducer,
+    newVideoReducer,
+    deleteVideoReducer,
+} from "./reducers/videoReducer";
+
+
+import { gstsReducer, newGstReducer, gstReducer } from './reducers/gstReducer';
+import { branchesReducer, newBranchReducer, branchReducer, branchDetailsReducer } from './reducers/branchReducer';
+import { logsReducer } from './reducers/logReducer';
+import { offersReducer, newOfferReducer, offerReducer, offerDetailsReducer } from './reducers/offerReducer';
+import { bannersReducer, newBannerReducer, bannerReducer, bannerDetailsReducer } from './reducers/bannerReducer';
 
 const reducer = combineReducers({
     user: userReducer,
@@ -80,6 +92,30 @@ const reducer = combineReducers({
     contactDetails: contactusDetailsReducer,
     deleteContact: deleteContactusReducer,
 
+    videoList: videosReducer,
+    newVideo: newVideoReducer,
+    deleteVideo: deleteVideoReducer,
+
+    gsts: gstsReducer,
+    newGst: newGstReducer,
+    gst: gstReducer,
+
+    branches: branchesReducer,
+    newBranch: newBranchReducer,
+    branch: branchReducer,
+    branchDetails: branchDetailsReducer,
+
+    auditLogs: logsReducer,
+
+    offers: offersReducer,
+    newOffer: newOfferReducer,
+    offer: offerReducer,
+    offerDetails: offerDetailsReducer,
+
+    banners: bannersReducer,
+    newBanner: newBannerReducer,
+    banner: bannerReducer,
+    bannerDetails: bannerDetailsReducer,
 });
 
 let initialState = {

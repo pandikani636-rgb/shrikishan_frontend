@@ -41,7 +41,15 @@ export const getProducts =
             try {
                 dispatch({ type: ALL_PRODUCTS_REQUEST });
 
-                let link = `/api/v1/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
+                let link = `/api/v1/products?page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}`;
+
+                if (ratings > 0) {
+                    link += `&ratings[gte]=${ratings}`;
+                }
+
+                if (keyword) {
+                    link += `&keyword=${keyword}`;
+                }
 
                 if (category) {
                     link += `&category=${category}`;
@@ -251,12 +259,12 @@ export const deleteProduct = (id) => async (dispatch) => {
 };
 
 
-// ✅ ADMIN — GET ALL REVIEWS
-export const getAllReviews = (id) => async (dispatch) => {
+// ✅ ADMIN — GET ALL REVIEWS GLOBALLY
+export const getAllReviews = () => async (dispatch) => {
     try {
         dispatch({ type: ALL_REVIEWS_REQUEST });
 
-        const { data } = await axios.get(`/api/v1/admin/reviews?id=${id}`);
+        const { data } = await axios.get(`/api/v1/admin/reviews/all`);
 
         dispatch({
             type: ALL_REVIEWS_SUCCESS,

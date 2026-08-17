@@ -5,24 +5,25 @@ import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import HelpIcon from '@mui/icons-material/Help';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import paymentMethods from '../../../assets/images/payment-methods.svg';
 import { useLocation } from 'react-router-dom';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import EmailIcon from '@mui/icons-material/Email';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const footerLinks = [
   {
-    title: "about",
+    title: "About",
     links: [
-      { name: "Contact Us", redirect: "#" },
-      { name: "About Shree Kishan Aayushi", redirect: "#" },
+      { name: "Contact Us", redirect: "/contact" },
+      { name: "About Shree Kishan Aayushi", redirect: "/about" },
       { name: "Careers", redirect: "#" },
-      { name: "Health Blog", redirect: "#" },
-      { name: "Press", redirect: "#" },
-      { name: "Pharmacy Network", redirect: "#" },
-      { name: "Corporate Information", redirect: "#" }
+      { name: "Pharmacy Network", redirect: "#" }
     ]
   },
   {
-    title: "help",
+    title: "Support",
     links: [
       { name: "Payments", redirect: "#" },
       { name: "Medicine Delivery", redirect: "#" },
@@ -31,22 +32,12 @@ const footerLinks = [
     ]
   },
   {
-    title: "policy",
+    title: "Policies",
     links: [
-      { name: "Return Policy", redirect: "#" },
       { name: "Terms Of Use", redirect: "#" },
-      { name: "Security", redirect: "#" },
       { name: "Privacy Policy", redirect: "#" },
       { name: "Medicine Safety", redirect: "#" },
       { name: "Prescription Policy", redirect: "#" }
-    ]
-  },
-  {
-    title: "social",
-    links: [
-      { name: "Facebook", redirect: "#" },
-      { name: "Twitter", redirect: "#" },
-      { name: "YouTube", redirect: "#" }
     ]
   }
 ];
@@ -62,88 +53,147 @@ const Footer = () => {
   return (
     <>
       {!adminRoute && (
-        <footer className="w-full bg-slate-900 px-4 md:px-0 py-24 relative overflow-hidden no-print">
-
-          {/* Subtle Grid Overlay */}
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/micro-carbon.png')] opacity-[0.05] pointer-events-none"></div>
-
-          <div className="container-responsive relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 mb-20">
-
-              {/* Brand Presence - Level 1 */}
-              <div className="lg:col-span-5 space-y-10">
-                <div className="flex flex-col gap-4">
-                  <div className="w-20 h-2 bg-blue-600 rounded-full"></div>
-                  <h2 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tighter leading-none">
-                    Shree Kishan <span className="text-blue-500">Aayushi</span>
-                  </h2>
-                  <div className="flex items-center gap-3">
-                    <span className="w-2.5 h-2.5 bg-blue-600 rounded-full animate-pulse shadow-glow-blue"></span>
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/80">Nodal Network v12.4</span>
-                  </div>
+        <footer className="w-full bg-[#064e3b] text-white pt-20 pb-10 relative overflow-hidden no-print shadow-inner border-t-4 border-primary-orange">
+          <div className="container mx-auto px-6 relative z-10">
+            
+            {/* Top Section - Trust Badges */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 bg-white/10 rounded-3xl p-8 mb-16 backdrop-blur-sm border border-white/20">
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-primary-orange/20 flex items-center justify-center text-primary-orange">
+                  <StarsIcon sx={{ fontSize: 28 }} />
                 </div>
-                <p className="text-white/90 text-sm font-bold leading-relaxed max-w-md italic border-l-2 border-blue-500/50 pl-6">
-                  "Advancing the frontier of clinical accessibility through digital integration. Your primary partner in medical designation and procurement."
+                <div>
+                  <h4 className="text-white font-semibold mb-1">Premium Quality</h4>
+                  <p className="text-sm text-green-100">Certified medical supplies</p>
+                </div>
+              </div>
+              
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-primary-orange/20 flex items-center justify-center text-primary-orange">
+                  <WorkIcon sx={{ fontSize: 28 }} />
+                </div>
+                <div>
+                  <h4 className="text-white font-semibold mb-1">Professional Grade</h4>
+                  <p className="text-sm text-green-100">Trusted by hospitals</p>
+                </div>
+              </div>
+              
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-primary-orange/20 flex items-center justify-center text-primary-orange">
+                  <CardGiftcardIcon sx={{ fontSize: 28 }} />
+                </div>
+                <div>
+                  <h4 className="text-white font-semibold mb-1">Special Offers</h4>
+                  <p className="text-sm text-green-100">Discounts on bulk orders</p>
+                </div>
+              </div>
+              
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-primary-orange/20 flex items-center justify-center text-primary-orange">
+                  <HelpIcon sx={{ fontSize: 28 }} />
+                </div>
+                <div>
+                  <h4 className="text-white font-semibold mb-1">24/7 Support</h4>
+                  <p className="text-sm text-green-100">Expert medical assistance</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
+              
+              {/* Brand Profile - Column 1 */}
+              <div className="lg:col-span-4 space-y-6">
+                <div>
+                  <h2 className="text-3xl font-semibold tracking-tight mb-1">
+                    SHREE KISHAN <span className="text-primary-orange">AAYUSHI</span>
+                  </h2>
+                  <p className="text-sm font-semibold uppercase tracking-widest text-green-200">
+                    Clinical Procurement Partner
+                  </p>
+                </div>
+                <p className="text-green-50 text-base leading-relaxed max-w-sm">
+                  Advancing the frontier of clinical accessibility through digital integration. Your primary partner in medical designation and procurement.
                 </p>
-                <div className="flex gap-4">
-                  {[FacebookIcon, TwitterIcon].map((Icon, i) => (
-                    <a key={i} href="#" className="w-14 h-14 rounded-2xl bg-white/5 border border-white/20 flex items-center justify-center text-white hover:bg-blue-600 hover:text-white transition-all duration-700 shadow-xl group">
-                      <Icon sx={{ fontSize: 24 }} className="group-hover:scale-125 transition-transform duration-500" />
+                <div className="flex gap-4 pt-2">
+                  {[FacebookIcon, TwitterIcon, LinkedInIcon].map((Icon, i) => (
+                    <a key={i} href="#" className="w-10 h-10 rounded-full bg-white/10 hover:bg-primary-orange flex items-center justify-center transition-colors duration-300">
+                      <Icon sx={{ fontSize: 20 }} />
                     </a>
                   ))}
                 </div>
               </div>
 
-              {/* Quick Navigation - Level 2 */}
-              <div className="lg:col-span-3 space-y-10">
-                <h3 className="text-xs font-black text-white uppercase tracking-[0.4em]">Resource Indices</h3>
-                <ul className="space-y-4">
-                  {['Institutional Catalog', 'Operation Centers', 'Clinical Safety', 'Legal Protocols'].map((link) => (
-                    <li key={link} className="group">
-                      <a href="#" className="text-[11px] font-black uppercase tracking-[0.2em] text-white/70 group-hover:text-white transition-all duration-500 flex items-center gap-3">
-                        <span className="w-0 h-px bg-blue-600 group-hover:w-6 transition-all duration-500"></span>
-                        {link}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+              {/* Quick Navigation - Columns 2, 3, 4 */}
+              <div className="lg:col-span-5 grid grid-cols-2 sm:grid-cols-3 gap-8">
+                {footerLinks.map((section, index) => (
+                  <div key={index}>
+                    <h3 className="text-base font-semibold uppercase tracking-wider text-green-200 mb-6">{section.title}</h3>
+                    <ul className="space-y-4">
+                      {section.links.map((link, i) => (
+                        <li key={i}>
+                          <a href={link.redirect} className="text-base text-white/80 hover:text-primary-orange transition-colors duration-300">
+                            {link.name}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
 
-              {/* Direct Access - Level 3 */}
-              <div className="lg:col-span-4 space-y-10">
-                <h3 className="text-xs font-black text-white uppercase tracking-[0.4em]">Operations Center</h3>
-                <div className="grid grid-cols-1 gap-8">
-                  <div className="flex items-center gap-6 p-6 rounded-3xl bg-white/2 border border-blue-100/5">
-                    <div className="w-12 h-12 rounded-2xl bg-blue-600/10 flex items-center justify-center text-blue-500 font-bold">HQ</div>
-                    <p className="text-[11px] font-black text-white/80 uppercase tracking-widest leading-relaxed">
-                      Sector 09, Shree Kishan Aayushi Plaza,<br />Health Metropolis.
-                    </p>
+              {/* Operations Center - Column 5 */}
+              <div className="lg:col-span-3 space-y-6">
+                <h3 className="text-base font-semibold uppercase tracking-wider text-green-200 mb-6">Contact Us</h3>
+                
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <LocationOnIcon sx={{ fontSize: 20, color: '#fcd34d' }} />
                   </div>
-                  <div className="flex items-center gap-6 p-6 rounded-3xl bg-white/2 border border-blue-100/5 group hover:bg-blue-600/10 transition-colors">
-                    <div className="w-12 h-12 rounded-2xl bg-blue-600/10 flex items-center justify-center text-blue-500 font-bold group-hover:bg-blue-600 group-hover:text-white transition-all">TL</div>
-                    <p className="text-xl font-black text-white tracking-tighter">+91 98765 00000</p>
+                  <p className="text-base text-green-50 leading-relaxed">
+                    Sector 09, Shree Kishan Aayushi Plaza,<br />
+                    Health Metropolis.
+                  </p>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <LocalPhoneIcon sx={{ fontSize: 20, color: '#fcd34d' }} />
+                  </div>
+                  <div>
+                    <p className="text-base font-semibold">+91 63805 18171</p>
+                    <p className="text-sm text-green-200">Mon-Sun: 24/7 Support</p>
                   </div>
                 </div>
-              </div>
 
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                    <EmailIcon sx={{ fontSize: 20, color: '#fcd34d' }} />
+                  </div>
+                  <p className="text-base font-semibold">shreekishanaayushi@gmail.com</p>
+                </div>
+
+              </div>
             </div>
 
-            {/* Strategic Verification Footer */}
-            <div className="pt-16 border-t border-white/10 flex flex-col lg:flex-row justify-between items-center gap-10">
-              <div className="flex items-center gap-10 opacity-70 hover:opacity-100 transition-all duration-1000">
-                <img src={paymentMethods} alt="Secured Payments" className="h-5 brightness-200" />
-                <div className="h-6 w-px bg-white/40"></div>
-                <span className="text-[9px] font-black text-white uppercase tracking-[0.3em]">AES-256 Encrypted</span>
-              </div>
-              <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/80 text-center lg:text-right">
-                © 2024 Shree Kishan Aayushi Group. All rights reserved. Registered across 14 territories.
+            {/* Bottom Footer - Copyright & Payments */}
+            <div className="pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-6">
+              <p className="text-xs text-green-200 text-center md:text-left">
+                &copy; {new Date().getFullYear()} Shree Kishan Aayushi Group. All rights reserved. Registered across 14 territories.
               </p>
+              <div className="flex items-center gap-6">
+                <span className="text-xs font-semibold uppercase tracking-widest text-green-200 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-green-400"></span>
+                  AES-256 Secured
+                </span>
+                <img src={paymentMethods} alt="Secured Payments" className="h-6 opacity-80" />
+              </div>
             </div>
+
           </div>
         </footer>
       )}
     </>
-  )
+  );
 };
 
 export default Footer;

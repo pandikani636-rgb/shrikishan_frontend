@@ -129,10 +129,10 @@ const Products = () => {
                     {/* Catalog Header */}
                     <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-8">
                         <div className="animate-fade-in-left">
-                            <h1 className="text-xl sm:text-3xl font-black text-blue-950 uppercase tracking-tighter mb-2 leading-none">Medical <span className="text-blue-600">Catalog</span></h1>
+                            <h1 className="text-xl sm:text-3xl font-semibold text-blue-950 uppercase tracking-tighter mb-2 leading-none">Medical <span className="text-blue-600">Catalog</span></h1>
                             <div className="flex items-center gap-2">
                                 <span className="w-6 h-1 bg-blue-600 rounded-full"></span>
-                                <p className="text-blue-800/60 font-black uppercase tracking-widest text-[9px]">Verified Healthcare Solutions</p>
+                                <p className="text-blue-800/60 font-semibold uppercase tracking-widest text-[9px]">Verified Healthcare Solutions</p>
                             </div>
                         </div>
 
@@ -144,12 +144,12 @@ const Products = () => {
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     placeholder="Search molecules, brands or devices..."
-                                    className="w-full bg-white border border-blue-100 rounded-xl px-6 py-4 pl-14 text-blue-950 text-sm font-bold focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all duration-500 placeholder:text-blue-900/20 shadow-sm"
+                                    className="w-full bg-white border border-blue-100 rounded-xl px-6 py-4 pl-14 text-blue-950 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all duration-500 placeholder:text-blue-900/20 shadow-sm"
                                 />
                                 <SearchIcon className="absolute left-6 top-1/2 transform -translate-y-1/2 text-blue-300 group-focus-within:text-blue-600 transition-colors" sx={{ fontSize: 20 }} />
                                 <button
                                     type="submit"
-                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-800 text-white px-6 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] transition-all shadow-xl shadow-blue-600/20 active:scale-95"
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-800 text-white px-6 py-2.5 rounded-lg text-[9px] font-semibold uppercase tracking-[0.2em] transition-all shadow-xl shadow-blue-600/20 active:scale-95"
                                 >
                                     Search
                                 </button>
@@ -163,9 +163,9 @@ const Products = () => {
                             className="w-full glass-card border-white/10 rounded-xl p-4 flex items-center justify-between group"
                             onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
                         >
-                            <span className="font-black text-[10px] uppercase tracking-widest text-white">Refine Search</span>
+                            <span className="font-semibold text-[10px] uppercase tracking-widest text-white">Refine Search</span>
                             <div className="flex items-center gap-3">
-                                <span className="text-[9px] font-bold text-blue-400 bg-blue-400/10 px-3 py-1 rounded-full border border-blue-400/20">
+                                <span className="text-[9px] font-semibold text-blue-400 bg-blue-400/10 px-3 py-1 rounded-full border border-blue-400/20">
                                     {(category ? 1 : 0) + (price[0] > 0 || price[1] < 200000 ? 1 : 0)} Active
                                 </span>
                                 <ExpandMoreIcon className="text-slate-400 group-hover:text-white transition-colors" />
@@ -177,25 +177,27 @@ const Products = () => {
 
                         {/* Sidebar (Desktop) */}
                         <aside className="hidden lg:flex flex-col w-72 flex-shrink-0 animate-fade-in-left sticky top-32">
-                            <div className="bg-white/80 backdrop-blur-2xl border border-blue-100 rounded-[2rem] p-6 space-y-10 shadow-[0_20px_50px_rgba(15,82,186,0.05)]">
-                                <div className="flex justify-between items-center border-b border-blue-50 pb-5">
-                                    <h3 className="font-black text-[10px] uppercase tracking-[0.25em] text-blue-950">Refinement</h3>
+                            <div className="bg-white/80 backdrop-blur-2xl border border-white rounded-[2.5rem] p-7 space-y-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                                <div className="flex justify-between items-center border-b-2 border-slate-50 pb-4">
+                                    <h3 className="font-semibold text-base uppercase tracking-widest text-slate-900 flex items-center gap-2">
+                                        <span className="w-2 h-6 bg-[#d97706] rounded-full"></span> Filters
+                                    </h3>
                                     <button
-                                        className="text-blue-600 hover:text-blue-800 text-[9px] font-black transition-all uppercase tracking-widest bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100"
+                                        className="text-[#d97706] hover:text-white bg-orange-50 hover:bg-[#d97706] text-[10px] font-semibold transition-all duration-300 uppercase tracking-widest px-3 py-1.5 rounded-xl shadow-sm hover:shadow-md"
                                         onClick={clearFilters}
                                     >
-                                        Clear
+                                        Clear All
                                     </button>
                                 </div>
 
                                 {/* Price Filter */}
-                                <div className="space-y-6">
+                                <div className="space-y-4">
                                     <div className="flex justify-between items-center group cursor-pointer" onClick={() => setPriceToggle(!priceToggle)}>
-                                        <h4 className="font-black text-[9px] uppercase text-blue-900/40 tracking-[0.2em] group-hover:text-blue-600 transition-colors">Economic Scope</h4>
-                                        {priceToggle ? <ExpandLessIcon sx={{ fontSize: 16 }} className="text-blue-200" /> : <ExpandMoreIcon sx={{ fontSize: 16 }} className="text-blue-200" />}
+                                        <h4 className="font-semibold text-[11px] uppercase text-slate-700 tracking-[0.2em]">Price Range</h4>
+                                        {priceToggle ? <ExpandLessIcon sx={{ fontSize: 20 }} className="text-[#d97706]" /> : <ExpandMoreIcon sx={{ fontSize: 20 }} className="text-slate-300 group-hover:text-slate-500" />}
                                     </div>
                                     {priceToggle && (
-                                        <div className="animate-fade-in px-3">
+                                        <div className="animate-fade-in px-2 pt-2">
                                             <Slider
                                                 value={price}
                                                 onChange={priceHandler}
@@ -203,72 +205,75 @@ const Products = () => {
                                                 min={0}
                                                 max={200000}
                                                 sx={{
-                                                    color: '#0f52ba',
+                                                    color: '#d97706',
                                                     '& .MuiSlider-thumb': {
                                                         width: 20,
                                                         height: 20,
                                                         backgroundColor: '#fff',
-                                                        border: '3px solid #0f52ba',
-                                                        boxShadow: '0 4px 12px rgba(15,82,186,0.2)',
+                                                        border: '3px solid #d97706',
+                                                        boxShadow: '0 4px 10px rgba(217,119,6,0.3)',
+                                                        '&:hover, &.Mui-focusVisible': {
+                                                            boxShadow: '0 0 0 8px rgba(217,119,6,0.1)',
+                                                        }
                                                     },
                                                     '& .MuiSlider-track': { height: 4, borderRadius: 2 },
-                                                    '& .MuiSlider-rail': { height: 4, opacity: 0.1, backgroundColor: '#0f52ba', borderRadius: 2 },
+                                                    '& .MuiSlider-rail': { height: 4, opacity: 0.3, backgroundColor: '#cbd5e1', borderRadius: 2 },
                                                 }}
                                             />
-                                            <div className="flex justify-between mt-4 text-[9px] font-black text-blue-900/60 uppercase tracking-widest">
-                                                <span>₹{price[0].toLocaleString()}</span>
-                                                <span>₹{price[1].toLocaleString()}</span>
+                                            <div className="flex justify-between mt-4">
+                                                <div className="bg-slate-50 border border-slate-100 rounded-xl px-4 py-2">
+                                                    <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-widest block mb-0.5">Min</span>
+                                                    <span className="text-sm font-semibold text-slate-900">₹{price[0].toLocaleString()}</span>
+                                                </div>
+                                                <div className="bg-slate-50 border border-slate-100 rounded-xl px-4 py-2 text-right">
+                                                    <span className="text-[9px] font-semibold text-slate-400 uppercase tracking-widest block mb-0.5">Max</span>
+                                                    <span className="text-sm font-semibold text-slate-900">₹{price[1].toLocaleString()}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     )}
                                 </div>
 
                                 {/* Categories Filter */}
-                                <div className="space-y-6">
+                                <div className="space-y-4">
                                     <div className="flex justify-between items-center group cursor-pointer" onClick={() => setCategoryToggle(!categoryToggle)}>
-                                        <h4 className="font-black text-[9px] uppercase text-blue-900/40 tracking-[0.2em] group-hover:text-blue-600 transition-colors">Clinical Discipline</h4>
-                                        {categoryToggle ? <ExpandLessIcon sx={{ fontSize: 16 }} className="text-blue-200" /> : <ExpandMoreIcon sx={{ fontSize: 16 }} className="text-blue-200" />}
+                                        <h4 className="font-semibold text-[11px] uppercase text-slate-700 tracking-[0.2em]">Categories</h4>
+                                        {categoryToggle ? <ExpandLessIcon sx={{ fontSize: 20 }} className="text-[#d97706]" /> : <ExpandMoreIcon sx={{ fontSize: 20 }} className="text-slate-300 group-hover:text-slate-500" />}
                                     </div>
                                     {categoryToggle && (
-                                        <div className="space-y-2 animate-fade-in">
+                                        <div className="space-y-3 animate-fade-in pt-2">
                                             {adminCategories?.map((cat) => (
-                                                <div key={cat._id} className="border-b border-blue-50 last:border-0 pb-2 last:pb-0">
+                                                <div key={cat._id} className="mb-2">
                                                     <div
-                                                        className={`flex items-center justify-between group cursor-pointer p-3 rounded-xl transition-all duration-500 ${selectedMainCategory === cat._id ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'hover:bg-blue-50 text-blue-900/70'}`}
+                                                        className={`flex items-center justify-between group cursor-pointer px-5 py-3.5 rounded-2xl transition-all duration-300 ${selectedMainCategory === cat._id ? 'bg-gradient-to-r from-orange-50 to-white border-l-4 border-l-[#d97706] shadow-sm' : 'bg-transparent hover:bg-slate-50 border-l-4 border-l-transparent'}`}
                                                         onClick={() => setSelectedMainCategory(selectedMainCategory === cat._id ? "" : cat._id)}
                                                     >
-                                                        <span className={`text-[10px] font-black uppercase tracking-widest`}>
+                                                        <span className={`text-[11px] font-semibold uppercase tracking-widest transition-colors ${selectedMainCategory === cat._id ? 'text-[#d97706]' : 'text-slate-600 group-hover:text-slate-900'}`}>
                                                             {cat.name}
                                                         </span>
                                                         {selectedMainCategory === cat._id ?
-                                                            <ExpandLessIcon sx={{ fontSize: 14 }} className="text-white" /> :
-                                                            <ExpandMoreIcon sx={{ fontSize: 14 }} className="text-blue-200 group-hover:text-blue-400" />
+                                                            <ExpandLessIcon sx={{ fontSize: 20 }} className="text-[#d97706]" /> :
+                                                            <ExpandMoreIcon sx={{ fontSize: 20 }} className="text-slate-300 group-hover:text-slate-500" />
                                                         }
                                                     </div>
 
                                                     {selectedMainCategory === cat._id && (
-                                                        <div className="mt-2 ml-1 animate-fade-in space-y-1">
-                                                            <FormControl component="fieldset" className="w-full">
-                                                                <RadioGroup value={category} onChange={(e) => setCategory(e.target.value)}>
-                                                                    {groupedSubCategories[cat._id]?.map((sub) => (
-                                                                        <FormControlLabel
-                                                                            key={sub._id}
-                                                                            value={sub.name}
-                                                                            className="hover:bg-blue-50 rounded-lg pr-3 transition-all w-full m-0 mb-0.5"
-                                                                            control={<Radio size="small" sx={{
-                                                                                padding: '4px',
-                                                                                color: 'rgba(15,82,186,0.1)',
-                                                                                '&.Mui-checked': { color: '#0f52ba' }
-                                                                            }} />}
-                                                                            label={
-                                                                                <span className={`text-[9px] font-black uppercase tracking-widest ${category === sub.name ? 'text-blue-600' : 'text-blue-900/40'}`}>
-                                                                                    {sub.name}
-                                                                                </span>
-                                                                            }
-                                                                        />
-                                                                    ))}
-                                                                </RadioGroup>
-                                                            </FormControl>
+                                                        <div className="mt-4 mb-4 animate-fade-in">
+                                                            <div className="flex flex-wrap gap-2 px-2">
+                                                                {groupedSubCategories[cat._id]?.map((sub) => (
+                                                                    <button
+                                                                        key={sub._id}
+                                                                        onClick={() => setCategory(category === sub.name ? "" : sub.name)}
+                                                                        className={`px-4 py-2.5 rounded-xl text-[9px] font-semibold uppercase tracking-[0.2em] transition-all duration-300 border shadow-sm ${
+                                                                            category === sub.name
+                                                                                ? 'bg-gradient-to-r from-[#d97706] to-[#f59e0b] text-white border-transparent shadow-[#d97706]/40 scale-[1.02]'
+                                                                                : 'bg-white text-slate-500 border-slate-100 hover:border-[#d97706] hover:text-[#d97706] hover:shadow-md'
+                                                                        }`}
+                                                                    >
+                                                                        {sub.name}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
                                                         </div>
                                                     )}
                                                 </div>
@@ -292,21 +297,21 @@ const Products = () => {
                                     <div className="w-40 h-40 bg-blue-50 rounded-full flex items-center justify-center mb-8 border border-blue-100 animate-pulse">
                                         <SearchIcon sx={{ fontSize: 60, color: 'rgba(15,82,186,0.1)' }} />
                                     </div>
-                                    <h2 className="text-2xl font-black text-blue-950 uppercase tracking-tighter mb-4">No Diagnostics Matched</h2>
-                                    <p className="text-blue-800/50 text-center max-w-sm font-bold leading-relaxed px-6 uppercase tracking-widest text-[9px]">Your query yielded zero biological results. Please adjust parameters.</p>
-                                    <button onClick={clearFilters} className="mt-10 px-10 py-4 bg-blue-600 text-white rounded-xl font-black uppercase tracking-[0.2em] text-[9px] hover:bg-blue-800 transition-all shadow-2xl shadow-blue-600/30 active:scale-95">Re-Sync Filters</button>
+                                    <h2 className="text-2xl font-semibold text-blue-950 uppercase tracking-tighter mb-4">No Diagnostics Matched</h2>
+                                    <p className="text-blue-800/50 text-center max-w-sm font-semibold leading-relaxed px-6 uppercase tracking-widest text-[9px]">Your query yielded zero biological results. Please adjust parameters.</p>
+                                    <button onClick={clearFilters} className="mt-10 px-10 py-4 bg-blue-600 text-white rounded-xl font-semibold uppercase tracking-[0.2em] text-[9px] hover:bg-blue-800 transition-all shadow-2xl shadow-blue-600/30 active:scale-95">Re-Sync Filters</button>
                                 </div>
                             ) : (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                                     {(filteredProducts.length > 0 ? filteredProducts : products).map((product) => <Product key={product._id} {...product} />)}
                                 </div>
                             )}
 
                             {/* Pagination - Premium Clinical */}
-                            {filteredProductsCount > resultPerPage && (
-                                <div className="flex justify-center mt-20 mb-12">
+                            {filteredProductsCount > 0 && (
+                                <div className="flex justify-center mt-16 mb-12">
                                     <Pagination
-                                        count={Math.ceil(filteredProductsCount / resultPerPage)}
+                                        count={Math.ceil(filteredProductsCount / (resultPerPage || 12))}
                                         page={currentPage}
                                         onChange={(e, val) => setCurrentPage(val)}
                                         color="primary"
@@ -314,24 +319,22 @@ const Products = () => {
                                         size={onMobile ? "small" : "medium"}
                                         sx={{
                                             '& .MuiPaginationItem-root': {
-                                                color: '#0f52ba',
+                                                color: '#d97706',
                                                 fontFamily: 'inherit',
-                                                fontWeight: '900',
-                                                fontSize: '0.65rem',
-                                                letterSpacing: '0.15em',
-                                                textTransform: 'uppercase',
-                                                borderRadius: '0.8rem',
-                                                margin: '0 3px',
-                                                border: '1px solid rgba(15,82,186,0.1)',
+                                                fontWeight: 'bold',
+                                                fontSize: '0.8rem',
+                                                borderRadius: '0.5rem',
+                                                margin: '0 4px',
+                                                border: '1px solid #fde68a',
                                                 background: '#fff',
-                                                transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                                                '&:hover': { background: '#0f52ba', color: '#fff', transform: 'translateY(-2px)' },
+                                                transition: 'all 0.3s ease',
+                                                '&:hover': { background: '#fffbeb', color: '#b45309', transform: 'translateY(-1px)' },
                                                 '&.Mui-selected': {
-                                                    background: '#0f52ba',
+                                                    background: '#d97706',
                                                     color: 'white',
                                                     border: 'none',
-                                                    boxShadow: '0 10px 20px rgba(15, 82, 186, 0.2)',
-                                                    '&:hover': { background: '#083d8d' }
+                                                    boxShadow: '0 4px 12px rgba(217,119,6,0.25)',
+                                                    '&:hover': { background: '#b45309' }
                                                 }
                                             }
                                         }}
@@ -348,32 +351,32 @@ const Products = () => {
                         <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" onClick={() => setMobileFiltersOpen(false)}></div>
                         <div className="absolute bottom-0 left-0 right-0 bg-[#0f172a] rounded-t-[2.5rem] border-t border-white/10 p-8 max-h-[85vh] overflow-y-auto animate-slide-up">
                             <div className="flex justify-between items-center mb-8">
-                                <h3 className="text-lg font-black text-white uppercase tracking-tighter">Refinement</h3>
+                                <h3 className="text-lg font-semibold text-white uppercase tracking-tighter">Refinement</h3>
                                 <button onClick={() => setMobileFiltersOpen(false)} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-white text-xs">✕</button>
                             </div>
 
                             <div className="space-y-10 pb-10">
                                 <div className="space-y-4">
-                                    <h4 className="text-[9px] font-black uppercase text-slate-500 tracking-widest">Financial Range</h4>
+                                    <h4 className="text-[9px] font-semibold uppercase text-slate-500 tracking-widest">Financial Range</h4>
                                     <Slider value={price} onChange={priceHandler} min={0} max={200000} sx={{ color: '#3b82f6' }} />
-                                    <div className="flex justify-between text-[9px] font-bold text-slate-400">
+                                    <div className="flex justify-between text-[9px] font-semibold text-slate-400">
                                         <span>₹{price[0]}</span>
                                         <span>₹{price[1]}</span>
                                     </div>
                                 </div>
 
                                 <div className="space-y-6">
-                                    <h4 className="text-[9px] font-black uppercase text-slate-500 tracking-widest">Disciplines</h4>
+                                    <h4 className="text-[9px] font-semibold uppercase text-slate-500 tracking-widest">Disciplines</h4>
                                     {adminCategories?.map(cat => (
                                         <div key={cat._id} className="space-y-4">
                                             <div onClick={() => setSelectedMainCategory(selectedMainCategory === cat._id ? "" : cat._id)} className={`p-3 rounded-xl border ${selectedMainCategory === cat._id ? 'border-blue-500 bg-blue-500/10' : 'border-white/5'} flex justify-between items-center`}>
-                                                <span className="text-[10px] font-bold text-white uppercase tracking-widest">{cat.name}</span>
+                                                <span className="text-[10px] font-semibold text-white uppercase tracking-widest">{cat.name}</span>
                                                 <ExpandMoreIcon sx={{ fontSize: 18 }} className={`text-slate-500 transition-transform ${selectedMainCategory === cat._id ? 'rotate-180' : ''}`} />
                                             </div>
                                             {selectedMainCategory === cat._id && (
                                                 <div className="grid grid-cols-1 gap-2 pl-3 animate-fade-in">
                                                     {groupedSubCategories[cat._id]?.map(sub => (
-                                                        <div key={sub._id} onClick={() => setCategory(sub.name)} className={`p-2.5 rounded-lg text-[9px] font-bold uppercase tracking-widest border ${category === sub.name ? 'border-emerald-500/50 text-emerald-400 bg-emerald-500/10' : 'border-white/5 text-slate-500'}`}>
+                                                        <div key={sub._id} onClick={() => setCategory(sub.name)} className={`p-2.5 rounded-lg text-[9px] font-semibold uppercase tracking-widest border ${category === sub.name ? 'border-emerald-500/50 text-emerald-400 bg-emerald-500/10' : 'border-white/5 text-slate-500'}`}>
                                                             {sub.name}
                                                         </div>
                                                     ))}
@@ -383,7 +386,7 @@ const Products = () => {
                                     ))}
                                 </div>
 
-                                <button onClick={() => setMobileFiltersOpen(false)} className="w-full py-4 bg-blue-600 text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-xl shadow-blue-600/20 active:scale-95">Verify Application</button>
+                                <button onClick={() => setMobileFiltersOpen(false)} className="w-full py-4 bg-blue-600 text-white rounded-xl font-semibold uppercase tracking-widest text-[10px] shadow-xl shadow-blue-600/20 active:scale-95">Verify Application</button>
                             </div>
                         </div>
                     </div>

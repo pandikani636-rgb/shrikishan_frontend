@@ -1,7 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.cda173d5.css",
-    "main.js": "/static/js/main.d045c396.js",
+    "main.css": "/static/css/main.04eedfd7.css",
+    "main.js": "/static/js/main.3df40f98.js",
+    "static/media/logo.jpg": "/static/media/logo.1b742d9a3ced8a46803f.jpg",
     "static/media/logo1.jpg": "/static/media/logo1.544ce6ddc46eaf01e7f3.jpg",
     "static/media/payment-methods.svg": "/static/media/payment-methods.69e7ec34d1302e6b58b2cb1abe6b2f9c.svg",
     "static/media/404-not-found.svg": "/static/media/404-not-found.f58b723c5e420e43683574327be5529a.svg",
@@ -17,11 +18,11 @@
     "static/media/health-tips.svg": "/static/media/health-tips.45dcd02ef10541c7757915ab09fbed85.svg",
     "static/media/expert.svg": "/static/media/expert.4cac7c579d94d68cdff7dcaad13ec9b5.svg",
     "static/media/brand.svg": "/static/media/brand.2ee440aec514d180c74a0b43c71ba753.svg",
-    "main.cda173d5.css.map": "/static/css/main.cda173d5.css.map",
-    "main.d045c396.js.map": "/static/js/main.d045c396.js.map"
+    "main.04eedfd7.css.map": "/static/css/main.04eedfd7.css.map",
+    "main.3df40f98.js.map": "/static/js/main.3df40f98.js.map"
   },
   "entrypoints": [
-    "static/css/main.cda173d5.css",
-    "static/js/main.d045c396.js"
+    "static/css/main.04eedfd7.css",
+    "static/js/main.3df40f98.js"
   ]
 }

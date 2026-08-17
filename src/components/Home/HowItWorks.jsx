@@ -23,7 +23,7 @@ const HowItWorks = () => {
 
     return (
         <section className="bg-white rounded-2xl shadow-sm p-6 mt-6">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-900">How It Works</h2>
+            <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-gray-900">How It Works</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {steps.map((s, idx) => (
                     <div key={idx} className="flex flex-col items-start gap-4 p-6 bg-gray-50 rounded-lg border border-gray-100">

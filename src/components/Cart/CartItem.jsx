@@ -1,20 +1,22 @@
 import { useSnackbar } from 'notistack';
 import { useDispatch } from 'react-redux';
 import { addItemsToCart, removeItemsFromCart } from '../../actions/cartAction';
-import { getDeliveryDate, getDiscount } from '../../utils/functions';
 
 import { Link } from 'react-router-dom';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-const CartItem = ({ product, name, seller, price, cuttedPrice, image, stock, quantity, inCart }) => {
+const CartItem = ({ product, name, seller, price, cuttedPrice, image, stock, quantity, inCart, gst }) => {
 
     const productId = product || product?._id || product?.id;
     const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
 
+    const gstAmount = (price * (gst / 100)) * quantity;
+
     const increaseQuantity = (id, quantity, stock) => {
         const newQty = quantity + 1;
         if (quantity >= stock) {
-            enqueueSnackbar("Portfolio Maximum Reached", { variant: "warning" });
+            enqueueSnackbar("Maximum stock reached", { variant: "warning" });
             return;
         };
         dispatch(addItemsToCart(id, newQty));
@@ -28,105 +30,151 @@ const CartItem = ({ product, name, seller, price, cuttedPrice, image, stock, qua
 
     const removeCartItem = (id) => {
         dispatch(removeItemsFromCart(id));
-        enqueueSnackbar("Asset De-listed from Session", { variant: "info" });
+        enqueueSnackbar("Item removed", { variant: "info" });
     }
 
-    const BASE_URL = "http://localhost:4000/";
+    const BASE_URL = "/";
+
+    if (!inCart) {
+        return (
+            <div className="flex items-center gap-4 py-4 sm:px-6 group transition-colors" key={product}>
+                {/* Compact Image */}
+                <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 bg-slate-50 rounded-xl p-2.5 border border-slate-100 flex items-center justify-center">
+                    <img
+                        draggable="false"
+                        className="max-h-full max-w-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-300"
+                        src={image?.startsWith('http') ? image : `${BASE_URL}admin/product/${image}`}
+                        alt={name}
+                    />
+                </div>
+
+                {/* Details */}
+                <div className="flex-1 flex justify-between items-center min-w-0">
+                    <div className="flex flex-col pr-4 min-w-0">
+                        {productId ? (
+                            <Link to={`/product/${productId}`} className="block truncate">
+                                <h3 className="text-sm sm:text-[15px] font-semibold text-slate-900 hover:text-emerald-600 transition-colors truncate">
+                                    {name}
+                                </h3>
+                            </Link>
+                        ) : (
+                            <h3 className="text-sm sm:text-[15px] font-semibold text-slate-900 truncate">{name}</h3>
+                        )}
+                        <div className="flex items-center gap-2 mt-0.5">
+                            <p className="text-[11px] text-slate-500 truncate">Sold by {seller}</p>
+                            {gst > 0 && (
+                                <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100 uppercase tracking-wider">
+                                    {gst}% GST (+₹{gstAmount.toFixed(2)})
+                                </span>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Price and Qty */}
+                    <div className="flex flex-col items-end flex-shrink-0 gap-1.5">
+                        <div className="text-base sm:text-lg font-semibold text-slate-900">
+                            ₹{(price * quantity).toLocaleString()}
+                        </div>
+                        <div className="flex items-center gap-1.5 bg-slate-100/80 border border-slate-200/60 py-1 px-2.5 rounded-lg shadow-[0_2px_10px_-2px_rgba(0,0,0,0.02)]">
+                            <span className="text-[9px] font-semibold text-slate-500 uppercase tracking-widest">Qty</span>
+                            <span className="text-xs font-semibold text-slate-800">{quantity}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <div className="p-6 hover:bg-blue-50/50 transition-all duration-700 animate-fade-in group" key={product}>
-            <div className="flex flex-col lg:flex-row gap-8 items-start">
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 items-start group" key={product}>
+            
+            {/* Product Image */}
+            <div className="w-24 sm:w-32 lg:w-40 aspect-square flex-shrink-0 bg-slate-50 rounded-2xl p-4 border border-slate-100 flex items-center justify-center">
+                <img
+                    draggable="false"
+                    className="max-h-full max-w-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+                    src={image?.startsWith('http') ? image : `${BASE_URL}admin/product/${image}`}
+                    alt={name}
+                />
+            </div>
 
-                {/* Product Visualization */}
-                <div className="w-full lg:w-32 aspect-square flex-shrink-0 relative">
-                    <div className="absolute inset-0 bg-blue-600/5 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                    <div className="h-full w-full bg-white border border-blue-50 rounded-2xl p-4 relative z-10 shadow-lg shadow-blue-900/5 group-hover:-translate-y-1 transition-transform duration-700">
-                        <img
-                            draggable="false"
-                            className="h-full w-full object-contain"
-                            src={image?.startsWith('http') ? image : `${BASE_URL}admin/product/${image}`}
-                            alt={name}
-                        />
+            {/* Details & Actions */}
+            <div className="flex-1 w-full flex flex-col justify-between min-h-[160px]">
+                
+                {/* Top: Title & Price */}
+                <div className="flex flex-col sm:flex-row justify-between gap-4">
+                    <div className="space-y-1">
+                        {productId ? (
+                            <Link to={`/product/${productId}`} className="block">
+                                <h3 className="text-lg font-semibold text-slate-900 hover:text-emerald-600 transition-colors leading-tight">
+                                    {name}
+                                </h3>
+                            </Link>
+                        ) : (
+                            <h3 className="text-lg font-semibold text-slate-900 leading-tight">{name}</h3>
+                        )}
+                        <div className="flex items-center gap-3">
+                            <p className="text-sm text-slate-500">Sold by {seller}</p>
+                            {gst > 0 ? (
+                                <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100 uppercase tracking-widest">
+                                    {gst}% GST Applied (+₹{gstAmount.toFixed(2)})
+                                </span>
+                            ) : (
+                                <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-slate-100 text-slate-500 border border-slate-200 uppercase tracking-widest">
+                                    No GST
+                                </span>
+                            )}
+                        </div>
+                        
+                        {stock < 10 && (
+                            <p className="text-xs font-semibold text-red-500 mt-2">
+                                Only {stock} left in stock
+                            </p>
+                        )}
+                    </div>
+
+                    <div className="text-left sm:text-right">
+                        <div className="text-xl font-semibold text-slate-900">
+                            ₹{(price * quantity).toLocaleString()}
+                        </div>
+                        {cuttedPrice > price && (
+                            <div className="text-sm text-slate-400 line-through mt-1">
+                                ₹{(cuttedPrice * quantity).toLocaleString()}
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                {/* Specification Details */}
-                <div className="flex-1 space-y-6 w-full">
-                    <div className="flex flex-col md:flex-row justify-between items-start gap-4">
-                        <div className="space-y-2">
-                            {productId ? (
-                                <Link to={`/product/${productId}`} className="block">
-                                    <h3 className="text-lg font-black text-blue-950 uppercase tracking-tighter hover:text-blue-600 transition-colors leading-none">
-                                        {name}
-                                    </h3>
-                                </Link>
-                            ) : (
-                                <h3 className="text-lg font-black text-blue-950 uppercase tracking-tighter leading-none">{name}</h3>
-                            )}
-                            <div className="flex flex-wrap items-center gap-3">
-                                <span className="text-[8px] font-black uppercase tracking-[0.2em] text-blue-900/40 bg-blue-50 px-3 py-1 rounded-lg border border-blue-100">
-                                    {seller}
-                                </span>
-                                {stock < 10 && (
-                                    <span className="text-[8px] font-black uppercase tracking-[0.2em] text-red-500 bg-red-50 px-3 py-1 rounded-lg border border-red-100 animate-pulse">
-                                        CRITICAL SUPPLY: {stock} UNITS
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Financial Analysis */}
-                        <div className="text-right flex flex-col items-end">
-                            <span className="text-[8px] font-black text-blue-900/30 uppercase tracking-widest mb-1">Item Total</span>
-                            <div className="flex items-center gap-2 mb-1">
-                                {cuttedPrice > price && (
-                                    <span className="text-xs font-medium text-slate-400 line-through">
-                                        ₹{(cuttedPrice * quantity).toLocaleString()}
-                                    </span>
-                                )}
-                                <div className="text-xl font-black text-blue-950 tracking-tighter leading-none">
-                                    ₹{(price * quantity).toLocaleString()}
-                                </div>
-                            </div>
-                            <div className="text-[9px] font-black text-blue-900/30 uppercase tracking-[0.25em] bg-blue-50/50 px-3 py-1 rounded-lg border border-blue-50/50">
-                                UNIT: ₹{price.toLocaleString()} × {quantity}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Operational Controls */}
-                    <div className="flex flex-wrap items-center justify-between gap-6 pt-6 border-t border-blue-50">
-
-                        {/* Quantity Modulation */}
-                        <div className="flex items-center gap-4">
-                            <span className="text-[9px] font-black text-blue-900/40 uppercase tracking-[0.3em]">QUANTITY</span>
-                            <div className="flex items-center p-1.5 bg-blue-50/50 rounded-xl border border-blue-100 shadow-inner">
-                                <button
-                                    onClick={() => decreaseQuantity(product, quantity)}
-                                    className="w-10 h-10 flex items-center justify-center rounded-lg bg-white text-blue-900 hover:bg-red-500 hover:text-white transition-all shadow-sm active:scale-95 font-black text-lg"
-                                >
-                                    -
-                                </button>
-                                <span className="w-12 text-center font-black text-blue-950 text-lg tracking-tighter">{quantity}</span>
-                                <button
-                                    onClick={() => increaseQuantity(product, quantity, stock)}
-                                    className="w-10 h-10 flex items-center justify-center rounded-lg bg-white text-blue-900 hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-95 font-black text-lg"
-                                >
-                                    +
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Resource De-listing */}
-                        {inCart && (
+                {/* Bottom: Quantity & Remove */}
+                <div className="flex items-center justify-between mt-6 pt-6 border-t border-slate-100/60">
+                    
+                    {/* Quantity */}
+                    <div className="flex items-center">
+                        <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden">
                             <button
-                                onClick={() => removeCartItem(product)}
-                                className="group flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white border border-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-700 active:scale-95 shadow-lg shadow-red-900/5 font-black text-[9px] uppercase tracking-[0.3em]"
+                                onClick={() => decreaseQuantity(product, quantity)}
+                                className="w-10 h-10 flex items-center justify-center bg-slate-50 hover:bg-slate-100 text-slate-600 transition-colors text-xl font-medium"
                             >
-                                Remove Item
+                                -
                             </button>
-                        )}
+                            <span className="w-12 text-center font-semibold text-slate-900">{quantity}</span>
+                            <button
+                                onClick={() => increaseQuantity(product, quantity, stock)}
+                                className="w-10 h-10 flex items-center justify-center bg-slate-50 hover:bg-slate-100 text-slate-600 transition-colors text-xl font-medium"
+                            >
+                                +
+                            </button>
+                        </div>
                     </div>
+
+                    {/* Remove */}
+                    <button
+                        onClick={() => removeCartItem(product)}
+                        className="flex items-center gap-1.5 text-sm font-semibold text-red-500 hover:text-red-600 transition-colors group/remove"
+                    >
+                        <DeleteOutlineIcon fontSize="small" className="group-hover/remove:scale-110 transition-transform" />
+                        <span className="underline underline-offset-4">Remove</span>
+                    </button>
                 </div>
             </div>
         </div>

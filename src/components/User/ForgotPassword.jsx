@@ -54,8 +54,8 @@ const ForgotPassword = () => {
                             <div className="inline-flex items-center justify-center w-24 h-24 rounded-[2rem] bg-blue-600 shadow-2xl shadow-blue-600/30 mb-8 group overflow-hidden">
                                 <span className="text-4xl group-hover:scale-125 group-hover:rotate-12 transition-all duration-700">🔐</span>
                             </div>
-                            <h1 className="text-3xl font-black text-blue-950 tracking-tighter uppercase leading-none mb-4">Recover <span className="text-blue-600">Access</span></h1>
-                            <p className="text-[10px] font-black text-blue-900/40 uppercase tracking-[0.3em]">Institutional Credential Recovery</p>
+                            <h1 className="text-3xl font-semibold text-blue-950 tracking-tighter uppercase leading-none mb-4">Recover <span className="text-blue-600">Access</span></h1>
+                            <p className="text-[10px] font-semibold text-blue-900/40 uppercase tracking-[0.3em]">Institutional Credential Recovery</p>
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-10">
@@ -73,14 +73,14 @@ const ForgotPassword = () => {
 
                             <button
                                 type="submit"
-                                className="w-full bg-blue-600 text-white py-6 rounded-[2rem] font-black uppercase tracking-[0.4em] text-[11px] shadow-2xl shadow-blue-600/30 hover:bg-blue-800 hover:-translate-y-2 transition-all duration-700 active:scale-95"
+                                className="w-full bg-blue-600 text-white py-6 rounded-[2rem] font-semibold uppercase tracking-[0.4em] text-[11px] shadow-2xl shadow-blue-600/30 hover:bg-blue-800 hover:-translate-y-2 transition-all duration-700 active:scale-95"
                             >
                                 {loading ? 'Processing Protocol...' : 'Initiate Recovery Link'}
                             </button>
                         </form>
 
                         <div className="mt-12 pt-8 border-t border-blue-50 text-center">
-                            <Link to="/login" className="text-blue-600 hover:text-blue-800 font-black text-[10px] uppercase tracking-[0.2em] transition-all border-b border-blue-600/20 pb-1">
+                            <Link to="/login" className="text-blue-600 hover:text-blue-800 font-semibold text-[10px] uppercase tracking-[0.2em] transition-all border-b border-blue-600/20 pb-1">
                                 Return to Access Gateway
                             </Link>
                         </div>

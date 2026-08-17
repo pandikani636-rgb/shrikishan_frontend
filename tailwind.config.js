@@ -24,7 +24,20 @@ module.exports = {
       yellow: colors.amber,
       green: colors.emerald,
       emerald: colors.emerald,
-      blue: colors.blue,
+      // Map Tailwind's default 'blue' to our new Yellow theme
+      blue: {
+        50: '#fffbeb',   
+        100: '#fef3c7',  
+        200: '#fde68a',  
+        300: '#fcd34d',  
+        400: '#fbbf24',  
+        500: '#f59e0b',  // Yellow
+        600: '#d97706',  // Darker Yellow
+        700: '#b45309',  
+        800: '#92400e',  
+        900: '#78350f',  // Very dark amber text/bg
+        950: '#451a03',
+      },
       indigo: colors.indigo,
       purple: colors.violet,
       pink: colors.pink,
@@ -32,23 +45,23 @@ module.exports = {
       cyan: colors.cyan,
       // custom colors - Medical Theme
       primary: {
-        blue: '#0066cc',        // Medical blue
-        lightGreen: '#00b894',  // Medical green
-        green: '#00a085',       // Darker medical green
-        yellow: '#fdcb6e',      // Soft medical yellow
-        orange: '#e17055',      // Medical orange/coral
-        darkBlue: '#2d3436',    // Dark medical blue
+        blue: '#d97706',        // Yellow
+        lightGreen: '#4ade80',  // Aayushi Light Green
+        green: '#15803d',       // Aayushi Deep Green
+        yellow: '#eab308',      // Aayushi Golden Yellow
+        orange: '#f59e0b',      // Aayushi Warm Orange
+        darkBlue: '#78350f',    // Aayushi Dark Amber
         grey: '#636e72',        // Medical grey
-        teal: '#00cec9',        // Medical teal
-        mint: '#55efc4',        // Medical mint
+        teal: '#16a34a',        // Aayushi Green
+        mint: '#fef08a',        // Aayushi Light Yellow
         white: '#ffffff',       // Pure white
-        lightBlue: '#74b9ff',   // Light medical blue
+        lightBlue: '#fef3c7',   // Light yellow
         // Standard Clinical Palette
-        medBlue: '#0f52ba',
-        medLightBlue: '#eef6ff',
-        medTeal: '#0d9488',
-        medNavy: '#0c1a30',
-        medMint: '#f0fdfa',
+        medBlue: '#d97706',
+        medLightBlue: '#fffbeb',
+        medTeal: '#eab308',
+        medNavy: '#78350f',
+        medMint: '#fef9c3',
         medGrey: '#f8fafc',
       },
     },
@@ -280,6 +293,7 @@ module.exports = {
     },
     fontFamily: {
       sans: [
+        '"Plus Jakarta Sans"',
         'ui-sans-serif',
         'system-ui',
         '-apple-system',
@@ -290,11 +304,8 @@ module.exports = {
         'Arial',
         '"Noto Sans"',
         'sans-serif',
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"',
-        '"Noto Color Emoji"',
       ],
+      outfit: ['"Outfit"', 'sans-serif'],
       serif: ['ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
       mono: [
         'ui-monospace',

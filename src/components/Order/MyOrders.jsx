@@ -9,6 +9,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import SearchIcon from '@mui/icons-material/Search';
+import SearchOffIcon from '@mui/icons-material/SearchOff';
 import MetaData from '../Layouts/MetaData';
 
 const orderStatus = ["Processing", "Shipped", "Delivered"];
@@ -160,40 +161,38 @@ const MyOrders = () => {
         <>
             <MetaData title="Deployment Archive | Shree Kishan Aayushi" />
 
-            <main className="min-h-screen bg-slate-50 pt-28 pb-20 relative overflow-hidden">
+            <main className="min-h-screen bg-slate-50 pt-36 lg:pt-40 pb-20 relative overflow-hidden">
                 {/* Premium Medical Mesh Background */}
-                <div className="absolute inset-0 pointer-events-none opacity-60">
-                    <div className="absolute top-0 right-[-10%] w-[70%] h-[70%] bg-blue-600/10 blur-[180px] rounded-full animate-float-1"></div>
-                    <div className="absolute bottom-0 left-[-10%] w-[70%] h-[70%] bg-teal-500/10 blur-[180px] rounded-full animate-float-2"></div>
-                </div>
+                <div className="absolute top-[-10%] right-[-5%] w-[40rem] h-[40rem] bg-emerald-600/5 rounded-full blur-[120px] pointer-events-none"></div>
+                <div className="absolute bottom-[-10%] left-[-5%] w-[40rem] h-[40rem] bg-orange-500/5 rounded-full blur-[120px] pointer-events-none"></div>
 
-                <div className="container-responsive relative z-10">
+                <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10">
                     {loading ? <Loader /> : (
-                        <div className="flex flex-col lg:flex-row gap-10 items-start">
+                        <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
                             {/* Filter sidebar content follows... */}
 
                             {/* Professional Filter Sidebar */}
-                            <aside className="w-full lg:w-[320px] animate-fade-in-left mt-10 lg:mt-16">
-                                <div className="bg-white/80 backdrop-blur-3xl rounded-[2.5rem] border border-blue-100 shadow-2xl shadow-blue-900/5 overflow-hidden">
-                                    <div className="p-8 bg-blue-600 flex justify-between items-center">
-                                        <h2 className="text-xs font-black text-white uppercase tracking-[0.2em] flex items-center gap-3">
+                            <aside className="w-full lg:w-[300px] animate-fade-in-left mt-6 lg:mt-0 shrink-0">
+                                <div className="bg-white rounded-[2rem] border border-gray-100 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.05)] overflow-hidden sticky top-32">
+                                    <div className="p-8 bg-gradient-to-r from-[#064e3b] to-[#043326] flex justify-between items-center">
+                                        <h2 className="text-sm font-semibold text-white uppercase tracking-wider flex items-center gap-3">
                                             My Orders
                                         </h2>
-                                        <button onClick={clearFilters} className="text-[9px] font-black text-white/60 uppercase tracking-widest hover:text-white transition-colors">
+                                        <button onClick={clearFilters} className="text-[9px] font-semibold text-emerald-100/70 uppercase tracking-widest hover:text-[#f97316] transition-colors">
                                             Reset Filters
                                         </button>
                                     </div>
 
                                     <div className="p-8 space-y-10">
                                         <div className="space-y-6">
-                                            <p className="text-[10px] font-black text-blue-900/40 uppercase tracking-widest">Order Status</p>
+                                            <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Order Status</p>
                                             <RadioGroup value={status} onChange={(e) => setStatus(e.target.value)} className="space-y-3">
                                                 {orderStatus.map((el, i) => (
-                                                    <div key={i} className={`flex items-center px-4 py-3 rounded-2xl border transition-all duration-300 ${status === el ? 'bg-blue-50 border-blue-200' : 'bg-transparent border-transparent hover:bg-blue-50/50'}`}>
+                                                    <div key={i} className={`flex items-center px-4 py-3 rounded-2xl border transition-all duration-300 ${status === el ? 'bg-emerald-50/50 border-emerald-200' : 'bg-transparent border-transparent hover:bg-gray-50'}`}>
                                                         <FormControlLabel
                                                             value={el}
-                                                            control={<Radio size="small" sx={{ color: 'rgba(15,82,186,0.2)', '&.Mui-checked': { color: '#0f52ba' } }} />}
-                                                            label={<span className="text-[11px] font-black text-blue-950 uppercase tracking-tight ml-2">{el}</span>}
+                                                            control={<Radio size="small" sx={{ color: 'rgba(6,78,59,0.3)', '&.Mui-checked': { color: '#064e3b' } }} />}
+                                                            label={<span className="text-xs font-semibold text-gray-700 uppercase tracking-wide ml-2">{el}</span>}
                                                             sx={{ margin: 0, width: '100%' }}
                                                         />
                                                     </div>
@@ -205,29 +204,71 @@ const MyOrders = () => {
                             </aside>
 
                             {/* Orders Feed */}
-                            <div className="flex-1 w-full space-y-8 animate-fade-in-right">
+                            <div className="flex-1 w-full space-y-8 animate-fade-in-right min-w-0">
                                 {/* Medical Search Bar */}
-                                <form onSubmit={searchOrders} className="relative group mt-10 lg:mt-16">
+                                <form onSubmit={searchOrders} className="relative group">
                                     <input
                                         value={search}
                                         onChange={(e) => setSearch(e.target.value)}
                                         type="search"
-                                        placeholder="Search Your Orders..."
-                                        className="w-full bg-white/80 backdrop-blur-3xl border border-blue-100 rounded-full px-10 py-6 text-sm font-bold text-blue-950 placeholder:text-blue-900/30 outline-none transition-all duration-700 shadow-2xl shadow-blue-900/5 focus:border-blue-600 focus:bg-white"
+                                        placeholder="Search your orders..."
+                                        className="w-full bg-white rounded-full px-8 py-5 text-sm font-semibold text-gray-900 placeholder:text-gray-400 outline-none transition-all duration-300 border border-gray-200 shadow-[0_8px_30px_-15px_rgba(0,0,0,0.05)] focus:border-[#064e3b] focus:shadow-[0_8px_30px_-15px_rgba(6,78,59,0.15)]"
                                     />
-                                    <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 bg-blue-600 text-white p-4 rounded-full shadow-xl shadow-blue-600/30 hover:bg-blue-800 transition-all active:scale-95">
+                                    <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 bg-[#f97316] text-white p-3 rounded-full shadow-lg hover:bg-[#ea580c] transition-all active:scale-95">
                                         <SearchIcon />
                                     </button>
                                 </form>
 
-                                <div className="space-y-6">
+                                <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 gap-6">
                                     {filteredOrders.length === 0 ? (
-                                        <div className="bg-white/80 backdrop-blur-3xl rounded-[3rem] p-20 flex flex-col items-center text-center border border-blue-100 shadow-2xl shadow-blue-900/5">
-                                            <div className="w-24 h-24 rounded-[2rem] bg-blue-50 flex items-center justify-center text-blue-600 mb-8 border border-blue-100">
-                                                <i className="material-icons text-5xl italic font-black">inventory</i>
+                                        <div className="col-span-full bg-white/40 backdrop-blur-3xl rounded-[3rem] py-28 px-8 flex flex-col items-center text-center border border-white/60 shadow-[0_20px_80px_-20px_rgba(0,0,0,0.05)] relative overflow-hidden">
+                                            
+                                            {/* Advanced Glowing Backdrops */}
+                                            <div className="absolute top-0 left-1/4 w-64 h-64 bg-emerald-400/20 rounded-full blur-[100px] pointer-events-none"></div>
+                                            <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-orange-400/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+                                            {/* Stacked Glassmorphic Icon Composition */}
+                                            <div className="relative mb-14 mt-4 flex justify-center items-center group">
+                                                
+                                                {/* Ambient Center Glow */}
+                                                <div className="absolute inset-0 bg-emerald-500 blur-[60px] opacity-20 rounded-full w-40 h-40 mx-auto transition-opacity duration-700 group-hover:opacity-40"></div>
+                                                
+                                                {/* Stacked Cards (Receipts/Orders Motif) */}
+                                                <div className="absolute -rotate-12 w-28 h-36 bg-white border border-gray-100 rounded-2xl shadow-sm opacity-60 translate-x-6 translate-y-2 transition-transform duration-700 group-hover:-rotate-[15deg] group-hover:translate-x-8"></div>
+                                                <div className="absolute rotate-12 w-28 h-36 bg-white border border-gray-100 rounded-2xl shadow-sm opacity-60 -translate-x-6 translate-y-2 transition-transform duration-700 group-hover:rotate-[15deg] group-hover:-translate-x-8"></div>
+                                                
+                                                {/* Main Glass Icon Container */}
+                                                <div className="relative w-36 h-36 bg-white/80 backdrop-blur-2xl border border-white rounded-[2rem] shadow-[0_25px_50px_-12px_rgba(6,78,59,0.15)] flex items-center justify-center z-10 overflow-hidden transition-transform duration-700 group-hover:scale-105 group-hover:-translate-y-2">
+                                                    <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/80 to-transparent"></div>
+                                                    <SearchOffIcon sx={{ fontSize: 64, color: '#064e3b' }} />
+                                                    
+                                                    {/* Inner floating spark */}
+                                                    <div className="absolute top-6 right-6 w-2 h-2 bg-orange-400 rounded-full animate-ping opacity-75"></div>
+                                                    <div className="absolute top-6 right-6 w-2 h-2 bg-orange-500 rounded-full"></div>
+                                                </div>
+
                                             </div>
-                                            <h3 className="text-2xl font-black text-blue-950 uppercase tracking-tight mb-4">No Orders Found</h3>
-                                            <p className="text-[11px] font-black text-blue-900/40 uppercase tracking-widest max-w-sm">You haven't placed any orders that match these filters yet.</p>
+                                            
+                                            {/* Gradient Typography */}
+                                            <h3 className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#064e3b] via-[#043326] to-[#f97316] uppercase tracking-[0.2em] mb-5 relative z-10">
+                                                No Orders Found
+                                            </h3>
+                                            
+                                            <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest max-w-lg leading-loose mb-12 relative z-10 px-4">
+                                                Your order history is completely empty for the selected filters. Adjust your search parameters or clear all filters to view your comprehensive clinical procurement history.
+                                            </p>
+
+                                            {/* Advanced Animated Button */}
+                                            <button 
+                                                onClick={clearFilters} 
+                                                className="group/btn relative z-10 px-10 py-4 bg-white border border-gray-200 text-gray-900 text-[11px] font-semibold uppercase tracking-[0.2em] rounded-2xl overflow-hidden transition-all duration-500 hover:border-[#064e3b] hover:shadow-[0_20px_40px_-15px_rgba(6,78,59,0.3)] hover:-translate-y-1"
+                                            >
+                                                <div className="absolute inset-0 w-0 bg-gradient-to-r from-[#064e3b] to-[#043326] transition-all duration-500 ease-out group-hover/btn:w-full"></div>
+                                                <span className="relative z-10 flex items-center gap-4 group-hover/btn:text-white transition-colors duration-500">
+                                                    <span>Clear All Filters</span>
+                                                    <span className="w-2 h-2 rounded-full bg-[#f97316] shadow-[0_0_10px_rgba(249,115,22,0.8)]"></span>
+                                                </span>
+                                            </button>
                                         </div>
                                     ) : (
                                         filteredOrders.map((order) => {

@@ -8,8 +8,16 @@ const FloatingCartBar = () => {
     const { cartItems } = useSelector((state) => state.cart);
     const location = useLocation();
 
-    // Do not show on cart page or admin pages
-    if (cartItems.length === 0 || location.pathname === '/cart' || location.pathname.startsWith('/admin')) {
+    const hiddenPaths = [
+        '/cart',
+        '/shipping',
+        '/order/confirm',
+        '/process/payment',
+        '/order/success'
+    ];
+
+    // Do not show on cart page, checkout flow, or admin pages
+    if (cartItems.length === 0 || hiddenPaths.includes(location.pathname) || location.pathname.startsWith('/admin')) {
         return null;
     }
 
@@ -26,17 +34,17 @@ const FloatingCartBar = () => {
                         <ShoppingCartIcon sx={{ fontSize: 20 }} />
                     </div>
                     <div className="flex flex-col">
-                        <span className="text-sm font-black uppercase tracking-tight">
+                        <span className="text-sm font-semibold uppercase tracking-tight">
                             {totalQuantity} {totalQuantity === 1 ? 'Item' : 'Items'} added
                         </span>
-                        <span className="text-[10px] font-bold text-emerald-100 uppercase tracking-widest">
+                        <span className="text-[10px] font-semibold text-emerald-100 uppercase tracking-widest">
                             Ready for procurement
                         </span>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <span className="text-xs font-black uppercase tracking-widest group-hover:mr-2 transition-all">View Cart</span>
+                    <span className="text-xs font-semibold uppercase tracking-widest group-hover:mr-2 transition-all">View Cart</span>
                     <ArrowForwardIosIcon sx={{ fontSize: 12 }} />
                 </div>
             </Link>

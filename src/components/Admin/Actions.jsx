@@ -33,8 +33,8 @@ const Actions = ({ id, deleteHandler, name, editRoute }) => {
                     size="small"
                     sx={{
                         color: '#60a5fa',
-                        background: 'rgba(59, 130, 246, 0.1)',
-                        '&:hover': { background: 'rgba(59, 130, 246, 0.2)' }
+                        background: 'rgba(22, 163, 74, 0.1)',
+                        '&:hover': { background: 'rgba(22, 163, 74, 0.2)' }
                     }}
                 >
                     <EditIcon sx={{ fontSize: 18 }} />

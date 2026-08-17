@@ -9,7 +9,7 @@ const Product = (props) => {
 
     const { product, name, price, cuttedPrice, image, ratings, reviews } = props;
 
-    const BASE_URL = "http://localhost:4000/";
+    const BASE_URL = "/";
 
     const dispatch = useDispatch();
 

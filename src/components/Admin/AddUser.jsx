@@ -12,8 +12,10 @@ import {
     CardContent,
     Grid
 } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllRoles } from '../../actions/rolesActions';
 import { showAlert } from '../../utils/sweetAlert';
 import MetaData from '../Layouts/MetaData';
 import Swal from 'sweetalert2'
@@ -36,6 +38,13 @@ const AddUser = () => {
 
     const [avatar, setAvatar] = useState();
     const [avatarPreview, setAvatarPreview] = useState("preview.png");
+
+    const dispatch = useDispatch();
+    const { roles: dynamicRoles } = useSelector(state => state.roles);
+
+    useEffect(() => {
+        dispatch(getAllRoles());
+    }, [dispatch]);
 
     const handleDataChange = (e) => {
         if (e.target.name === "avatar") {
@@ -69,7 +78,7 @@ const AddUser = () => {
                 icon: "error",
                 background: '#0f172a',
                 color: '#fff',
-                confirmButtonColor: '#3b82f6'
+                confirmButtonColor: '#16a34a'
             });
             return;
         }
@@ -80,7 +89,7 @@ const AddUser = () => {
             icon: "success",
             background: '#0f172a',
             color: '#fff',
-            confirmButtonColor: '#3b82f6',
+            confirmButtonColor: '#16a34a',
             timer: 2000,
         });
         navigate("/admin/users");
@@ -129,7 +138,7 @@ const AddUser = () => {
                                             color: '#f8fafc',
                                             '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.05)' },
                                             '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.1)' },
-                                            '&.Mui-focused fieldset': { borderColor: '#3b82f6' }
+                                            '&.Mui-focused fieldset': { borderColor: '#16a34a' }
                                         }
                                     }}
                                 />
@@ -152,7 +161,7 @@ const AddUser = () => {
                                             color: '#f8fafc',
                                             '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.05)' },
                                             '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.1)' },
-                                            '&.Mui-focused fieldset': { borderColor: '#3b82f6' }
+                                            '&.Mui-focused fieldset': { borderColor: '#16a34a' }
                                         }
                                     }}
                                 />
@@ -175,7 +184,7 @@ const AddUser = () => {
                                             color: '#f8fafc',
                                             '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.05)' },
                                             '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.1)' },
-                                            '&.Mui-focused fieldset': { borderColor: '#3b82f6' }
+                                            '&.Mui-focused fieldset': { borderColor: '#16a34a' }
                                         }
                                     }}
                                 />
@@ -198,13 +207,19 @@ const AddUser = () => {
                                             color: '#f8fafc',
                                             '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.05)' },
                                             '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.1)' },
-                                            '&.Mui-focused fieldset': { borderColor: '#3b82f6' }
+                                            '&.Mui-focused fieldset': { borderColor: '#16a34a' }
                                         },
                                         '& .MuiSvgIcon-root': { color: '#94a3b8' }
                                     }}
                                 >
                                     <MenuItem value="user">USER_NODE</MenuItem>
                                     <MenuItem value="admin">ADMIN_PROTOCOL</MenuItem>
+                                    <MenuItem value="doctor">DOCTOR_INTERFACE</MenuItem>
+                                    {dynamicRoles?.map(r => (
+                                        <MenuItem key={r._id} value={r.name}>
+                                            {r.name.toUpperCase()}_PROTOCOL
+                                        </MenuItem>
+                                    ))}
                                 </TextField>
                             </Grid>
                             <Grid item xs={12}>
@@ -226,7 +241,7 @@ const AddUser = () => {
                                             color: '#f8fafc',
                                             '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.05)' },
                                             '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.1)' },
-                                            '&.Mui-focused fieldset': { borderColor: '#3b82f6' }
+                                            '&.Mui-focused fieldset': { borderColor: '#16a34a' }
                                         }
                                     }}
                                 />
@@ -240,8 +255,8 @@ const AddUser = () => {
                                     onChange={handleDataChange}
                                     sx={{ color: '#f8fafc' }}
                                 >
-                                    <FormControlLabel value="male" control={<Radio sx={{ color: '#64748b', '&.Mui-checked': { color: '#3b82f6' } }} required />} label="MALE_BIOTYPE" />
-                                    <FormControlLabel value="female" control={<Radio sx={{ color: '#64748b', '&.Mui-checked': { color: '#3b82f6' } }} required />} label="FEMALE_BIOTYPE" />
+                                    <FormControlLabel value="male" control={<Radio sx={{ color: '#64748b', '&.Mui-checked': { color: '#16a34a' } }} required />} label="MALE_BIOTYPE" />
+                                    <FormControlLabel value="female" control={<Radio sx={{ color: '#64748b', '&.Mui-checked': { color: '#16a34a' } }} required />} label="FEMALE_BIOTYPE" />
                                 </RadioGroup>
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -262,7 +277,7 @@ const AddUser = () => {
                                             color: '#f8fafc',
                                             '& fieldset': { borderColor: 'rgba(255, 255, 255, 0.05)' },
                                             '&:hover fieldset': { borderColor: 'rgba(255, 255, 255, 0.1)' },
-                                            '&.Mui-focused fieldset': { borderColor: '#3b82f6' }
+                                            '&.Mui-focused fieldset': { borderColor: '#16a34a' }
                                         }
                                     }}
                                 />
@@ -272,7 +287,7 @@ const AddUser = () => {
                                     <Avatar
                                         alt="Avatar Preview"
                                         src={avatarPreview}
-                                        sx={{ width: 64, height: 64, border: '2px solid rgba(59, 130, 246, 0.5)', background: 'rgba(0,0,0,0.4)' }}
+                                        sx={{ width: 64, height: 64, border: '2px solid rgba(22, 163, 74, 0.5)', background: 'rgba(0,0,0,0.4)' }}
                                     />
                                     <Button
                                         component="label"
@@ -283,7 +298,7 @@ const AddUser = () => {
                                             textTransform: 'none',
                                             color: '#94a3b8',
                                             borderColor: 'rgba(255, 255, 255, 0.1)',
-                                            '&:hover': { borderColor: '#3b82f6', color: '#f8fafc', background: 'rgba(59, 130, 246, 0.05)' }
+                                            '&:hover': { borderColor: '#16a34a', color: '#f8fafc', background: 'rgba(22, 163, 74, 0.05)' }
                                         }}
                                     >
                                         Upload Identity Core (Avatar)
@@ -309,11 +324,11 @@ const AddUser = () => {
                                             fontWeight: 800,
                                             fontSize: '15px',
                                             py: 1.8,
-                                            background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-                                            boxShadow: '0 8px 25px -5px rgba(59, 130, 246, 0.5)',
+                                            background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)',
+                                            boxShadow: '0 8px 25px -5px rgba(22, 163, 74, 0.5)',
                                             '&:hover': {
-                                                background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
-                                                boxShadow: '0 12px 30px -5px rgba(59, 130, 246, 0.6)',
+                                                background: 'linear-gradient(135deg, #15803d 0%, #1d4ed8 100%)',
+                                                boxShadow: '0 12px 30px -5px rgba(22, 163, 74, 0.6)',
                                             }
                                         }}
                                     >

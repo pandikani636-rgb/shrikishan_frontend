@@ -197,7 +197,7 @@ const Categories = () => {
 
                 {/* Page Title */}
                 <div className="mb-6">
-                    <h2 className="text-2xl font-bold text-gray-800">Categories</h2>
+                    <h2 className="text-2xl font-semibold text-gray-800">Categories</h2>
                 </div>
             </div>
 
@@ -206,7 +206,7 @@ const Categories = () => {
                 <Card className="shadow-lg border-0 mb-6">
                     <CardContent className="p-6">
                         <div className="flex justify-between items-center mb-4">
-                            <Typography variant="h6" className="font-bold text-gray-800">
+                            <Typography variant="h6" className="font-semibold text-gray-800">
                                 {isEditing ? 'Edit Category' : 'Add New Category'}
                             </Typography>
                             <IconButton onClick={cancelEdit} className="text-gray-500">
@@ -338,10 +338,10 @@ const Categories = () => {
                         <Table>
                             <TableHead className="bg-gray-100">
                                 <TableRow>
-                                    <TableCell className="font-bold text-gray-800 border-r text-center">ID</TableCell>
-                                    <TableCell className="font-bold text-gray-800 border-r text-center">Category Name</TableCell>
-                                    <TableCell className="font-bold text-gray-800 border-r text-center">Category Type</TableCell>
-                                    <TableCell className="font-bold text-gray-800 text-center">Actions</TableCell>
+                                    <TableCell className="font-semibold text-gray-800 border-r text-center">ID</TableCell>
+                                    <TableCell className="font-semibold text-gray-800 border-r text-center">Category Name</TableCell>
+                                    <TableCell className="font-semibold text-gray-800 border-r text-center">Category Type</TableCell>
+                                    <TableCell className="font-semibold text-gray-800 text-center">Actions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>

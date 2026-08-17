@@ -13,7 +13,7 @@ const FeaturedCategories = () => {
     return (
         <section className="bg-white rounded-2xl shadow-sm p-6 mt-6">
             <div className="flex items-center gap-4 mb-4">
-                <h2 className="text-2xl font-bold text-gray-900">Featured Categories</h2>
+                <h2 className="text-2xl font-semibold text-gray-900">Featured Categories</h2>
                 <p className="text-sm text-gray-500">Browse popular categories and find what you need fast</p>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">

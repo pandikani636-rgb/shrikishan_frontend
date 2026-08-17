@@ -6,7 +6,10 @@ import {
   FormControl,
   InputLabel,
   Select,
-  FormHelperText
+  FormHelperText,
+  Stepper,
+  Step,
+  StepLabel
 } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,8 +19,10 @@ import { getAllRoles } from "../../actions/rolesActions";
 import BackdropLoader from "../Layouts/BackdropLoader";
 import MetaData from "../Layouts/MetaData";
 import Swal from "sweetalert2";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import aayushiLogo from '../../assets/images/logo1.jpg';
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -32,6 +37,8 @@ const Register = () => {
     (state) => state.roles || {}
   );
 
+  const [activeStep, setActiveStep] = useState(0);
+
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -42,178 +49,83 @@ const Register = () => {
     password: "",
     cpassword: "",
     // Doctor-specific fields
-    registrationNumber: "",
-    medicalCouncil: "",
     qualification: "",
-    specialization: "",
+    specialization: [],
     experience: "",
-    clinicName: "",
-    clinicAddress: "",
-    city: "",
-    state: "",
-    pincode: "",
-    registrationCertificate: null,
-    doctorIdProof: null,
-    profilePhoto: null
   });
 
   const [errors, setErrors] = useState({});
   const [avatarPreview, setAvatarPreview] = useState("/profile.png");
-  const [resume, setResume] = useState(""); // treating as cert preview/name if needed
+  const [resume, setResume] = useState(""); 
   const [idProof, setIdProof] = useState("");
 
-  const validate = (fieldName, value) => {
-    const newErrors = { ...errors };
+  const isDoctor = user.role && user.role.toLowerCase().includes("doctor");
+  const steps = isDoctor 
+    ? ['Personal Info', 'Account Details', 'Medical Credentials']
+    : ['Personal Info', 'Account Details'];
 
-    switch (fieldName) {
-      case 'name':
-        if (!value.trim()) newErrors.name = "Full Name is required";
-        else delete newErrors.name;
-        break;
-      case 'email':
-        if (!value.trim()) newErrors.email = "Email is required";
-        else if (!/\S+@\S+\.\S+/.test(value)) newErrors.email = "Email is invalid";
-        else delete newErrors.email;
-        break;
-      case 'phone':
-        if (!value.trim()) newErrors.phone = "Phone Number is required";
-        else if (!/^\d{10}$/.test(value)) newErrors.phone = "Phone Number must be 10 digits";
-        else delete newErrors.phone;
-        break;
-      case 'gender':
-        if (!value) newErrors.gender = "Gender is required";
-        else delete newErrors.gender;
-        break;
-      case 'address':
-        if (!value.trim()) newErrors.address = "Address is required";
-        else delete newErrors.address;
-        break;
-      case 'role':
-        if (!value) newErrors.role = "Role is required";
-        else delete newErrors.role;
-        break;
-      case 'password':
-        if (!value) newErrors.password = "Password is required";
-        else if (value.length < 8) newErrors.password = "Password must be at least 8 characters";
-        else delete newErrors.password;
-        // Check confirm password match if password changes
-        if (user.cpassword && value !== user.cpassword) newErrors.cpassword = "Passwords do not match";
-        else if (user.cpassword && value === user.cpassword) delete newErrors.cpassword;
-        break;
-      case 'cpassword':
-        if (!value) newErrors.cpassword = "Confirm Password is required";
-        else if (value !== user.password) newErrors.cpassword = "Passwords do not match";
-        else delete newErrors.cpassword;
-        break;
-      // Doctor fields
-      case 'registrationNumber':
-        if (!value.trim()) newErrors.registrationNumber = "Registration Number is required";
-        else delete newErrors.registrationNumber;
-        break;
-      case 'medicalCouncil':
-        if (!value.trim()) newErrors.medicalCouncil = "Medical Council is required";
-        else delete newErrors.medicalCouncil;
-        break;
-      case 'qualification':
-        if (!value.trim()) newErrors.qualification = "Qualification is required";
-        else delete newErrors.qualification;
-        break;
-      case 'specialization':
-        if (!value.trim()) newErrors.specialization = "Specialization is required";
-        else delete newErrors.specialization;
-        break;
-      case 'experience':
-        if (!value) newErrors.experience = "Experience is required";
-        else delete newErrors.experience;
-        break;
-      case 'clinicName':
-        if (!value.trim()) newErrors.clinicName = "Clinic Name is required";
-        else delete newErrors.clinicName;
-        break;
-      case 'city':
-        if (!value.trim()) newErrors.city = "City is required";
-        else delete newErrors.city;
-        break;
-      case 'state':
-        if (!value.trim()) newErrors.state = "State is required";
-        else delete newErrors.state;
-        break;
-      case 'clinicAddress':
-        if (!value.trim()) newErrors.clinicAddress = "Clinic Address is required";
-        else delete newErrors.clinicAddress;
-        break;
-    }
-    return newErrors;
-  };
-
-  // Validate entire form on submit
-  const validateForm = () => {
+  const validateStep = (stepIndex) => {
     const newErrors = {};
-    if (!user.name.trim()) newErrors.name = "Full Name is required";
-    if (!user.email.trim()) newErrors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(user.email)) newErrors.email = "Email is invalid";
-    if (!user.phone.trim()) newErrors.phone = "Phone Number is required";
-    else if (!/^\d{10}$/.test(user.phone)) newErrors.phone = "Phone Number must be 10 digits";
-    if (!user.gender) newErrors.gender = "Gender is required";
-    if (!user.address.trim()) newErrors.address = "Address is required";
-    if (!user.role) newErrors.role = "Role is required";
-    if (!user.password) newErrors.password = "Password is required";
-    else if (user.password.length < 8) newErrors.password = "Password must be at least 8 characters";
-    if (!user.cpassword) newErrors.cpassword = "Confirm Password is required";
-    else if (user.password !== user.cpassword) newErrors.cpassword = "Passwords do not match";
+    let isValid = true;
 
-    if (user.role && user.role.toLowerCase().includes("doctor")) {
-      if (!user.registrationNumber) newErrors.registrationNumber = "Registration Number is required";
-      if (!user.medicalCouncil) newErrors.medicalCouncil = "Medical Council is required";
-      if (!user.qualification) newErrors.qualification = "Qualification is required";
-      if (!user.specialization) newErrors.specialization = "Specialization is required";
-      if (!user.experience) newErrors.experience = "Experience is required";
-      if (!user.clinicName) newErrors.clinicName = "Clinic Name is required";
-      if (!user.city) newErrors.city = "City is required";
-      if (!user.state) newErrors.state = "State is required";
-      if (!user.clinicAddress) newErrors.clinicAddress = "Clinic Address is required";
+    if (stepIndex === 0) {
+      if (!user.name.trim()) newErrors.name = "Required";
+      if (!user.email.trim()) newErrors.email = "Required";
+      else if (!/\S+@\S+\.\S+/.test(user.email)) newErrors.email = "Invalid Email";
+      if (!user.phone.trim()) newErrors.phone = "Required";
+      else if (!/^\d{10}$/.test(user.phone)) newErrors.phone = "10 digits required";
+      if (!user.gender) newErrors.gender = "Required";
+      if (!user.address.trim()) newErrors.address = "Required";
+    }
+
+    if (stepIndex === 1) {
+      if (!user.role) newErrors.role = "Role is required";
+      if (!user.password) newErrors.password = "Required";
+      else if (user.password.length < 8) newErrors.password = "Min 8 chars";
+      if (!user.cpassword) newErrors.cpassword = "Required";
+      else if (user.password !== user.cpassword) newErrors.cpassword = "Passwords must match";
+    }
+
+    if (stepIndex === 2 && isDoctor) {
+      if (!user.qualification) newErrors.qualification = "Required";
+      if (!user.specialization || user.specialization.length === 0) newErrors.specialization = "Required";
+      if (!user.experience) newErrors.experience = "Required";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      isValid = false;
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }
+    return isValid;
+  };
 
-  const handleDataChange = (e) => {
-    if (e.target.name === "profilePhoto") {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setAvatarPreview(reader.result);
-          setUser({ ...user, profilePhoto: e.target.files[0] });
-        }
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    } else if (e.target.name === "registrationCertificate") {
-      setUser({ ...user, registrationCertificate: e.target.files[0] });
-      setResume(e.target.files[0].name);
-    } else if (e.target.name === "doctorIdProof") {
-      setUser({ ...user, doctorIdProof: e.target.files[0] });
-      setIdProof(e.target.files[0].name);
+  const handleNext = () => {
+    if (validateStep(activeStep)) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     } else {
-      setUser({ ...user, [e.target.name]: e.target.value });
-      // Real-time validation: Clear error when valid, set when invalid if touched logic desired, 
-      // but requirement says "hide once valid". Simplest is to re-validate this field.
-      const updatedErrors = validate(e.target.name, e.target.value);
-      setErrors(updatedErrors);
+      enqueueSnackbar("Please fill required fields correctly", { variant: "error" });
     }
   };
 
-  // Fetch roles
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleDataChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+    if (errors[e.target.name]) {
+        setErrors({ ...errors, [e.target.name]: null });
+    }
+  };
+
   useEffect(() => {
     dispatch(getAllRoles());
   }, [dispatch]);
 
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      enqueueSnackbar("Please fix the errors in the form", { variant: "error" });
+  const handleRegister = async () => {
+    if (!validateStep(activeStep)) {
+      enqueueSnackbar("Please fix the errors before submitting", { variant: "error" });
       return;
     }
 
@@ -228,39 +140,10 @@ const Register = () => {
       cpassword: user.cpassword,
     }
 
-    // Convert files to Base64
-    const convertFileToBase64 = (file) => {
-      return new Promise((resolve, reject) => {
-        if (!file) {
-          resolve(null);
-          return;
-        }
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-      });
-    };
-
-    const registrationCertificateBase64 = await convertFileToBase64(user.registrationCertificate);
-    const doctorIdProofBase64 = await convertFileToBase64(user.doctorIdProof);
-    const profilePhotoBase64 = await convertFileToBase64(user.profilePhoto);
-
-    // Doctor specific fields
-    if (user.role && user.role.toLowerCase().includes("doctor")) {
-      payload.clinicname = user.clinicName;
-      payload.clinicAddress = user.clinicAddress;
-      payload.city = user.city;
-      payload.state = user.state;
-      payload.pincode = user.pincode;
+    if (isDoctor) {
       payload.qualification = user.qualification;
-      payload.specialization = user.specialization;
-      payload.registrationNumber = user.registrationNumber;
-      payload.medicalCouncilName = user.medicalCouncil;
+      payload.specialization = user.specialization.join(", ");
       payload.yearsOfExperience = user.experience;
-      payload.registrationCertificate = registrationCertificateBase64;
-      payload.doctorIdProof = doctorIdProofBase64;
-      payload.profilePhoto = profilePhotoBase64;
     }
 
     dispatch(registerUser(payload));
@@ -283,273 +166,229 @@ const Register = () => {
       if (currentUser?.role === "admin") {
         navigate("/admin/dashboard");
       } else {
-        navigate("/");
+        navigate("/home");
       }
     }
   }, [error, isAuthenticated, dispatch, navigate, enqueueSnackbar, currentUser]);
 
+  // Premium TextField Styling
+  const textFieldStyles = {
+    '& .MuiOutlinedInput-root': {
+      backgroundColor: '#f8fafc',
+      transition: 'all 0.3s ease',
+      '& fieldset': { borderColor: 'transparent' },
+      '&:hover fieldset': { borderColor: '#cbd5e1' },
+      '&.Mui-focused fieldset': { borderColor: '#064e3b', borderWidth: '2px' },
+      '&.Mui-error fieldset': { borderColor: '#ef4444', borderWidth: '2px' }
+    }
+  };
+  const inputProps = { style: { borderRadius: '12px' } };
+
   return (
     <>
-      <MetaData title="Create Account | MedStore" />
+      <MetaData title="Create Account | Shree Kishan Aayushi" />
       {loading && <BackdropLoader />}
 
-      <div className="min-h-screen bg-[#eef2f6] flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl w-full bg-white rounded-[30px] shadow-xl overflow-hidden flex flex-col md:flex-row mt-20">
+      <div className="min-h-screen bg-gradient-to-br from-[#eef2f6] to-[#d5e0e9] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="absolute top-[-10%] left-[-5%] w-96 h-96 bg-[#064e3b] opacity-10 rounded-full blur-3xl fixed"></div>
+        <div className="absolute bottom-[-10%] right-[-5%] w-[30rem] h-[30rem] bg-primary-orange opacity-10 rounded-full blur-3xl fixed"></div>
 
-          {/* Sidebar / Left Panel - Fixed height or sticky in a real app, but here we just fill nicely */}
-          <div className="md:w-1/3 bg-blue-600 text-white p-10 flex flex-col relative overflow-hidden">
-            {/* Background Pattern */}
-            <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/medical-icons-blue.png')]"></div>
+        {/* Premium Layout: min-h-[600px] ensures it feels substantial, md:flex-row handles the columns */}
+        <div className="max-w-6xl w-full min-h-[600px] bg-white/90 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col md:flex-row border border-white/80 relative z-10">
 
-            {/* Header */}
+          {/* Left Panel: justify-between aligns top logo and bottom footer perfectly */}
+          <div className="hidden md:flex md:w-[35%] bg-[#064e3b] text-white p-12 flex-col justify-between relative overflow-hidden shadow-inner">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/10 rounded-full -translate-y-1/2 translate-x-1/3 blur-2xl"></div>
+            <div className="absolute bottom-0 left-0 w-80 h-80 bg-primary-orange/20 rounded-full translate-y-1/3 -translate-x-1/4 blur-3xl"></div>
+            
             <div className="relative z-10">
-              <div className="flex items-center space-x-3 mb-8">
-                <PersonAddIcon fontSize="large" />
-                <span className="text-2xl font-bold tracking-wide">MedStore</span>
-              </div>
-              <h2 className="text-4xl font-extrabold leading-tight mb-4">Join Us Today</h2>
-              <p className="text-blue-100 text-lg">Create your account to access our premium medical services and products.</p>
+                <Link to="/" className="flex items-center space-x-3 mb-10 hover:opacity-90 transition-opacity">
+                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center p-1 shadow-md overflow-hidden shrink-0">
+                        <img draggable="false" className="w-full h-full object-contain" src={aayushiLogo} alt="Shree Kishan Aayushi" />
+                    </div>
+                    <div className="flex flex-col text-left">
+                        <span className="text-xl font-semibold tracking-tight leading-none text-white">SHREE KISHAN</span>
+                        <span className="text-xl font-semibold tracking-tight leading-none text-primary-orange">AAYUSHI</span>
+                    </div>
+                </Link>
+                
+                <h2 className="text-4xl font-semibold leading-tight mb-4">Join Us.</h2>
+                <p className="text-green-100/80 text-base mb-10 leading-relaxed font-light pr-4">
+                    Complete the steps to access premium clinical procurement.
+                </p>
+
+                <div className="mb-8">
+                    <Stepper activeStep={activeStep} orientation="vertical" sx={{
+                        '& .MuiStepLabel-label': { color: 'rgba(255,255,255,0.4)', fontWeight: '600' },
+                        '& .MuiStepLabel-label.Mui-active': { color: '#fff', fontSize: '1.15rem', fontWeight: '800' },
+                        '& .MuiStepLabel-label.Mui-completed': { color: '#86efac' },
+                        '& .MuiStepIcon-root': { color: 'rgba(255,255,255,0.1)' },
+                        '& .MuiStepIcon-root.Mui-active': { color: '#f97316' },
+                        '& .MuiStepIcon-root.Mui-completed': { color: '#86efac' },
+                        '& .MuiStepConnector-line': { borderColor: 'rgba(255,255,255,0.1)' }
+                    }}>
+                        {steps.map((label) => (
+                        <Step key={label}>
+                            <StepLabel>{label}</StepLabel>
+                        </Step>
+                        ))}
+                    </Stepper>
+                </div>
             </div>
 
-            {/* Center Visual / Icons (New Addition) */}
-            <div className="relative z-10 flex-grow flex flex-col justify-center items-center my-10 space-y-6">
-              <div className="relative">
-                <div className="absolute inset-0 bg-blue-400 rounded-full opacity-20 blur-xl animate-pulse"></div>
-                <div className="w-40 h-40 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center shadow-2xl">
-                  <img src="https://cdn-icons-png.flaticon.com/512/1312/1312139.png" alt="Stethoscope Icon" className="w-24 h-24 opacity-90 drop-shadow-lg" style={{ filter: 'brightness(0) invert(1)' }} />
-                </div>
-
-                {/* Floating Small Icons */}
-                <div className="absolute -top-4 -right-4 w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center shadow-lg border border-blue-400">
-                  <span className="text-xl">✚</span>
-                </div>
-                <div className="absolute -bottom-2 -left-2 w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center shadow-lg border border-teal-400">
-                  <span className="text-lg">💊</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Footer Group */}
-            <div className="relative z-10 mt-auto">
-              <p className="text-sm text-blue-200">Already have an account?</p>
-              <Link to="/login" className="mt-2 inline-block bg-white text-blue-600 px-6 py-3 rounded-full font-bold shadow-lg hover:bg-blue-50 hover:scale-105 transition-all duration-300 transform">
-                Login Here
-              </Link>
+            <div className="relative z-10 bg-black/10 backdrop-blur-sm rounded-2xl p-5 border border-white/5 shadow-sm">
+                <p className="text-xs text-green-100/70 font-medium mb-2 uppercase tracking-wider">Already have an account?</p>
+                <Link to="/login" className="text-base font-semibold text-white hover:text-primary-orange transition-colors flex items-center group">
+                    Log In Here <ArrowForwardIcon fontSize="small" className="ml-1 group-hover:translate-x-1 transition-transform" />
+                </Link>
             </div>
           </div>
 
-          {/* Main Form Area */}
-          <div className="md:w-2/3 p-8 md:p-12">
-            <div className="text-center mb-10">
-              <h1 className="text-3xl font-bold text-gray-800">Create Account</h1>
-              <p className="text-gray-500 mt-2">Please fill in your details below.</p>
+          {/* Main Form Area: justify-between aligns header and buttons to match the left sidebar */}
+          <div className="w-full md:w-[65%] p-10 md:p-14 bg-white flex flex-col justify-between relative">
+            <div>
+              <div className="mb-10 pb-4 border-b border-gray-100">
+                <h1 className="text-4xl font-semibold text-gray-900 tracking-tight">{steps[activeStep]}</h1>
+                <p className="text-gray-500 mt-2 text-sm font-semibold tracking-wide uppercase">Step {activeStep + 1} of {steps.length}</p>
+              </div>
+
+              {/* Form Content vertically centered in its remaining space */}
+              <div className="flex flex-col justify-center min-h-[300px]">
+                {/* STEP 1: PERSONAL INFO */}
+                {activeStep === 0 && (
+                    <div className="space-y-6 animate-fade-in-up">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <TextField label="Full Name" name="name" value={user.name} onChange={handleDataChange} fullWidth variant="outlined" InputProps={inputProps} sx={textFieldStyles} error={!!errors.name} helperText={errors.name} />
+                        <TextField label="Email Address" name="email" type="email" value={user.email} onChange={handleDataChange} fullWidth variant="outlined" InputProps={inputProps} sx={textFieldStyles} error={!!errors.email} helperText={errors.email} />
+                        <TextField label="Phone Number" name="phone" type="tel" value={user.phone} onChange={handleDataChange} fullWidth variant="outlined" InputProps={inputProps} sx={textFieldStyles} error={!!errors.phone} helperText={errors.phone} />
+                        <FormControl fullWidth error={!!errors.gender}>
+                        <InputLabel sx={{ '&.Mui-focused': { color: '#064e3b' } }}>Gender</InputLabel>
+                        <Select name="gender" value={user.gender} onChange={handleDataChange} label="Gender" sx={{ backgroundColor: '#f8fafc', borderRadius: '12px', '& .MuiOutlinedInput-notchedOutline': { borderColor: 'transparent' }, '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#cbd5e1' }, '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#064e3b', borderWidth: '2px' } }}>
+                            <MenuItem value="male">Male</MenuItem>
+                            <MenuItem value="female">Female</MenuItem>
+                        </Select>
+                        {errors.gender && <FormHelperText>{errors.gender}</FormHelperText>}
+                        </FormControl>
+                    </div>
+                    <TextField label="Official Address" name="address" value={user.address} onChange={handleDataChange} fullWidth multiline rows={3} variant="outlined" InputProps={inputProps} sx={textFieldStyles} error={!!errors.address} helperText={errors.address} />
+                    </div>
+                )}
+
+                {/* STEP 2: ACCOUNT DETAILS */}
+                {activeStep === 1 && (
+                    <div className="space-y-8 animate-fade-in-up max-w-lg">
+                    <FormControl fullWidth error={!!errors.role}>
+                        <InputLabel sx={{ '&.Mui-focused': { color: '#064e3b' } }}>Registering as a...</InputLabel>
+                        <Select name="role" value={user.role} onChange={handleDataChange} label="Registering as a..." sx={{ backgroundColor: '#f8fafc', borderRadius: '12px', '& .MuiOutlinedInput-notchedOutline': { borderColor: 'transparent' }, '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#cbd5e1' }, '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: '#064e3b', borderWidth: '2px' } }}>
+                        {loading ? <MenuItem disabled>Loading...</MenuItem> :
+                            roles.map((role) => (
+                            <MenuItem key={role._id} value={role.name}>{role.name}</MenuItem>
+                            ))
+                        }
+                        </Select>
+                        {errors.role && <FormHelperText>{errors.role}</FormHelperText>}
+                    </FormControl>
+                    
+                    <div className="grid grid-cols-1 gap-5">
+                        <TextField label="Secure Password" name="password" type="password" value={user.password} onChange={handleDataChange} fullWidth variant="outlined" InputProps={inputProps} sx={textFieldStyles} error={!!errors.password} helperText={errors.password} />
+                        <TextField label="Confirm Password" name="cpassword" type="password" value={user.cpassword} onChange={handleDataChange} fullWidth variant="outlined" InputProps={inputProps} sx={textFieldStyles} error={!!errors.cpassword} helperText={errors.cpassword} />
+                    </div>
+                    </div>
+                )}
+
+                {/* STEP 3: DOCTOR DETAILS */}
+                {activeStep === 2 && isDoctor && (
+                    <div className="space-y-5 animate-fade-in-up">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <FormControl fullWidth size="small" error={!!errors.qualification} sx={textFieldStyles}>
+                          <InputLabel sx={{ '&.Mui-focused': { color: '#064e3b' } }}>Qualification</InputLabel>
+                          <Select name="qualification" value={user.qualification} onChange={handleDataChange} label="Qualification" sx={{ backgroundColor: '#f8fafc', borderRadius: '12px' }}>
+                              <MenuItem value="MBBS">MBBS</MenuItem>
+                              <MenuItem value="BDS">BDS</MenuItem>
+                              <MenuItem value="BAMS">BAMS</MenuItem>
+                              <MenuItem value="BHMS">BHMS</MenuItem>
+                              <MenuItem value="MD">MD</MenuItem>
+                              <MenuItem value="MS">MS</MenuItem>
+                              <MenuItem value="Others">Others</MenuItem>
+                          </Select>
+                          {errors.qualification && <FormHelperText>{errors.qualification}</FormHelperText>}
+                        </FormControl>
+
+                        <FormControl fullWidth size="small" error={!!errors.specialization} sx={textFieldStyles}>
+                          <InputLabel sx={{ '&.Mui-focused': { color: '#064e3b' } }}>Specialization</InputLabel>
+                          <Select multiple name="specialization" value={user.specialization} onChange={handleDataChange} label="Specialization" sx={{ backgroundColor: '#f8fafc', borderRadius: '12px' }}>
+                              <MenuItem value="Cardiology">Cardiology</MenuItem>
+                              <MenuItem value="Dermatology">Dermatology</MenuItem>
+                              <MenuItem value="Neurology">Neurology</MenuItem>
+                              <MenuItem value="Pediatrics">Pediatrics</MenuItem>
+                              <MenuItem value="Psychiatry">Psychiatry</MenuItem>
+                              <MenuItem value="General Medicine">General Medicine</MenuItem>
+                              <MenuItem value="Orthopedics">Orthopedics</MenuItem>
+                              <MenuItem value="Gynecology">Gynecology</MenuItem>
+                          </Select>
+                          {errors.specialization && <FormHelperText>{errors.specialization}</FormHelperText>}
+                        </FormControl>
+                        
+                        <TextField label="Experience (Years)" type="number" name="experience" value={user.experience} onChange={handleDataChange} fullWidth size="small" variant="outlined" InputProps={inputProps} sx={textFieldStyles} error={!!errors.experience} helperText={errors.experience} />
+                    </div>
+                    </div>
+                )}
+              </div>
             </div>
 
-            <form onSubmit={handleRegister} className="space-y-6">
-
-              <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">Personal Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <TextField
-                    label="Full Name"
-                    name="name"
-                    value={user.name}
-                    onChange={handleDataChange}
-                    fullWidth
-                    variant="outlined"
-                    InputProps={{ style: { borderRadius: '12px' } }}
-                    error={!!errors.name}
-                    helperText={errors.name}
-                  />
-                  <TextField
-                    label="Email"
-                    name="email"
-                    type="email"
-                    value={user.email}
-                    onChange={handleDataChange}
-                    fullWidth
-                    variant="outlined"
-                    InputProps={{ style: { borderRadius: '12px' } }}
-                    error={!!errors.email}
-                    helperText={errors.email}
-                  />
-                  <TextField
-                    label="Phone Number"
-                    name="phone"
-                    type="tel"
-                    value={user.phone}
-                    onChange={handleDataChange}
-                    fullWidth
-                    variant="outlined"
-                    InputProps={{ style: { borderRadius: '12px' } }}
-                    error={!!errors.phone}
-                    helperText={errors.phone}
-                  />
-                  <FormControl fullWidth error={!!errors.gender}>
-                    <InputLabel>Gender</InputLabel>
-                    <Select
-                      name="gender"
-                      value={user.gender}
-                      onChange={handleDataChange}
-                      label="Gender"
-                      sx={{ borderRadius: '12px' }}
-                    >
-                      <MenuItem value="male">Male</MenuItem>
-                      <MenuItem value="female">Female</MenuItem>
-                    </Select>
-                    {errors.gender && <FormHelperText>{errors.gender}</FormHelperText>}
-                  </FormControl>
-                </div>
-                <TextField
-                  label="Address"
-                  name="address"
-                  value={user.address}
-                  onChange={handleDataChange}
-                  fullWidth
-                  multiline
-                  rows={2}
-                  variant="outlined"
-                  className="mt-4"
-                  InputProps={{ style: { borderRadius: '12px' } }}
-                  sx={{ mt: 2 }}
-                  error={!!errors.address}
-                  helperText={errors.address}
-                />
-              </div>
-
-              <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">Role Selection</h3>
-                <FormControl fullWidth error={!!errors.role}>
-                  <InputLabel>I am a...</InputLabel>
-                  <Select
-                    name="role"
-                    value={user.role}
-                    onChange={handleDataChange}
-                    label="I am a..."
-                    sx={{ borderRadius: '12px' }}
-                  >
-                    {loading ? <MenuItem disabled>Loading Roles...</MenuItem> :
-                      roles.map((role) => (
-                        <MenuItem key={role._id} value={role.name}>
-                          {role.name}
-                        </MenuItem>
-                      ))
-                    }
-                  </Select>
-                  {errors.role && <FormHelperText>{errors.role}</FormHelperText>}
-                </FormControl>
-              </div>
-
-              {/* Conditional Doctor Fields */}
-              {user.role && user.role.toLowerCase().includes("doctor") && (
-                <div className="bg-gray-50 p-6 rounded-2xl border border-blue-100 shadow-sm animate-fade-in-up">
-                  <h3 className="text-lg font-semibold text-blue-700 mb-4 flex items-center">
-                    <span className="mr-2">🩺</span> Doctor Details
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <TextField fullWidth label="Registration Number" name="registrationNumber" value={user.registrationNumber} onChange={handleDataChange} variant="outlined" InputProps={{ style: { borderRadius: '12px' } }} error={!!errors.registrationNumber} helperText={errors.registrationNumber} />
-                    <TextField fullWidth label="Medical Council" name="medicalCouncil" value={user.medicalCouncil} onChange={handleDataChange} variant="outlined" InputProps={{ style: { borderRadius: '12px' } }} error={!!errors.medicalCouncil} helperText={errors.medicalCouncil} />
-                    <TextField fullWidth label="Qualification" name="qualification" value={user.qualification} onChange={handleDataChange} variant="outlined" InputProps={{ style: { borderRadius: '12px' } }} error={!!errors.qualification} helperText={errors.qualification} />
-                    <TextField fullWidth label="Specialization" name="specialization" value={user.specialization} onChange={handleDataChange} variant="outlined" InputProps={{ style: { borderRadius: '12px' } }} error={!!errors.specialization} helperText={errors.specialization} />
-                    <TextField fullWidth label="Experience (Years)" type="number" name="experience" value={user.experience} onChange={handleDataChange} variant="outlined" InputProps={{ style: { borderRadius: '12px' } }} error={!!errors.experience} helperText={errors.experience} />
-                    <TextField fullWidth label="Clinic Name" name="clinicName" value={user.clinicName} onChange={handleDataChange} variant="outlined" InputProps={{ style: { borderRadius: '12px' } }} error={!!errors.clinicName} helperText={errors.clinicName} />
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <TextField fullWidth label="City" name="city" value={user.city} onChange={handleDataChange} variant="outlined" InputProps={{ style: { borderRadius: '12px' } }} error={!!errors.city} helperText={errors.city} />
-                    <TextField fullWidth label="State" name="state" value={user.state} onChange={handleDataChange} variant="outlined" InputProps={{ style: { borderRadius: '12px' } }} error={!!errors.state} helperText={errors.state} />
-                    <TextField fullWidth label="Clinic Address" name="clinicAddress" value={user.clinicAddress} onChange={handleDataChange} multiline rows={2} variant="outlined" InputProps={{ style: { borderRadius: '12px' } }} className="md:col-span-2" error={!!errors.clinicAddress} helperText={errors.clinicAddress} />
-                  </div>
-
-                  <div className="mt-6">
-                    <h4 className="text-sm font-semibold text-gray-700 mb-3">Upload Documents</h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <Button
-                        variant="outlined"
-                        component="label"
-                        startIcon={<CloudUploadIcon />}
-                        sx={{ borderRadius: '10px', textTransform: 'none', height: '50px' }}
-                      >
-                        {resume ? "Cert. Selected" : "Medical Cert."}
-                        <input type="file" name="registrationCertificate" hidden onChange={handleDataChange} />
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        component="label"
-                        startIcon={<CloudUploadIcon />}
-                        sx={{ borderRadius: '10px', textTransform: 'none', height: '50px' }}
-                      >
-                        {idProof ? "ID Selected" : "Govt ID Proof"}
-                        <input type="file" name="doctorIdProof" hidden onChange={handleDataChange} />
-                      </Button>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-10 h-10 rounded-full overflow-hidden border">
-                          <img src={avatarPreview} alt="Preview" className="w-full h-full object-cover" />
-                        </div>
-                        <Button
-                          variant="outlined"
-                          component="label"
-                          size="small"
-                          sx={{ borderRadius: '10px', textTransform: 'none' }}
-                        >
-                          Photo
-                          <input type="file" name="profilePhoto" hidden onChange={handleDataChange} />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">Security</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <TextField
-                    label="Password"
-                    name="password"
-                    type="password"
-                    value={user.password}
-                    onChange={handleDataChange}
-                    fullWidth
-                    variant="outlined"
-                    InputProps={{ style: { borderRadius: '12px' } }}
-                    error={!!errors.password}
-                    helperText={errors.password}
-                  />
-                  <TextField
-                    label="Confirm Password"
-                    name="cpassword"
-                    type="password"
-                    value={user.cpassword}
-                    onChange={handleDataChange}
-                    fullWidth
-                    variant="outlined"
-                    InputProps={{ style: { borderRadius: '12px' } }}
-                    error={!!errors.cpassword}
-                    helperText={errors.cpassword}
-                  />
-                </div>
-              </div>
-
+            {/* Form Action Buttons */}
+            <div className="flex items-center justify-between mt-10">
               <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                size="large"
-                sx={{
-                  borderRadius: '15px',
-                  padding: '14px',
-                  fontWeight: 'bold',
-                  fontSize: '1.1rem',
-                  background: 'linear-gradient(45deg, #2563eb 30%, #3b82f6 90%)',
-                  boxShadow: '0 3px 5px 2px rgba(33, 203, 243, .3)',
-                  textTransform: 'none',
-                  marginTop: '20px'
-                }}
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                startIcon={<ArrowBackIcon />}
+                sx={{ color: '#94a3b8', textTransform: 'none', fontWeight: 'bold', '&:hover': { color: '#064e3b', backgroundColor: '#f8fafc' } }}
               >
-                Register
+                Go Back
               </Button>
+              
+              {activeStep === steps.length - 1 ? (
+                <Button
+                    onClick={handleRegister}
+                    variant="contained"
+                    sx={{
+                        borderRadius: '12px',
+                        padding: '12px 36px',
+                        fontSize: '15px',
+                        fontWeight: '800',
+                        backgroundColor: '#f97316',
+                        color: 'white',
+                        textTransform: 'none',
+                        boxShadow: '0 8px 20px -6px rgba(249, 115, 22, 0.5)',
+                        '&:hover': { backgroundColor: '#ea580c', transform: 'translateY(-1px)', boxShadow: '0 10px 25px -6px rgba(249, 115, 22, 0.6)' },
+                        transition: 'all 0.2s ease'
+                    }}
+                >
+                    Submit Registration
+                </Button>
+              ) : (
+                <Button
+                    onClick={handleNext}
+                    variant="contained"
+                    endIcon={<ArrowForwardIcon />}
+                    sx={{
+                        borderRadius: '12px',
+                        padding: '12px 36px',
+                        fontSize: '15px',
+                        fontWeight: '800',
+                        backgroundColor: '#064e3b',
+                        color: 'white',
+                        textTransform: 'none',
+                        boxShadow: '0 8px 20px -6px rgba(6, 78, 59, 0.4)',
+                        '&:hover': { backgroundColor: '#04362a', transform: 'translateY(-1px)', boxShadow: '0 10px 25px -6px rgba(6, 78, 59, 0.5)' },
+                        transition: 'all 0.2s ease'
+                    }}
+                >
+                    Next Step
+                </Button>
+              )}
+            </div>
 
-            </form>
           </div>
         </div>
       </div>

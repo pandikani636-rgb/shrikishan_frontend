@@ -71,13 +71,13 @@ const UpdatePassword = () => {
                             <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-blue-500/10 border border-blue-500/20 shadow-inner mb-6 group">
                                 <span className="text-4xl group-hover:scale-110 transition-transform duration-500">🛡️</span>
                             </div>
-                            <h1 className="text-3xl font-black text-slate-50 tracking-tight mb-3">Security Update</h1>
+                            <h1 className="text-3xl font-semibold text-slate-50 tracking-tight mb-3">Security Update</h1>
                             <p className="text-slate-400 font-medium">Rotate your access credentials</p>
                         </div>
 
                         <form onSubmit={updatePasswordSubmitHandler} className="space-y-6">
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Legacy Token</label>
+                                <label className="text-xs font-semibold text-slate-500 uppercase tracking-widest ml-1">Legacy Token</label>
                                 <TextField
                                     fullWidth
                                     type="password"
@@ -100,7 +100,7 @@ const UpdatePassword = () => {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">New Security Token</label>
+                                <label className="text-xs font-semibold text-slate-500 uppercase tracking-widest ml-1">New Security Token</label>
                                 <TextField
                                     fullWidth
                                     type="password"
@@ -121,7 +121,7 @@ const UpdatePassword = () => {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Confirm New Token</label>
+                                <label className="text-xs font-semibold text-slate-500 uppercase tracking-widest ml-1">Confirm New Token</label>
                                 <TextField
                                     fullWidth
                                     type="password"
@@ -142,10 +142,10 @@ const UpdatePassword = () => {
                             </div>
 
                             <div className="flex flex-col gap-4 pt-6">
-                                <button type="submit" className="w-full bg-linear-to-r from-blue-600 to-blue-500 text-white py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-[0_8px_30px_rgb(59,130,246,0.3)] hover:shadow-[0_8px_30px_rgb(59,130,246,0.5)] transition-all duration-300 active:scale-[0.98]">
+                                <button type="submit" className="w-full bg-linear-to-r from-blue-600 to-blue-500 text-white py-4 rounded-2xl font-semibold text-sm uppercase tracking-widest shadow-[0_8px_30px_rgb(59,130,246,0.3)] hover:shadow-[0_8px_30px_rgb(59,130,246,0.5)] transition-all duration-300 active:scale-[0.98]">
                                     {loading ? 'Processing...' : 'Verify & Rotate'}
                                 </button>
-                                <Link to="/account" className="w-full bg-white/5 hover:bg-white/10 text-slate-100 text-center py-4 rounded-2xl font-black text-sm uppercase tracking-widest border border-white/5 transition-all duration-300">
+                                <Link to="/account" className="w-full bg-white/5 hover:bg-white/10 text-slate-100 text-center py-4 rounded-2xl font-semibold text-sm uppercase tracking-widest border border-white/5 transition-all duration-300">
                                     Abort
                                 </Link>
                             </div>

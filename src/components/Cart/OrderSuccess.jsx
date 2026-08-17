@@ -44,25 +44,25 @@ const OrderSuccess = ({ success }) => {
                             <i className="material-icons text-white text-5xl">{success ? '✅' : '❌'}</i>
                         </div>
 
-                        <h1 className="text-4xl md:text-5xl font-black text-blue-950 uppercase tracking-tighter leading-none mb-6">
+                        <h1 className="text-4xl md:text-5xl font-semibold text-blue-950 uppercase tracking-tighter leading-none mb-6">
                             Transaction <span className={success ? 'text-emerald-500' : 'text-red-500'}>{success ? 'Authorized' : 'Aborted'}</span>
                         </h1>
 
                         <div className="flex items-center gap-2 mb-10">
                             <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${success ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
-                            <p className="text-[10px] font-black text-blue-900/40 uppercase tracking-[0.3em]">
+                            <p className="text-[10px] font-semibold text-blue-900/40 uppercase tracking-[0.3em]">
                                 {success ? 'System Registry Updated' : 'Signal Interference Detected'}
                             </p>
                         </div>
 
-                        <p className="text-xl font-bold italic text-blue-950/60 mb-12">
+                        <p className="text-xl font-semibold italic text-blue-950/60 mb-12">
                             Redirecting to institutional {success ? "archive" : "requisition"} in <span className="text-blue-600">{time}</span> seconds...
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-6 w-full">
                             <Link
                                 to={success ? "/orders" : "/cart"}
-                                className={`flex-1 py-6 rounded-2xl font-black uppercase tracking-[0.4em] text-[11px] transition-all duration-700 shadow-2xl active:scale-95 ${success ? 'bg-blue-600 text-white hover:bg-blue-800 shadow-blue-600/30' : 'bg-red-600 text-white hover:bg-red-800 shadow-red-600/30'}`}
+                                className={`flex-1 py-6 rounded-2xl font-semibold uppercase tracking-[0.4em] text-[11px] transition-all duration-700 shadow-2xl active:scale-95 ${success ? 'bg-blue-600 text-white hover:bg-blue-800 shadow-blue-600/30' : 'bg-red-600 text-white hover:bg-red-800 shadow-red-600/30'}`}
                             >
                                 Manual Override: {success ? "Archive" : "Requisition"}
                             </Link>
@@ -71,11 +71,11 @@ const OrderSuccess = ({ success }) => {
                         <div className="mt-16 pt-8 border-t border-blue-50 w-full flex justify-center items-center gap-8 opacity-40">
                             <div className="flex items-center gap-2">
                                 <div className="w-2 h-2 rounded-full bg-blue-400"></div>
-                                <span className="text-[8px] font-black uppercase tracking-widest text-blue-900">End-to-End SSL</span>
+                                <span className="text-[8px] font-semibold uppercase tracking-widest text-blue-900">End-to-End SSL</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <div className="w-2 h-2 rounded-full bg-blue-400"></div>
-                                <span className="text-[8px] font-black uppercase tracking-widest text-blue-900">Registry Syncing</span>
+                                <span className="text-[8px] font-semibold uppercase tracking-widest text-blue-900">Registry Syncing</span>
                             </div>
                         </div>
                     </div>

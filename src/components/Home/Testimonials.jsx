@@ -19,7 +19,7 @@ const Testimonials = () => {
 
     return (
         <section className="bg-white rounded-2xl shadow-sm p-6 mt-6">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-900">What Our Customers Say</h2>
+            <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-gray-900">What Our Customers Say</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {data.map((d, i) => (
                     <div className="p-6 bg-gray-50 rounded-lg border border-gray-100" key={i}>

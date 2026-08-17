@@ -22,14 +22,14 @@ const Searchbar = () => {
             <input
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
-                className="bg-transparent text-[10px] font-black uppercase tracking-widest text-blue-950 flex-1 outline-none placeholder:text-blue-900/10"
+                className="bg-transparent text-[10px] font-semibold uppercase tracking-widest text-blue-950 flex-1 outline-none placeholder:text-blue-900/10"
                 type="text"
                 placeholder="Identifer Search..."
                 aria-label="Medical Search"
             />
             <button
                 type="submit"
-                className="ml-2 px-4 py-1.5 bg-blue-600 text-white text-[8px] font-black uppercase tracking-widest rounded-lg hover:bg-blue-800 transition-all shadow-lg shadow-blue-600/10 active:scale-95"
+                className="ml-2 px-4 py-1.5 bg-blue-600 text-white text-[8px] font-semibold uppercase tracking-widest rounded-lg hover:bg-blue-800 transition-all shadow-lg shadow-blue-600/10 active:scale-95"
             >
                 SCAN
             </button>

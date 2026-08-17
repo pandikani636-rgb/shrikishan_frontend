@@ -10,7 +10,7 @@ const HomeExperts = () => {
     return (
         <section className="bg-white rounded-2xl shadow-sm p-6 mt-6">
             <div className="flex items-center gap-3 mb-4">
-                <h2 className="text-2xl font-bold text-gray-800">Meet Our Experts</h2>
+                <h2 className="text-2xl font-semibold text-gray-800">Meet Our Experts</h2>
                 <p className="text-sm text-gray-500">Qualified healthcare professionals who care</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

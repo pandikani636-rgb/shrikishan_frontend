@@ -49,7 +49,7 @@ const DealSlider = ({ title }) => {
         <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center shadow-inner">
             <div className="w-6 h-6 bg-blue-500 rounded-full"></div>
         </div>
-        <h1 className="text-xl font-bold text-gray-800">{title}</h1>
+        <h1 className="text-xl font-semibold text-gray-800">{title}</h1>
     </div>
     <Link 
         to="/products" 

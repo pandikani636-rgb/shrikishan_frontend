@@ -1,5 +1,6 @@
 import StarIcon from '@mui/icons-material/Star';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Rating from '@mui/material/Rating';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,7 +14,7 @@ import { useState } from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 
-const Product = ({ _id, id, name, images, ratings, numOfReviews, price, cuttedPrice, stock, subCategoryType }) => {
+const Product = ({ _id, id, name, images, ratings, numOfReviews, price, cuttedPrice, stock, subCategoryType, gst }) => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -33,7 +34,7 @@ const Product = ({ _id, id, name, images, ratings, numOfReviews, price, cuttedPr
     const increaseQty = () => {
         if (stock <= itemInCart.quantity) return;
         dispatch(addItemsToCart(productId, itemInCart.quantity + 1, {
-            _id, id, name, price, cuttedPrice, images, stock, subCategoryType,
+            _id, id, name, price, cuttedPrice, images, stock, subCategoryType, gst,
             prescriptionUrl: itemInCart.prescriptionUrl
         }));
     }
@@ -44,7 +45,7 @@ const Product = ({ _id, id, name, images, ratings, numOfReviews, price, cuttedPr
             return;
         }
         dispatch(addItemsToCart(productId, itemInCart.quantity - 1, {
-            _id, id, name, price, cuttedPrice, images, stock, subCategoryType,
+            _id, id, name, price, cuttedPrice, images, stock, subCategoryType, gst,
             prescriptionUrl: itemInCart.prescriptionUrl
         }));
     }
@@ -66,7 +67,7 @@ const Product = ({ _id, id, name, images, ratings, numOfReviews, price, cuttedPr
             if (data.success) {
                 // Add to cart with prescription URL
                 dispatch(addItemsToCart(productId, 1, {
-                    _id, id, name, price, cuttedPrice, images, stock, subCategoryType,
+                    _id, id, name, price, cuttedPrice, images, stock, subCategoryType, gst,
                     prescriptionUrl: data.url
                 }));
                 enqueueSnackbar("Prescription Uploaded & Item Added", { variant: "success" });
@@ -97,7 +98,7 @@ const Product = ({ _id, id, name, images, ratings, numOfReviews, price, cuttedPr
             return;
         }
 
-        dispatch(addItemsToCart(productId, 1, { _id, id, name, price, cuttedPrice, images, stock, subCategoryType }));
+        dispatch(addItemsToCart(productId, 1, { _id, id, name, price, cuttedPrice, images, stock, subCategoryType, gst }));
         enqueueSnackbar("Item added to cart", { variant: "success" });
     }
 
@@ -107,24 +108,28 @@ const Product = ({ _id, id, name, images, ratings, numOfReviews, price, cuttedPr
             return;
         }
         if (!itemInCart) {
-            dispatch(addItemsToCart(productId, 1, { _id, id, name, price, cuttedPrice, images, stock }));
+            dispatch(addItemsToCart(productId, 1, { _id, id, name, price, cuttedPrice, images, stock, subCategoryType, gst }));
         }
         navigate('/cart');
     }
 
-    const BASE_URL = "http://localhost:4000/";
+    const BASE_URL = "/";
 
     return (
         <>
-            <div className="group relative bg-white rounded-[1.2rem] p-4 transition-all duration-500 hover:shadow-xl border border-blue-50 flex flex-col items-center text-center overflow-hidden">
+            <div className="group relative bg-white rounded-[2.5rem] p-5 border border-slate-100 shadow-xl shadow-slate-200/40 hover:shadow-2xl hover:shadow-slate-200/60 hover:-translate-y-2 transition-all duration-500 flex flex-col h-full overflow-hidden">
 
                 {/* Image Container */}
-                {/* Image Container */}
                 <Link to={`/product/${productId}`} className="contents">
-                    <div className="relative w-full aspect-square mb-6 bg-[#f8fafc] rounded-2xl p-4 flex items-center justify-center overflow-hidden group/img cursor-pointer">
+                    <div className="relative w-full h-[220px] bg-gradient-to-b from-slate-50 to-white rounded-[1.5rem] p-6 flex items-center justify-center overflow-hidden mb-5 group/img cursor-pointer border border-slate-50">
+                        {cuttedPrice > price && (
+                            <div className="absolute top-4 left-4 bg-red-500 text-white text-[10px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full z-10 shadow-lg shadow-red-500/30">
+                                {Math.round(((cuttedPrice - price) / cuttedPrice) * 100)}% OFF
+                            </div>
+                        )}
                         <img
                             draggable="false"
-                            className="w-full h-full object-contain transform transition-all duration-700 group-hover:scale-105"
+                            className="w-full h-full object-contain transform transition-transform duration-700 group-hover:scale-110 mix-blend-multiply"
                             src={
                                 images && images.length > 0 && images[0].url
                                     ? (images[0].url.startsWith('http') || images[0].url.startsWith('https')
@@ -138,41 +143,58 @@ const Product = ({ _id, id, name, images, ratings, numOfReviews, price, cuttedPr
                 </Link>
 
                 {/* Content Info */}
-                <div className="flex flex-col gap-1 w-full relative z-10 flex-1">
-                    <div>
-                        <h2 className="text-[#1a202c] font-black text-xs uppercase tracking-tight leading-tight px-1 line-clamp-2">
+                <div className="flex flex-col flex-1 text-left px-2 pb-2 mt-2">
+                    {/* Category Tag Badge */}
+                    <div className="mb-3 flex items-center">
+                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[9px] font-semibold uppercase tracking-[0.2em] border ${
+                            subCategoryType === 'Prescription'
+                                ? 'bg-indigo-50 text-indigo-700 border-indigo-100 shadow-sm shadow-indigo-100/50'
+                                : 'bg-emerald-50 text-emerald-600 border-emerald-100 shadow-sm shadow-emerald-100/50'
+                        }`}>
+                            {subCategoryType === 'Prescription' ? (
+                                <span className="bg-indigo-600 text-white text-[7.5px] px-1 py-[2px] rounded-sm leading-none tracking-normal">Rx</span>
+                            ) : (
+                                <span className="w-1.5 h-1.5 rounded-full animate-pulse bg-emerald-500"></span>
+                            )}
+                            {subCategoryType || 'Medical Care'}
+                        </span>
+                    </div>
+
+                    <Link to={`/product/${productId}`}>
+                        <h2 className="text-slate-900 font-semibold text-[1.05rem] leading-snug line-clamp-2 hover:text-[#d97706] transition-colors">
                             {name}
                         </h2>
-                    </div>
+                    </Link>
 
-                    {/* Price Display - Below Name */}
-                    <div className="flex flex-col items-center gap-1 mt-2">
-                        <span className="text-xl font-black text-blue-600 tracking-tighter leading-none">₹{price.toLocaleString()}</span>
-
-                        {/* Highlighted Stock Qty */}
-                        <div className="mt-1 px-2 py-0.5 rounded-full bg-blue-50 border border-blue-100 flex items-center gap-1.5 shadow-sm">
-                            <span className="w-1 h-1 bg-blue-500 rounded-full animate-pulse"></span>
-                            <span className="text-[8px] font-black text-blue-900 uppercase tracking-widest leading-none">
-                                Stock: {stock}
-                            </span>
+                    {/* Bottom Section: Price & Action */}
+                    <div className="mt-auto pt-8">
+                        <div className="flex flex-col mb-6">
+                            {cuttedPrice > price && (
+                                <span className="text-[13px] font-semibold text-slate-400 line-through mb-1">
+                                    ₹{cuttedPrice.toLocaleString()}
+                                </span>
+                            )}
+                            <div className="flex items-start">
+                                <span className="text-sm font-semibold text-slate-900 mt-[3px] mr-[1px]">₹</span>
+                                <span className="text-3xl font-semibold text-slate-900 leading-none tracking-tighter">{price.toLocaleString()}</span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="mt-auto pt-4">
+                        {/* Large Action Button */}
                         {itemInCart ? (
-                            <div className="flex items-center justify-between w-full h-10 bg-[#f0f4f8] rounded-full px-1 border border-blue-50 shadow-inner">
+                            <div className="flex items-center justify-between w-full h-14 bg-emerald-50 rounded-2xl px-2 border-2 border-emerald-100/50 shadow-inner">
                                 <button
                                     onClick={decreaseQty}
-                                    className="w-8 h-8 rounded-lg bg-white text-blue-600 flex items-center justify-center text-lg font-black shadow-sm"
+                                    className="w-10 h-10 rounded-xl bg-white text-emerald-600 flex items-center justify-center text-xl font-semibold shadow-sm hover:bg-emerald-600 hover:text-white transition-colors"
                                 >
                                     -
                                 </button>
-                                <span className="text-xs font-black text-[#1a202c]">
+                                <span className="text-base font-semibold text-emerald-900 mx-2">
                                     {itemInCart.quantity}
                                 </span>
                                 <button
                                     onClick={increaseQty}
-                                    className="w-8 h-8 rounded-lg bg-white text-blue-600 flex items-center justify-center text-lg font-black shadow-sm"
+                                    className="w-10 h-10 rounded-xl bg-white text-emerald-600 flex items-center justify-center text-xl font-semibold shadow-sm hover:bg-emerald-600 hover:text-white transition-colors"
                                 >
                                     +
                                 </button>
@@ -181,10 +203,10 @@ const Product = ({ _id, id, name, images, ratings, numOfReviews, price, cuttedPr
                             <button
                                 onClick={addToCartHandler}
                                 disabled={stock < 1}
-                                className="w-full h-10 rounded-lg border border-blue-600 bg-white text-blue-600 text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center gap-2"
+                                className={`w-full h-14 rounded-2xl text-xs font-semibold uppercase tracking-[0.15em] transition-all flex items-center justify-center gap-3 ${stock < 1 ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-[#d97706] text-white hover:bg-[#b45309] shadow-[0_10px_20px_rgba(217,119,6,0.25)] hover:shadow-[0_15px_30px_rgba(217,119,6,0.35)] hover:-translate-y-1 active:translate-y-0'}`}
                             >
-                                <ShoppingCartIcon sx={{ fontSize: 14 }} />
-                                ADD
+                                {stock >= 1 && <ShoppingCartIcon sx={{ fontSize: 20 }} />}
+                                {stock < 1 ? 'Out of Stock' : 'Add to Cart'}
                             </button>
                         )}
                     </div>
@@ -200,14 +222,14 @@ const Product = ({ _id, id, name, images, ratings, numOfReviews, price, cuttedPr
             >
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-sm bg-white rounded-[2rem] p-6 shadow-2xl outline-none border border-blue-100">
                     <div className="flex justify-between items-center mb-6">
-                        <h3 className="text-lg font-black text-blue-950 uppercase tracking-tighter">Required Upload</h3>
+                        <h3 className="text-lg font-semibold text-blue-950 uppercase tracking-tighter">Required Upload</h3>
                         <button onClick={() => setOpenUpload(false)} className="text-slate-400 hover:text-red-500 transition-colors">
                             <CloseIcon />
                         </button>
                     </div>
 
                     <div className="flex flex-col gap-4">
-                        <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide leading-relaxed">
+                        <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide leading-relaxed">
                             Government regulations require a valid prescription for <span className="text-blue-600">{name}</span>.
                         </p>
 
@@ -220,13 +242,13 @@ const Product = ({ _id, id, name, images, ratings, numOfReviews, price, cuttedPr
                             />
                             {prescriptionFile ? (
                                 <div className="text-center px-4">
-                                    <p className="text-xs font-black text-emerald-600 uppercase tracking-widest truncate max-w-[200px]">{prescriptionFile.name}</p>
-                                    <p className="text-[9px] text-emerald-400 mt-1 font-bold">Ready to Upload</p>
+                                    <p className="text-xs font-semibold text-emerald-600 uppercase tracking-widest truncate max-w-[200px]">{prescriptionFile.name}</p>
+                                    <p className="text-[9px] text-emerald-400 mt-1 font-semibold">Ready to Upload</p>
                                 </div>
                             ) : (
                                 <div className="text-center">
                                     <CloudUploadIcon className="text-blue-300 group-hover:text-blue-500 transition-colors mb-2" sx={{ fontSize: 32 }} />
-                                    <p className="text-[10px] font-black text-blue-900/40 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Tap to Upload</p>
+                                    <p className="text-[10px] font-semibold text-blue-900/40 uppercase tracking-widest group-hover:text-blue-600 transition-colors">Tap to Upload</p>
                                 </div>
                             )}
                         </label>
@@ -234,7 +256,7 @@ const Product = ({ _id, id, name, images, ratings, numOfReviews, price, cuttedPr
                         <button
                             onClick={handlePrescriptionUpload}
                             disabled={!prescriptionFile || uploading}
-                            className={`w-full py-3 rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg transition-all ${!prescriptionFile || uploading ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-blue-600/30 active:scale-95'}`}
+                            className={`w-full py-3 rounded-xl font-semibold uppercase tracking-widest text-[10px] shadow-lg transition-all ${!prescriptionFile || uploading ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-blue-600/30 active:scale-95'}`}
                         >
                             {uploading ? 'Verifying...' : 'Verify & Add to Cart'}
                         </button>

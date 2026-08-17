@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 
 const Product = (props) => {
 
-    const { _id, id, name, images, ratings, numOfReviews, price, cuttedPrice, stock } = props;
+    const { _id, id, name, images, ratings, numOfReviews, price, cuttedPrice, stock, gst } = props;
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -20,11 +20,11 @@ const Product = (props) => {
     const productId = _id || id;
     const itemInCart = cartItems.find((i) => i.product === productId);
 
-    const BASE_URL = "http://localhost:4000/";
+    const BASE_URL = "/";
 
     const increaseQty = () => {
         if (stock <= itemInCart.quantity) return;
-        dispatch(addItemsToCart(productId, itemInCart.quantity + 1, { _id, id, name, price, cuttedPrice, images, stock }));
+        dispatch(addItemsToCart(productId, itemInCart.quantity + 1, { _id, id, name, price, cuttedPrice, images, stock, gst }));
     }
 
     const decreaseQty = () => {
@@ -32,7 +32,7 @@ const Product = (props) => {
             dispatch(removeItemsFromCart(productId));
             return;
         }
-        dispatch(addItemsToCart(productId, itemInCart.quantity - 1, { _id, id, name, price, cuttedPrice, images, stock }));
+        dispatch(addItemsToCart(productId, itemInCart.quantity - 1, { _id, id, name, price, cuttedPrice, images, stock, gst }));
     }
 
     const addToCartHandler = () => {
@@ -45,7 +45,7 @@ const Product = (props) => {
             });
             return;
         }
-        dispatch(addItemsToCart(productId, 1, { _id, id, name, price, cuttedPrice, images, stock }));
+        dispatch(addItemsToCart(productId, 1, { _id, id, name, price, cuttedPrice, images, stock, gst }));
     }
 
     const buyNowHandler = () => {
@@ -54,7 +54,7 @@ const Product = (props) => {
             return;
         }
         if (!itemInCart) {
-            dispatch(addItemsToCart(productId, 1, { _id, id, name, price, cuttedPrice, images, stock }));
+            dispatch(addItemsToCart(productId, 1, { _id, id, name, price, cuttedPrice, images, stock, gst }));
         }
         navigate('/cart');
     }
@@ -82,19 +82,19 @@ const Product = (props) => {
             {/* Content Info */}
             <div className="flex flex-col gap-1 w-full relative z-10 flex-1">
                 <div>
-                    <h2 className="text-[#1a202c] font-black text-xs uppercase tracking-tight leading-tight px-1 line-clamp-2">
+                    <h2 className="text-[#1a202c] font-semibold text-xs uppercase tracking-tight leading-tight px-1 line-clamp-2">
                         {name}
                     </h2>
                 </div>
 
                 {/* Price Display - Below Name */}
                 <div className="flex flex-col items-center gap-1 mt-2">
-                    <span className="text-xl font-black text-blue-600 tracking-tighter leading-none">₹{price.toLocaleString()}</span>
+                    <span className="text-xl font-semibold text-blue-600 tracking-tighter leading-none">₹{price.toLocaleString()}</span>
 
                     {/* Highlighted Stock Qty */}
                     <div className="mt-1 px-2 py-0.5 rounded-full bg-blue-50 border border-blue-100 flex items-center gap-1.5 shadow-sm">
                         <span className="w-1 h-1 bg-blue-500 rounded-full animate-pulse"></span>
-                        <span className="text-[8px] font-black text-blue-900 uppercase tracking-widest leading-none">
+                        <span className="text-[8px] font-semibold text-blue-900 uppercase tracking-widest leading-none">
                             Stock: {stock}
                         </span>
                     </div>
@@ -105,16 +105,16 @@ const Product = (props) => {
                         <div className="flex items-center justify-between w-full h-10 bg-[#f0f4f8] rounded-full px-1 border border-blue-50 shadow-inner">
                             <button
                                 onClick={decreaseQty}
-                                className="w-8 h-8 rounded-lg bg-white text-blue-600 flex items-center justify-center text-lg font-black shadow-sm"
+                                className="w-8 h-8 rounded-lg bg-white text-blue-600 flex items-center justify-center text-lg font-semibold shadow-sm"
                             >
                                 -
                             </button>
-                            <span className="text-xs font-black text-[#1a202c]">
+                            <span className="text-xs font-semibold text-[#1a202c]">
                                 {itemInCart.quantity}
                             </span>
                             <button
                                 onClick={increaseQty}
-                                className="w-8 h-8 rounded-lg bg-white text-blue-600 flex items-center justify-center text-lg font-black shadow-sm"
+                                className="w-8 h-8 rounded-lg bg-white text-blue-600 flex items-center justify-center text-lg font-semibold shadow-sm"
                             >
                                 +
                             </button>
@@ -123,7 +123,7 @@ const Product = (props) => {
                         <button
                             onClick={addToCartHandler}
                             disabled={stock < 1}
-                            className="w-full h-10 rounded-lg border border-blue-600 bg-white text-blue-600 text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center gap-2"
+                            className="w-full h-10 rounded-lg border border-blue-600 bg-white text-blue-600 text-[10px] font-semibold uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center gap-2"
                         >
                             <ShoppingCartIcon sx={{ fontSize: 14 }} />
                             ADD

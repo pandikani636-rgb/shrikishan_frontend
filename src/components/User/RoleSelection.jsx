@@ -28,7 +28,7 @@ const RoleSelection = () => {
 
                         <div className="flex-1 p-8 sm:p-12">
                             <div className="max-w-lg mx-auto text-center">
-                                <h2 className="text-3xl font-bold text-gray-800 mb-2">Select Your Role</h2>
+                                <h2 className="text-3xl font-semibold text-gray-800 mb-2">Select Your Role</h2>
                                 <p className="text-gray-600 mb-8">Choose how you want to use our platform</p>
 
                                 <div className="space-y-4">

@@ -7,7 +7,7 @@ const LimitedOffers = () => {
         <section className="bg-white rounded-2xl shadow-sm p-6 mt-6">
             <div className="flex items-center gap-3 mb-4">
                 <div className="w-3 h-8 bg-red-500 rounded-full"></div>
-                <h2 className="text-2xl font-bold text-gray-800">Limited Time Offers</h2>
+                <h2 className="text-2xl font-semibold text-gray-800">Limited Time Offers</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 {offers.map((o, i) => (

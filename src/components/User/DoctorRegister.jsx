@@ -133,9 +133,9 @@ const DoctorRegister = () => {
                         <div className="relative z-10">
                             <div className="flex items-center space-x-3 mb-8">
                                 <LocalHospitalIcon fontSize="large" />
-                                <span className="text-2xl font-bold tracking-wide">MedStore</span>
+                                <span className="text-2xl font-semibold tracking-wide">MedStore</span>
                             </div>
-                            <h2 className="text-4xl font-extrabold leading-tight mb-4">Welcome, Doctor!</h2>
+                            <h2 className="text-4xl font-semibold leading-tight mb-4">Welcome, Doctor!</h2>
                             <p className="text-blue-100 text-lg">Join our network of top-tier medical professionals. Manage your practice and reach more patients effortlessly.</p>
                         </div>
                         <div className="relative z-10 mt-10">
@@ -149,7 +149,7 @@ const DoctorRegister = () => {
                     {/* Main Form Area */}
                     <div className="md:w-2/3 p-10 md:p-14">
                         <div className="text-center mb-10">
-                            <h1 className="text-3xl font-bold text-gray-800">Doctor Registration</h1>
+                            <h1 className="text-3xl font-semibold text-gray-800">Doctor Registration</h1>
                             <p className="text-gray-500 mt-2">Please fill in your details to create your account.</p>
                         </div>
 

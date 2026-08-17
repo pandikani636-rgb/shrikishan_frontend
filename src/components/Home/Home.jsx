@@ -17,6 +17,7 @@ import deliveryImg from '../../assets/images/Home/delivery.svg';
 import tipsImg from '../../assets/images/Home/health_tips.svg';
 import HomeHighlights from './HomeHighlights';
 import AboutSite from './AboutSite';
+import ayurvedaImg from '../../assets/images/Home/ayurveda.png';
 
 const Home = () => {
 
@@ -39,51 +40,47 @@ const Home = () => {
     <>
       <MetaData title="Shree Kishan Aayushi | Premium Healthcare Assets & Clinical Protocols" />
 
-      <main className="w-full mt-20 sm:mt-24 min-h-screen bg-slate-50 relative overflow-hidden">
+      <main className="w-full min-h-screen bg-slate-50 relative overflow-hidden flex flex-col">
 
-        {/* Premium Medical Mesh Background */}
-        <div className="absolute inset-0 pointer-events-none opacity-60">
-          <div className="absolute top-0 left-[-10%] w-[70%] h-[70%] bg-blue-600/10 blur-[180px] rounded-full animate-float-1"></div>
-          <div className="absolute bottom-0 right-[-10%] w-[70%] h-[70%] bg-teal-500/10 blur-[180px] rounded-full animate-float-2"></div>
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[90%] h-[90%] bg-white/40 blur-[120px] rounded-full"></div>
+        {/* Banner Section - Now Full Width Edge-to-Edge */}
+        <section className="w-full relative z-10 pt-20">
+          <Banner />
+        </section>
 
-          {/* Clinical Pattern Overlay */}
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/micro-carbon.png')] opacity-[0.05]"></div>
+        {/* Premium Medical Mesh Background for lower sections */}
+        <div className="absolute inset-0 pointer-events-none opacity-40 mt-[80vh]">
+          <div className="absolute top-0 left-[-10%] w-[60%] h-[60%] bg-primary-green/10 blur-[150px] rounded-full animate-float-1"></div>
+          <div className="absolute bottom-0 right-[-10%] w-[60%] h-[60%] bg-primary-orange/10 blur-[150px] rounded-full animate-float-2"></div>
         </div>
 
-        <div className="container-responsive relative z-10 flex flex-col gap-16 py-8 sm:py-16">
-
-          {/* Banner Section */}
-          <section className="animate-fade-in-up w-full rounded-[3.5rem] overflow-hidden shadow-2xl shadow-blue-900/10 border border-white bg-white/40 backdrop-blur-2xl">
-            <Banner />
-          </section>
-
-
+        <div className="container mx-auto px-4 sm:px-8 relative z-20 flex flex-col gap-24 py-20">
 
           {/* Why Choose Us - Premium Clinical Block */}
-          <section className="animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-            <AboutSite
-              variant="blue"
-              image={brandImg}
-              title="State-of-the-Art Clinical Care"
-              description="We leverage advanced logistics and professional expertise to deliver a premium healthcare experience right to your fingertips."
-              bullets={["100% SECURE PROTOCOL", "LIVE SPECIALIST SYNC", "EXPRESS CLINICAL DELIVERY"]}
-            />
+          <section className="animate-fade-in-up">
+              <AboutSite
+                variant="dark"
+                image="https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&h=800&fit=crop"
+                title="State-of-the-Art Clinical Care"
+                description="We leverage advanced logistics and professional expertise to deliver a premium healthcare experience right to your fingertips."
+                bullets={["100% SECURE PROTOCOL", "LIVE SPECIALIST SYNC", "EXPRESS CLINICAL DELIVERY"]}
+                reverse={false}
+              />
           </section>
 
           {/* Delivery & Support */}
-          <section className="animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
+          <section className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             <HomeDelivery />
           </section>
 
-          <section className="animate-fade-in-up mb-20" style={{ animationDelay: '1s' }}>
-            <AboutSite
-              variant="blue"
-              image={deliveryImg}
-              title="Vibrant Health Integration"
-              description="Safe, fast, and secure delivery of your essential medical supplies. We prioritize your health with every shipment."
-              bullets={["REAL-TIME ASSET TRACKING", "BIO-SECURE PACKAGING", "AUTOMATED RETURN PROTOCOLS"]}
-            />
+          <section className="animate-fade-in-up mb-16" style={{ animationDelay: '0.4s' }}>
+              <AboutSite
+                variant="emerald"
+                image={ayurvedaImg}
+                title="Vibrant Health Integration"
+                description="Safe, fast, and secure delivery of your essential medical supplies. We prioritize your health with every shipment."
+                bullets={["REAL-TIME ASSET TRACKING", "BIO-SECURE PACKAGING", "AUTOMATED RETURN PROTOCOLS"]}
+                reverse={true}
+              />
           </section>
 
         </div>

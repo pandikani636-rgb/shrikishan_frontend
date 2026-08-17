@@ -97,18 +97,18 @@ const UserTable = () => {
             <Box sx={{ mb: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                 <Box>
                     <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-1 bg-blue-600 rounded-full"></div>
-                        <p className="text-[10px] font-black text-blue-900/40 uppercase tracking-[0.3em]">Management</p>
+                        <div className="w-10 h-1 bg-green-600 rounded-full"></div>
+                        <p className="text-[10px] font-semibold text-green-900/40 uppercase tracking-[0.3em]">Management</p>
                     </div>
                     <Typography variant="h4" sx={{ fontWeight: 950, color: '#020617', letterSpacing: '-0.03em', textTransform: 'uppercase' }}>
-                        All <span style={{ color: '#0f52ba' }}>Users</span>
+                        All <span style={{ color: '#16a34a' }}>Users</span>
                     </Typography>
                 </Box>
             </Box>
 
             <Card sx={{
                 borderRadius: '35px',
-                boxShadow: '0 40px 100px rgba(15, 82, 186, 0.04)',
+                boxShadow: '0 40px 100px rgba(22, 163, 74, 0.04)',
                 border: '1px solid #f1f5f9',
                 background: '#ffffff',
                 overflow: 'hidden'
@@ -151,7 +151,7 @@ const UserTable = () => {
                                 {loading ? (
                                     <TableRow>
                                         <TableCell colSpan={6} align="center" sx={{ py: 12 }}>
-                                            <CircularProgress size={24} sx={{ color: '#0f52ba' }} />
+                                            <CircularProgress size={24} sx={{ color: '#16a34a' }} />
                                             <Typography sx={{ mt: 2, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '10px', color: 'rgba(2, 6, 23, 0.3)' }}>Loading...</Typography>
                                         </TableCell>
                                     </TableRow>
@@ -163,7 +163,7 @@ const UserTable = () => {
                                                 key={user._id}
                                                 sx={{
                                                     transition: 'all 0.4s ease',
-                                                    '&:hover': { background: '#f0f7ff' },
+                                                    '&:hover': { background: '#f0fdf4' },
                                                     '& td': { borderBottom: '1px solid #f8fafc', py: 3 }
                                                 }}
                                             >
@@ -193,8 +193,8 @@ const UserTable = () => {
                                                     <Box sx={{
                                                         fontSize: '9px',
                                                         fontWeight: 950,
-                                                        color: user.role === "admin" ? '#4f46e5' : user.role === "doctor" ? '#059669' : '#0f52ba',
-                                                        background: user.role === "admin" ? '#eef2ff' : user.role === "doctor" ? '#ecfdf5' : '#f0f7ff',
+                                                        color: user.role === "admin" ? '#4f46e5' : user.role === "doctor" ? '#059669' : '#16a34a',
+                                                        background: user.role === "admin" ? '#eef2ff' : user.role === "doctor" ? '#ecfdf5' : '#f0fdf4',
                                                         px: 2.5,
                                                         py: 1,
                                                         borderRadius: '20px',
@@ -212,28 +212,28 @@ const UserTable = () => {
                                                             <IconButton
                                                                 onClick={() => handleOpenDocs(user)}
                                                                 sx={{
-                                                                    color: '#0f52ba',
-                                                                    background: '#eff6ff',
+                                                                    color: '#16a34a',
+                                                                    background: '#f0fdf4',
                                                                     borderRadius: '12px',
-                                                                    '&:hover': { background: '#0f52ba', color: '#fff' },
+                                                                    '&:hover': { background: '#16a34a', color: '#fff' },
                                                                     transition: 'all 0.3s ease'
                                                                 }}
                                                             >
                                                                 <VisibilityIcon sx={{ fontSize: 18 }} />
                                                             </IconButton>
                                                         )}
-                                                        <IconButton
-                                                            onClick={() => handleDelete(user._id)}
-                                                            sx={{
-                                                                color: '#ef4444',
-                                                                background: '#fef2f2',
-                                                                borderRadius: '12px',
-                                                                '&:hover': { background: '#ef4444', color: '#fff' },
-                                                                transition: 'all 0.3s ease'
-                                                            }}
-                                                        >
-                                                            <DeleteIcon sx={{ fontSize: 18 }} />
-                                                        </IconButton>
+                                                            <IconButton
+                                                                onClick={() => handleDelete(user._id)}
+                                                                sx={{
+                                                                    color: '#ef4444',
+                                                                    background: '#fef2f2',
+                                                                    borderRadius: '12px',
+                                                                    '&:hover': { background: '#ef4444', color: '#fff' },
+                                                                    transition: 'all 0.3s ease'
+                                                                }}
+                                                            >
+                                                                <DeleteIcon sx={{ fontSize: 18 }} />
+                                                            </IconButton>
                                                     </Box>
                                                 </TableCell>
                                             </TableRow>
@@ -296,13 +296,13 @@ const UserTable = () => {
                     borderBottom: '1px solid #f1f5f9',
                     p: 4
                 }}>
-                    Doctor Verification: <span style={{ color: '#0f52ba' }}>{selectedUser?.name}</span>
+                    Doctor Verification: <span style={{ color: '#16a34a' }}>{selectedUser?.name}</span>
                 </DialogTitle>
                 <DialogContent sx={{ p: 4 }}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
                         {/* Medical Certificate */}
                         <div className="bg-slate-50 p-6 rounded-[20px] border border-slate-100">
-                            <p className="text-[10px] font-black text-blue-900/30 uppercase tracking-widest mb-4">Medical Certificate</p>
+                            <p className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest mb-4">Medical Certificate</p>
                             {selectedUser?.registrationCertificate?.url ? (
                                 <div className="rounded-xl overflow-hidden border border-slate-200">
                                     <img
@@ -314,7 +314,7 @@ const UserTable = () => {
                                     <div className="p-3 bg-white text-center">
                                         <button
                                             onClick={() => window.open(selectedUser.registrationCertificate.url, '_blank')}
-                                            className="text-[10px] font-bold text-blue-600 uppercase tracking-wider hover:underline"
+                                            className="text-[10px] font-semibold text-green-600 uppercase tracking-wider hover:underline"
                                         >
                                             View
                                         </button>
@@ -322,14 +322,14 @@ const UserTable = () => {
                                 </div>
                             ) : (
                                 <div className="h-48 flex items-center justify-center bg-slate-100 rounded-xl border border-dashed border-slate-300">
-                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">No Document</span>
+                                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">No Document</span>
                                 </div>
                             )}
                         </div>
 
                         {/* ID Proof */}
                         <div className="bg-slate-50 p-6 rounded-[20px] border border-slate-100">
-                            <p className="text-[10px] font-black text-blue-900/30 uppercase tracking-widest mb-4">ID Proof</p>
+                            <p className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest mb-4">ID Proof</p>
                             {selectedUser?.doctorIdProof?.url ? (
                                 <div className="rounded-xl overflow-hidden border border-slate-200">
                                     <img
@@ -341,7 +341,7 @@ const UserTable = () => {
                                     <div className="p-3 bg-white text-center">
                                         <button
                                             onClick={() => window.open(selectedUser.doctorIdProof.url, '_blank')}
-                                            className="text-[10px] font-bold text-blue-600 uppercase tracking-wider hover:underline"
+                                            className="text-[10px] font-semibold text-green-600 uppercase tracking-wider hover:underline"
                                         >
                                             View
                                         </button>
@@ -349,7 +349,7 @@ const UserTable = () => {
                                 </div>
                             ) : (
                                 <div className="h-48 flex items-center justify-center bg-slate-100 rounded-xl border border-dashed border-slate-300">
-                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">No Document</span>
+                                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">No Document</span>
                                 </div>
                             )}
                         </div>

@@ -81,19 +81,20 @@ const ContactTable = () => {
         <Box sx={{ minHeight: '100vh', py: 4 }}>
             <MetaData title="Messages | Shree Kishan Aayushi" />
 
-            <Box sx={{ mb: 4, textAlign: 'center' }}>
-                <Typography variant="h5" sx={{ fontWeight: 800, color: '#020617', mb: 0.5, letterSpacing: '0.5px' }}>
-                    Messages
-                </Typography>
-                <Typography variant="body2" sx={{ color: '#64748b', fontWeight: 500 }}>
-                    View and manage user queries
+            <Box sx={{ mb: 6 }}>
+                <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-1 bg-green-600 rounded-full"></div>
+                    <p className="text-[10px] font-semibold text-green-900/40 uppercase tracking-[0.3em]">Administration</p>
+                </div>
+                <Typography variant="h4" sx={{ fontWeight: 950, color: '#020617', letterSpacing: '-0.03em', textTransform: 'uppercase' }}>
+                    User <span style={{ color: '#16a34a' }}>Messages</span>
                 </Typography>
             </Box>
 
             <Card sx={{
-                borderRadius: '32px',
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.1)',
-                border: '1px solid #e2e8f0',
+                borderRadius: '35px',
+                boxShadow: '0 40px 100px rgba(22, 163, 74, 0.04)',
+                border: '1px solid #f1f5f9',
                 background: '#ffffff',
                 overflow: 'hidden'
             }}>
@@ -101,7 +102,7 @@ const ContactTable = () => {
                     <TableContainer sx={{ maxHeight: 'calc(100vh - 350px)' }}>
                         <Table stickyHeader>
                             <TableHead>
-                                <TableRow sx={{ background: '#f8fafc' }}>
+                                <TableRow>
                                     {[
                                         { label: 'S.No', width: '80px' },
                                         { label: 'Name', width: 'auto' },
@@ -113,13 +114,14 @@ const ContactTable = () => {
                                             key={i}
                                             align={i === 0 || i === 4 ? "center" : "left"}
                                             sx={{
-                                                fontWeight: 700,
-                                                color: '#64748b',
-                                                fontSize: '12px',
-                                                py: 2,
-                                                borderBottom: '1px solid #e2e8f0',
+                                                fontWeight: 950,
+                                                color: 'rgba(2, 6, 23, 0.3)',
+                                                fontSize: '10px',
+                                                py: 4,
+                                                bgcolor: '#f8fafc',
+                                                borderBottom: '1px solid #f1f5f9',
                                                 textTransform: 'uppercase',
-                                                letterSpacing: '1px',
+                                                letterSpacing: '0.15em',
                                                 width: head.width
                                             }}
                                         >
@@ -134,8 +136,8 @@ const ContactTable = () => {
                                     <TableRow>
                                         <TableCell colSpan={5} align="center" sx={{ py: 12 }}>
                                             <div className="flex flex-col items-center gap-4">
-                                                <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                                                <Typography sx={{ fontWeight: 600, fontSize: '12px', color: '#64748b' }}>Loading...</Typography>
+                                                <div className="w-12 h-12 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin"></div>
+                                                <Typography sx={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '10px', color: 'rgba(2, 6, 23, 0.3)' }}>Loading...</Typography>
                                             </div>
                                         </TableCell>
                                     </TableRow>
@@ -146,14 +148,14 @@ const ContactTable = () => {
                                             <TableRow
                                                 key={item._id}
                                                 sx={{
-                                                    transition: 'all 0.3s ease',
-                                                    '&:hover': { background: '#f8fafc' },
-                                                    '& td': { borderBottom: '1px solid #f1f5f9', py: 2 }
+                                                    transition: 'all 0.4s ease',
+                                                    '&:hover': { background: '#f0fdf4' },
+                                                    '& td': { borderBottom: '1px solid #f8fafc', py: 3 }
                                                 }}
                                             >
                                                 <TableCell align="center">
-                                                    <Typography sx={{ fontSize: '13px', color: '#64748b', fontWeight: 600 }}>
-                                                        {((page * rowsPerPage) + index + 1)}
+                                                    <Typography sx={{ fontSize: '11px', color: 'rgba(2, 6, 23, 0.2)', fontWeight: 900 }}>
+                                                        {((page * rowsPerPage) + index + 1).toString().padStart(2, '0')}
                                                     </Typography>
                                                 </TableCell>
                                                 <TableCell align="left">
@@ -161,50 +163,49 @@ const ContactTable = () => {
                                                         <Box sx={{
                                                             width: 32, height: 32,
                                                             borderRadius: '8px',
-                                                            background: 'rgba(59, 130, 246, 0.1)',
+                                                            background: 'rgba(22, 163, 74, 0.1)',
                                                             display: 'flex',
                                                             alignItems: 'center',
                                                             justifyContent: 'center',
-                                                            fontWeight: 700,
-                                                            color: '#60a5fa',
-                                                            border: '1px solid rgba(59, 130, 246, 0.2)',
-                                                            fontSize: '12px'
+                                                            fontWeight: 900,
+                                                            color: '#16a34a',
+                                                            border: '1px solid rgba(22, 163, 74, 0.2)',
+                                                            fontSize: '14px'
                                                         }}>
                                                             {item.name?.[0].toUpperCase()}
                                                         </Box>
-                                                        <Typography sx={{ fontSize: '14px', color: '#020617', fontWeight: 700 }}>
+                                                        <Typography sx={{ fontSize: '13px', color: '#020617', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.01em' }}>
                                                             {item.name}
                                                         </Typography>
                                                     </Box>
                                                 </TableCell>
                                                 <TableCell align="left">
                                                     <Box>
-                                                        <Typography sx={{ fontSize: '13px', color: '#64748b', fontWeight: 500 }}>
+                                                        <Typography sx={{ fontSize: '12px', color: '#64748b', fontWeight: 700 }}>
                                                             {item.email}
                                                         </Typography>
-                                                        <Typography sx={{ fontSize: '11px', color: '#60a5fa', fontWeight: 600, mt: 0.5 }}>
+                                                        <Typography sx={{ fontSize: '10px', color: '#16a34a', fontWeight: 900, mt: 0.5, letterSpacing: '0.05em' }}>
                                                             {item.phone}
                                                         </Typography>
                                                     </Box>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Typography sx={{ fontSize: '13px', color: '#64748b', fontStyle: 'italic', maxWidth: '300px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                    <Typography sx={{ fontSize: '12px', color: '#64748b', fontStyle: 'italic', maxWidth: '300px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 500 }}>
                                                         "{item.message}"
                                                     </Typography>
                                                 </TableCell>
                                                 <TableCell align="center">
                                                     <IconButton
                                                         onClick={() => handleDelete(item._id)}
-                                                        size="small"
                                                         sx={{
-                                                            color: '#ff4d4d',
-                                                            background: 'rgba(255, 77, 77, 0.1)',
-                                                            borderRadius: '8px',
-                                                            '&:hover': { background: 'rgba(255, 77, 77, 0.2)' },
+                                                            color: '#ef4444',
+                                                            background: '#fef2f2',
+                                                            borderRadius: '12px',
+                                                            '&:hover': { background: '#ef4444', color: '#fff' },
                                                             transition: 'all 0.3s ease'
                                                         }}
                                                     >
-                                                        <DeleteIcon sx={{ fontSize: 16 }} />
+                                                        <DeleteIcon sx={{ fontSize: 18 }} />
                                                     </IconButton>
                                                 </TableCell>
                                             </TableRow>
@@ -212,7 +213,10 @@ const ContactTable = () => {
                                 ) : (
                                     <TableRow>
                                         <TableCell colSpan={5} align="center" sx={{ py: 12 }}>
-                                            <Typography sx={{ fontWeight: 500, fontSize: '14px', color: '#64748b' }}>No Messages Found</Typography>
+                                            <div className="flex flex-col items-center gap-4 opacity-20">
+                                                <div className="w-16 h-16 rounded-full bg-slate-200"></div>
+                                                <Typography sx={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '11px' }}>No Messages Found</Typography>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 )}
@@ -229,11 +233,15 @@ const ContactTable = () => {
                         onRowsPerPageChange={handleRowsPerPageChange}
                         rowsPerPageOptions={[10, 25, 50]}
                         sx={{
-                            color: '#94a3b8',
-                            borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-                            '& .MuiTablePagination-selectIcon': { color: '#94a3b8' },
-                            '& .MuiTablePagination-actions': { color: '#94a3b8' },
-                            mt: 2
+                            borderTop: '1px solid #f1f5f9',
+                            px: 4,
+                            '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': {
+                                fontWeight: 900,
+                                textTransform: 'uppercase',
+                                fontSize: '10px',
+                                color: 'rgba(2, 6, 23, 0.3)',
+                                letterSpacing: '0.1em'
+                            }
                         }}
                     />
                 </CardContent>

@@ -11,7 +11,7 @@ const Loading = () => {
             width: '100%',
             bgcolor: '#020617'
         }}>
-            <CircularProgress sx={{ color: '#3b82f6' }} size={60} thickness={5} />
+            <CircularProgress sx={{ color: '#16a34a' }} size={60} thickness={5} />
         </Box>
     );
 };

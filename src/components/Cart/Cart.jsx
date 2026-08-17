@@ -7,6 +7,7 @@ import EmptyCart from './EmptyCart';
 import PriceSidebar from './PriceSidebar';
 import SaveForLaterItem from './SaveForLaterItem';
 import { fetchCart } from '../../actions/cartAction';
+import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 
 const Cart = () => {
     const navigate = useNavigate();
@@ -25,7 +26,6 @@ const Cart = () => {
         navigate('/shipping');
     };
 
-
     const continueShoppingHandler = () => {
         navigate('/products');
     };
@@ -33,118 +33,98 @@ const Cart = () => {
     return (
         <>
             <MetaData title="Shopping Cart | Shree Kishan Aayushi" />
-            <main className="min-h-screen pt-32 pb-20 bg-slate-50 relative overflow-hidden">
+            <main className="min-h-screen pt-28 pb-24 bg-slate-50 font-sans selection:bg-emerald-500 selection:text-white">
+                
+                <div className="w-full xl:w-[95%] 2xl:w-[90%] max-w-[1800px] mx-auto px-4 sm:px-8 lg:px-12 mt-4 md:mt-8">
 
-                {/* Premium Medical Mesh Background */}
-                <div className="absolute inset-0 pointer-events-none opacity-60">
-                    <div className="absolute top-0 left-[-10%] w-[70%] h-[70%] bg-blue-600/10 blur-[180px] rounded-full animate-float-1"></div>
-                    <div className="absolute bottom-0 right-[-10%] w-[70%] h-[70%] bg-teal-500/10 blur-[180px] rounded-full animate-float-2"></div>
-
-                    {/* Clinical Pattern Overlay */}
-                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/micro-carbon.png')] opacity-[0.05]"></div>
-                </div>
-
-                <div className="w-full sm:w-11/12 px-4 sm:px-12 m-auto relative z-10 mt-8">
-
-                    {/* Header Block */}
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-6 animate-fade-in">
-                        <div>
-                            <h1 className="text-2xl md:text-3xl font-black text-blue-950 uppercase tracking-tighter mb-2 leading-none">
-                                My <span className="text-blue-600">Cart</span>
-                            </h1>
-                            <div className="flex items-center gap-2">
-                                <span className="w-6 h-1 bg-blue-600 rounded-full"></span>
-                                <p className="text-blue-800/60 font-black uppercase tracking-widest text-[8px]">Items you have selected</p>
+                    {/* Premium Header */}
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6 animate-fade-in-up mt-2">
+                        <div className="flex items-center gap-5 group">
+                            <div className="relative">
+                                <div className="absolute inset-0 bg-emerald-400 blur-lg opacity-40 rounded-full group-hover:opacity-60 transition-opacity"></div>
+                                <div className="relative w-14 h-14 rounded-[1.25rem] bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-lg shadow-emerald-500/30 transform group-hover:scale-105 group-hover:-rotate-3 transition-all duration-500">
+                                    <LocalMallOutlinedIcon />
+                                </div>
+                            </div>
+                            <div>
+                                <h1 className="text-3xl md:text-4xl font-semibold text-slate-900 tracking-tight">Shopping Cart</h1>
+                                <div className="flex items-center gap-2 mt-1.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-widest">{cartItems.length} {cartItems.length === 1 ? 'item' : 'items'} ready to ship</p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="flex flex-col lg:flex-row gap-12 items-start">
-                        {/* Left Column - Reserves Mapping */}
-                        <div className="flex-1 w-full space-y-12">
+                    <div className="flex flex-col lg:flex-row gap-12 xl:gap-16 items-start">
+                        
+                        {/* Left Column - Cart Items */}
+                        <div className="flex-1 w-full space-y-8 animate-fade-in-up" style={{animationDelay: '100ms'}}>
 
-                            {/* Primary Cart Registry */}
-                            <div className="bg-white rounded-[2rem] border border-blue-100 overflow-hidden shadow-2xl shadow-blue-900/5 animate-fade-in-left">
-                                <div className="bg-blue-50/50 px-8 py-6 border-b border-blue-100 flex justify-between items-center">
-                                    <h2 className="text-[10px] font-black text-blue-950 uppercase tracking-[0.2em] flex items-center gap-3">
-                                        <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse shadow-glow-blue"></span>
-                                        Cart Items ({cartItems.length})
-                                    </h2>
-                                    {cartItems.length > 0 && (
-                                        <span className="text-[8px] font-black text-blue-600 bg-white px-4 py-1.5 rounded-xl border border-blue-100 uppercase tracking-widest shadow-sm">
-                                            Verified Quality
-                                        </span>
-                                    )}
-                                </div>
-
-                                <div className="divide-y divide-blue-50 min-h-[400px]">
+                            {/* Cart List */}
+                            <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden">
+                                
+                                <div className="p-6 md:p-10 space-y-2">
+                                    <h2 className="text-xl font-semibold text-slate-900 mb-6">Items ({cartItems.length})</h2>
+                                    
                                     {cartItems.length === 0 ? (
                                         <EmptyCart />
                                     ) : (
-                                        cartItems.map((item) => (
-                                            <CartItem {...item} inCart={true} key={item.product} />
-                                        ))
+                                        <div className="divide-y divide-slate-100">
+                                            {cartItems.map((item) => (
+                                                <div key={item.product} className="py-8 first:pt-0 last:pb-0">
+                                                    <CartItem {...item} inCart={true} />
+                                                </div>
+                                            ))}
+                                        </div>
                                     )}
                                 </div>
 
-                                {/* Registry Actions */}
+                                {/* Actions Block */}
                                 {cartItems.length > 0 && (
-                                    <div className="p-8 bg-blue-50/30 border-t border-blue-50">
-                                        <div className="flex flex-col md:flex-row gap-4">
-                                            <button
-                                                onClick={placeOrderHandler}
-                                                className="flex-1 bg-blue-600 hover:bg-blue-800 text-white py-4 px-8 rounded-xl font-black uppercase tracking-[0.2em] text-[9px] shadow-xl shadow-blue-600/20 transition-all active:scale-95"
-                                            >
-                                                Place Order
-                                            </button>
-                                            <button
-                                                onClick={continueShoppingHandler}
-                                                className="flex-1 bg-white border border-blue-100 hover:bg-blue-50 text-blue-900 py-4 px-8 rounded-xl font-black uppercase tracking-[0.2em] text-[9px] transition-all active:scale-95 shadow-md shadow-blue-900/5"
-                                            >
-                                                Add More Products
-                                            </button>
-                                        </div>
+                                    <div className="p-6 md:p-8 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-6">
+                                        <button
+                                            onClick={continueShoppingHandler}
+                                            className="text-emerald-600 font-semibold hover:text-emerald-700 transition-colors flex items-center gap-2"
+                                        >
+                                            &larr; Continue Shopping
+                                        </button>
+                                        <button
+                                            onClick={placeOrderHandler}
+                                            className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-4 rounded-xl font-semibold transition-all shadow-lg shadow-emerald-600/20 active:scale-95"
+                                        >
+                                            Proceed to Checkout
+                                        </button>
                                     </div>
                                 )}
                             </div>
 
-                            {/* Secondary Portfolio (Saved For Later) */}
+                            {/* Saved For Later */}
                             {saveForLaterItems.length > 0 && (
-                                <div className="bg-white rounded-[3rem] border border-blue-100 overflow-hidden shadow-2xl shadow-blue-900/5 animate-fade-in-up">
-                                    <div className="bg-blue-50 px-12 py-10 border-b border-blue-100">
-                                        <h2 className="text-[11px] font-black text-blue-950 uppercase tracking-[0.25em]">
-                                            Saved For Later ({saveForLaterItems.length} Products)
-                                        </h2>
-                                    </div>
-
-                                    <div className="divide-y divide-blue-50">
-                                        {saveForLaterItems.map((item) => (
-                                            <SaveForLaterItem {...item} key={item.product} />
-                                        ))}
+                                <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden">
+                                    <div className="p-6 md:p-10">
+                                        <h2 className="text-xl font-semibold text-slate-900 mb-6">Saved for later ({saveForLaterItems.length})</h2>
+                                        
+                                        <div className="divide-y divide-slate-100">
+                                            {saveForLaterItems.map((item) => (
+                                                <div key={item.product} className="py-8 first:pt-0 last:pb-0">
+                                                    <SaveForLaterItem {...item} />
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             )}
                         </div>
 
-                        {/* Right Column - Financial Sidebar */}
+                        {/* Right Column - Order Summary */}
                         {cartItems.length > 0 && (
-                            <div className="lg:w-[450px] w-full sticky top-32">
+                            <div className="lg:w-[400px] xl:w-[480px] w-full sticky top-32 animate-fade-in-up" style={{animationDelay: '200ms'}}>
                                 <PriceSidebar cartItems={cartItems} />
                             </div>
                         )}
                     </div>
 
-                    {/* Fallback Action */}
-                    {cartItems.length === 0 && (
-                        <div className="text-center mt-12 animate-fade-in-up">
-                            <button
-                                onClick={continueShoppingHandler}
-                                className="px-12 py-5 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-[0.2em] text-xs shadow-2xl shadow-blue-600/20 hover:bg-blue-500 transition-all active:scale-95"
-                            >
-                                Re-initialize Protocol
-                            </button>
-                        </div>
-                    )}
                 </div>
             </main >
         </>

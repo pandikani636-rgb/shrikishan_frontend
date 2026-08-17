@@ -47,6 +47,7 @@ import {
     clearErrors,
 } from "../../actions/productAction";
 import { getAdminSubCategories } from "../../actions/subCategoryAction";
+import { getAdminGsts } from "../../actions/gstAction";
 import { NEW_PRODUCT_RESET, UPDATE_PRODUCT_RESET, DELETE_PRODUCT_RESET } from "../../constants/productConstants";
 
 const ProductTable = () => {
@@ -72,7 +73,8 @@ const ProductTable = () => {
         stock: '',
         category: '',
         status: 'Active',
-        subCategoryType: 'Non-Prescription'
+        subCategoryType: 'Non-Prescription',
+        gst: 0
     });
     const [images, setImages] = useState([]);
     const [imagesPreview, setImagesPreview] = useState([]);
@@ -83,10 +85,12 @@ const ProductTable = () => {
     const { success: createSuccess, error: createError, loading: createLoading } = useSelector((state) => state.newProduct);
     const { product: productDetails } = useSelector((state) => state.productDetails);
     const { subCategories } = useSelector((state) => state.subCategories);
+    const { gsts } = useSelector((state) => state.gsts);
 
     useEffect(() => {
         dispatch(getAdminProducts());
         dispatch(getAdminSubCategories());
+        dispatch(getAdminGsts());
     }, [dispatch]);
 
     useEffect(() => {
@@ -132,14 +136,15 @@ const ProductTable = () => {
                 stock: productDetails.stock || '',
                 category: productDetails.category || '',
                 status: productDetails.status || 'Active',
-                subCategoryType: productDetails.subCategoryType || 'Non-Prescription'
+                subCategoryType: productDetails.subCategoryType || 'Non-Prescription',
+                gst: productDetails.gst || 0
             });
-            setImagesPreview(productDetails.images?.map(img => img.url?.startsWith('http') ? img.url : `http://localhost:4000/admin/product/${img.url}`) || []);
+            setImagesPreview(productDetails.images?.map(img => img.url?.startsWith('http') ? img.url : `/admin/product/${img.url}`) || []);
         }
     }, [dispatch, error, deleteError, isDeleted, createSuccess, createError, isUpdated, updateError, productDetails, openEditModal]);
 
     const handleOpenAddModal = () => {
-        setProductForm({ name: '', description: '', price: '', stock: '', category: '', status: 'Active', subCategoryType: 'Non-Prescription' });
+        setProductForm({ name: '', description: '', price: '', stock: '', category: '', status: 'Active', subCategoryType: 'Non-Prescription', gst: 0 });
         setImages([]);
         setImagesPreview([]);
         setValidation({});
@@ -148,7 +153,7 @@ const ProductTable = () => {
 
     const handleCloseAddModal = () => {
         setOpenAddModal(false);
-        setProductForm({ name: '', description: '', price: '', stock: '', category: '', status: 'Active', subCategoryType: 'Non-Prescription' });
+        setProductForm({ name: '', description: '', price: '', stock: '', category: '', status: 'Active', subCategoryType: 'Non-Prescription', gst: 0 });
         setImages([]);
         setImagesPreview([]);
         setValidation({});
@@ -164,7 +169,7 @@ const ProductTable = () => {
     const handleCloseEditModal = () => {
         setOpenEditModal(false);
         setSelectedProduct(null);
-        setProductForm({ name: '', description: '', price: '', stock: '', category: '', status: 'Active' });
+        setProductForm({ name: '', description: '', price: '', stock: '', category: '', status: 'Active', subCategoryType: 'Non-Prescription', gst: 0 });
         setImages([]);
         setImagesPreview([]);
         setValidation({});
@@ -221,6 +226,7 @@ const ProductTable = () => {
         formData.set("category", productForm.category);
         formData.set("status", productForm.status);
         formData.set("subCategoryType", productForm.subCategoryType);
+        formData.set("gst", productForm.gst);
         images.forEach((img) => formData.append("images", img));
 
         dispatch(createProduct(formData));
@@ -238,6 +244,7 @@ const ProductTable = () => {
         formData.set("category", productForm.category);
         formData.set("status", productForm.status);
         formData.set("subCategoryType", productForm.subCategoryType);
+        formData.set("gst", productForm.gst);
         images.forEach((img) => formData.append("images", img));
 
         dispatch(updateProduct(selectedProduct._id, formData));
@@ -286,11 +293,11 @@ const ProductTable = () => {
             <Box sx={{ mb: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                 <Box>
                     <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-1 bg-blue-600 rounded-full"></div>
-                        <p className="text-[10px] font-black text-blue-900/40 uppercase tracking-[0.3em]">Inventory</p>
+                        <div className="w-10 h-1 bg-green-600 rounded-full"></div>
+                        <p className="text-[10px] font-semibold text-green-900/40 uppercase tracking-[0.3em]">Inventory</p>
                     </div>
                     <Typography variant="h4" sx={{ fontWeight: 950, color: '#020617', letterSpacing: '-0.03em', textTransform: 'uppercase' }}>
-                        All <span style={{ color: '#0f52ba' }}>Products</span>
+                        All <span style={{ color: '#16a34a' }}>Products</span>
                     </Typography>
                 </Box>
 
@@ -306,10 +313,10 @@ const ProductTable = () => {
                         fontSize: '11px',
                         px: 4,
                         py: 2,
-                        background: '#0f52ba',
-                        boxShadow: '0 15px 30px rgba(15, 82, 186, 0.15)',
+                        background: '#16a34a',
+                        boxShadow: '0 15px 30px rgba(22, 163, 74, 0.15)',
                         '&:hover': {
-                            background: '#083d8d',
+                            background: '#14532d',
                             transform: 'translateY(-2px)'
                         },
                         transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
@@ -321,7 +328,7 @@ const ProductTable = () => {
 
             <Card sx={{
                 borderRadius: '35px',
-                boxShadow: '0 40px 100px rgba(15, 82, 186, 0.04)',
+                boxShadow: '0 40px 100px rgba(22, 163, 74, 0.04)',
                 border: '1px solid #f1f5f9',
                 background: '#ffffff',
                 overflow: 'hidden'
@@ -370,7 +377,7 @@ const ProductTable = () => {
                                                 key={product._id}
                                                 sx={{
                                                     transition: 'all 0.4s ease',
-                                                    '&:hover': { background: '#f0f7ff' },
+                                                    '&:hover': { background: '#f0fdf4' },
                                                     '& td': { borderBottom: '1px solid #f8fafc', py: 3 }
                                                 }}
                                             >
@@ -390,7 +397,7 @@ const ProductTable = () => {
                                                             justifyContent: 'center',
                                                             fontSize: '14px',
                                                             fontWeight: 900,
-                                                            color: '#0f52ba',
+                                                            color: '#16a34a',
                                                             border: '1px solid #e2e8f0'
                                                         }}>
                                                             {product.name.charAt(0).toUpperCase()}
@@ -401,7 +408,7 @@ const ProductTable = () => {
                                                     </Box>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Typography sx={{ fontSize: '10px', color: '#0f52ba', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.05em', bgcolor: '#f0f7ff', px: 2, py: 0.8, borderRadius: '8px', display: 'inline-block' }}>
+                                                    <Typography sx={{ fontSize: '10px', color: '#16a34a', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.05em', bgcolor: '#f0fdf4', px: 2, py: 0.8, borderRadius: '8px', display: 'inline-block' }}>
                                                         {product.category?.name || product.category}
                                                     </Typography>
                                                 </TableCell>
@@ -442,7 +449,7 @@ const ProductTable = () => {
                                                             onClick={() => handleOpenImageModal(
                                                                 product.images?.[0]?.url?.startsWith('http')
                                                                     ? product.images[0].url
-                                                                    : `http://localhost:4000/admin/product/${product.images?.[0]?.url}`
+                                                                    : `/admin/product/${product.images?.[0]?.url}`
                                                             )}
                                                             sx={{
                                                                 color: '#64748b',
@@ -457,10 +464,10 @@ const ProductTable = () => {
                                                         <IconButton
                                                             onClick={() => handleEdit(product)}
                                                             sx={{
-                                                                color: '#0f52ba',
-                                                                background: '#f0f7ff',
+                                                                color: '#16a34a',
+                                                                background: '#f0fdf4',
                                                                 borderRadius: '12px',
-                                                                '&:hover': { background: '#0f52ba', color: '#fff' },
+                                                                '&:hover': { background: '#16a34a', color: '#fff' },
                                                                 transition: 'all 0.3s ease'
                                                             }}
                                                         >
@@ -531,7 +538,7 @@ const ProductTable = () => {
                 PaperProps={{
                     sx: {
                         borderRadius: '40px',
-                        boxShadow: '0 50px 100px rgba(15, 82, 186, 0.15)',
+                        boxShadow: '0 50px 100px rgba(22, 163, 74, 0.15)',
                         border: '1px solid #f1f5f9'
                     }
                 }}
@@ -540,11 +547,11 @@ const ProductTable = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Box>
                             <div className="flex items-center gap-3 mb-2">
-                                <div className="w-8 h-1 bg-blue-600 rounded-full"></div>
-                                <p className="text-[9px] font-black text-blue-900/40 uppercase tracking-[0.2em]">Product Form</p>
+                                <div className="w-8 h-1 bg-green-600 rounded-full"></div>
+                                <p className="text-[9px] font-semibold text-green-900/40 uppercase tracking-[0.2em]">Product Form</p>
                             </div>
                             <Typography variant="h5" sx={{ fontWeight: 950, color: '#020617', textTransform: 'uppercase' }}>
-                                {openAddModal ? 'Add' : 'Edit'} <span style={{ color: '#0f52ba' }}>Product</span>
+                                {openAddModal ? 'Add' : 'Edit'} <span style={{ color: '#16a34a' }}>Product</span>
                             </Typography>
                         </Box>
                         <IconButton onClick={openAddModal ? handleCloseAddModal : handleCloseEditModal}>
@@ -557,7 +564,7 @@ const ProductTable = () => {
                         <Grid item xs={12} md={7}>
                             <div className="space-y-6">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-blue-900/30 uppercase tracking-widest ml-1">Product Name</label>
+                                    <label className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest ml-1">Product Name</label>
                                     <TextField
                                         fullWidth
                                         variant="outlined"
@@ -568,7 +575,7 @@ const ProductTable = () => {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-blue-900/30 uppercase tracking-widest ml-1">Price (₹)</label>
+                                        <label className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest ml-1">Price (₹)</label>
                                         <TextField
                                             fullWidth
                                             type="number"
@@ -578,7 +585,7 @@ const ProductTable = () => {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-blue-900/30 uppercase tracking-widest ml-1">Stock</label>
+                                        <label className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest ml-1">Stock</label>
                                         <TextField
                                             fullWidth
                                             type="number"
@@ -590,7 +597,7 @@ const ProductTable = () => {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-blue-900/30 uppercase tracking-widest ml-1">Category</label>
+                                        <label className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest ml-1">Category</label>
                                         <Select
                                             fullWidth
                                             value={productForm.category}
@@ -601,7 +608,7 @@ const ProductTable = () => {
                                         </Select>
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-blue-900/30 uppercase tracking-widest ml-1">Sub Category Type</label>
+                                        <label className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest ml-1">Sub Category Type</label>
                                         <Select
                                             fullWidth
                                             value={productForm.subCategoryType}
@@ -613,8 +620,34 @@ const ProductTable = () => {
                                         </Select>
                                     </div>
                                 </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest ml-1">Status</label>
+                                        <Select
+                                            fullWidth
+                                            value={productForm.status}
+                                            onChange={(e) => setProductForm({ ...productForm, status: e.target.value })}
+                                            sx={{ borderRadius: '15px', bgcolor: '#f8fafc' }}
+                                        >
+                                            <MenuItem value="Active">Active</MenuItem>
+                                            <MenuItem value="Inactive">Inactive</MenuItem>
+                                        </Select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest ml-1">GST (%)</label>
+                                        <Select
+                                            fullWidth
+                                            value={productForm.gst}
+                                            onChange={(e) => setProductForm({ ...productForm, gst: e.target.value })}
+                                            sx={{ borderRadius: '15px', bgcolor: '#f8fafc' }}
+                                        >
+                                            <MenuItem value={0}>0%</MenuItem>
+                                            {gsts?.map(gst => <MenuItem key={gst._id} value={gst.percentage}>{gst.percentage}%</MenuItem>)}
+                                        </Select>
+                                    </div>
+                                </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-blue-900/30 uppercase tracking-widest ml-1">Description</label>
+                                    <label className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest ml-1">Description</label>
                                     <TextField
                                         fullWidth
                                         multiline
@@ -628,7 +661,7 @@ const ProductTable = () => {
                         </Grid>
                         <Grid item xs={12} md={5}>
                             <div className="h-full flex flex-col">
-                                <label className="text-[10px] font-black text-blue-900/30 uppercase tracking-widest mb-2 ml-1">Product Images</label>
+                                <label className="text-[10px] font-semibold text-green-900/30 uppercase tracking-widest mb-2 ml-1">Product Images</label>
                                 <Box sx={{
                                     flex: 1,
                                     border: '2px dashed #e2e8f0',
@@ -641,7 +674,7 @@ const ProductTable = () => {
                                     justifyContent: 'center',
                                     gap: 2,
                                     cursor: 'pointer',
-                                    '&:hover': { bgcolor: '#f1f5f9', borderColor: '#0f52ba' },
+                                    '&:hover': { bgcolor: '#f1f5f9', borderColor: '#16a34a' },
                                     transition: 'all 0.3s ease'
                                 }} component="label">
                                     <input type="file" hidden multiple onChange={handleImages} />
@@ -656,7 +689,7 @@ const ProductTable = () => {
                                     ) : (
                                         <div className="flex flex-col items-center">
                                             <CloudUploadIcon sx={{ fontSize: 48, color: '#e2e8f0', mb: 2 }} />
-                                            <p className="text-[10px] font-black text-blue-900/20 uppercase tracking-[0.2em] text-center">Upload Images Here</p>
+                                            <p className="text-[10px] font-semibold text-green-900/20 uppercase tracking-[0.2em] text-center">Upload Images Here</p>
                                         </div>
                                     )}
                                 </Box>
@@ -666,7 +699,7 @@ const ProductTable = () => {
                                         fullWidth
                                         variant="contained"
                                         onClick={openAddModal ? handleAddSubmit : handleEditSubmit}
-                                        sx={{ borderRadius: '15px', bgcolor: '#0f52ba', fontWeight: 900, fontSize: '11px', boxShadow: '0 10px 20px rgba(15,82,186,0.2)' }}
+                                        sx={{ borderRadius: '15px', bgcolor: '#16a34a', fontWeight: 900, fontSize: '11px', boxShadow: '0 10px 20px rgba(22,163,74,0.2)' }}
                                     >
                                         {openAddModal ? 'Add Product' : 'Update Product'}
                                     </Button>

@@ -8,37 +8,31 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Paper,
     IconButton,
     Card,
     CardContent,
     Typography,
-    TextField,
-    TablePagination
+    TablePagination,
+    Box
 } from '@mui/material';
-import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { clearErrors, deleteReview, getAllReviews } from '../../actions/productAction';
 import { DELETE_REVIEW_RESET } from '../../constants/productConstants';
 import MetaData from '../Layouts/MetaData';
-import BackdropLoader from '../Layouts/BackdropLoader';
 import Swal from 'sweetalert2';
 
 const ReviewsTable = () => {
     const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
-    const [productId, setProductId] = useState("");
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(15);
 
     const { reviews, error } = useSelector((state) => state.reviews);
     const { loading, isDeleted, error: deleteError } = useSelector((state) => state.review);
 
     useEffect(() => {
-        if (productId.length === 24) {
-            dispatch(getAllReviews(productId));
-        }
+        dispatch(getAllReviews());
         if (error) {
             enqueueSnackbar(error, { variant: "error" });
             dispatch(clearErrors());
@@ -51,102 +45,92 @@ const ReviewsTable = () => {
             enqueueSnackbar("Review Deleted Successfully", { variant: "success" });
             dispatch({ type: DELETE_REVIEW_RESET });
         }
-    }, [dispatch, error, deleteError, isDeleted, productId, enqueueSnackbar]);
+    }, [dispatch, error, deleteError, isDeleted, enqueueSnackbar]);
 
-    const handleDelete = (id) => {
+    const handleDelete = (reviewId, productId) => {
         Swal.fire({
             title: "Are you sure?",
-            text: "You won't be able to revert this!",
+            text: "This action cannot be undone!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
+            confirmButtonColor: "#16a34a",
+            cancelButtonColor: "#6b7280",
             confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel",
+            customClass: {
+                confirmButton: 'swal-confirm-btn',
+                cancelButton: 'swal-cancel-btn'
+            }
         }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(deleteReview(id, productId));
+                dispatch(deleteReview(reviewId, productId));
             }
         });
     };
 
     return (
-        <Box sx={{ minHeight: '100vh' }}>
-            <MetaData title="Nodal Feedback | Aayushi Health" />
+        <Box sx={{ minHeight: '100vh', py: 4 }}>
+            <MetaData title="Customer Reviews | Shree Kishan Aayushi" />
 
-            <Box sx={{ mb: 4, textAlign: 'center' }}>
-                <Typography variant="h5" sx={{ fontWeight: 800, color: '#f8fafc', mb: 0.5, letterSpacing: '0.5px' }}>
-                    Feedback Matrix
-                </Typography>
-                <Typography variant="body2" sx={{ color: '#94a3b8', fontWeight: 500 }}>
-                    Monitor and moderate user-generated product insights
+            <Box sx={{ mb: 6 }}>
+                <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-1 bg-green-600 rounded-full"></div>
+                    <p className="text-[10px] font-semibold text-green-900/40 uppercase tracking-[0.3em]">Administration</p>
+                </div>
+                <Typography variant="h4" sx={{ fontWeight: 950, color: '#020617', letterSpacing: '-0.03em', textTransform: 'uppercase' }}>
+                    Customer <span style={{ color: '#16a34a' }}>Reviews</span>
                 </Typography>
             </Box>
 
             <Card sx={{
-                borderRadius: '32px',
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-                border: '1px solid rgba(255, 255, 255, 0.05)',
-                background: 'rgba(15, 23, 42, 0.4)',
-                backdropFilter: 'blur(16px)',
+                borderRadius: '35px',
+                boxShadow: '0 40px 100px rgba(22, 163, 74, 0.04)',
+                border: '1px solid #f1f5f9',
+                background: '#ffffff',
                 overflow: 'hidden'
             }}>
-                <CardContent className="p-6">
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                        <Box sx={{
-                            background: 'rgba(59, 130, 246, 0.1)',
-                            px: 2,
-                            py: 0.75,
-                            borderRadius: '12px',
-                            border: '1px solid rgba(59, 130, 246, 0.2)'
-                        }}>
-                            <Typography variant="body2" sx={{ color: '#60a5fa', fontWeight: 700, fontSize: '13px' }}>
-                                TOTAL ENTRIES: {reviews?.length || 0}
-                            </Typography>
-                        </Box>
-
-                        <TextField
-                            size="small"
-                            placeholder="Terminal: Enter Product UUID..."
-                            value={productId}
-                            onChange={(e) => setProductId(e.target.value)}
-                            sx={{
-                                width: '280px',
-                                '& .MuiOutlinedInput-root': {
-                                    borderRadius: '12px',
-                                    backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                                    fontSize: '13px',
-                                    color: '#f8fafc',
-                                    '& fieldset': {
-                                        borderColor: 'rgba(255, 255, 255, 0.05)',
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: 'rgba(255, 255, 255, 0.1)',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: '#3b82f6',
-                                    }
-                                }
-                            }}
-                        />
-                    </Box>
-
-                    <TableContainer component={Paper}>
-                        <Table>
+                <CardContent sx={{ p: 0 }}>
+                    <TableContainer sx={{ maxHeight: 'calc(100vh - 350px)' }}>
+                        <Table stickyHeader>
                             <TableHead>
-                                <TableRow sx={{ background: 'rgba(255, 255, 255, 0.02)' }}>
-                                    <TableCell align="center" sx={{ fontWeight: 700, color: '#94a3b8', fontSize: '12px', py: 2, borderBottom: '1px solid rgba(255, 255, 255, 0.05)', textTransform: 'uppercase', letterSpacing: '1px' }}>ID</TableCell>
-                                    <TableCell align="center" sx={{ fontWeight: 700, color: '#94a3b8', fontSize: '12px', py: 2, borderBottom: '1px solid rgba(255, 255, 255, 0.05)', textTransform: 'uppercase', letterSpacing: '1px' }}>User</TableCell>
-                                    <TableCell align="center" sx={{ fontWeight: 700, color: '#94a3b8', fontSize: '12px', py: 2, borderBottom: '1px solid rgba(255, 255, 255, 0.05)', textTransform: 'uppercase', letterSpacing: '1px' }}>Rating</TableCell>
-                                    <TableCell align="center" sx={{ fontWeight: 700, color: '#94a3b8', fontSize: '12px', py: 2, borderBottom: '1px solid rgba(255, 255, 255, 0.05)', textTransform: 'uppercase', letterSpacing: '1px' }}>Comment</TableCell>
-                                    <TableCell align="center" sx={{ fontWeight: 700, color: '#94a3b8', fontSize: '12px', py: 2, borderBottom: '1px solid rgba(255, 255, 255, 0.05)', textTransform: 'uppercase', letterSpacing: '1px' }}>Actions</TableCell>
+                                <TableRow>
+                                    {[
+                                        { label: 'Date', width: '120px' },
+                                        { label: 'Product', width: '250px' },
+                                        { label: 'User', width: '200px' },
+                                        { label: 'Rating', width: '150px' },
+                                        { label: 'Comment', width: 'auto' },
+                                        { label: 'Actions', width: '100px' }
+                                    ].map((head, i) => (
+                                        <TableCell
+                                            key={i}
+                                            align={i === 3 || i === 5 ? "center" : "left"}
+                                            sx={{
+                                                fontWeight: 950,
+                                                color: 'rgba(2, 6, 23, 0.3)',
+                                                fontSize: '10px',
+                                                py: 4,
+                                                bgcolor: '#f8fafc',
+                                                borderBottom: '1px solid #f1f5f9',
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.15em',
+                                                width: head.width
+                                            }}
+                                        >
+                                            {head.label}
+                                        </TableCell>
+                                    ))}
                                 </TableRow>
                             </TableHead>
 
                             <TableBody>
                                 {loading ? (
                                     <TableRow>
-                                        <TableCell colSpan={5} align="center">
-                                            Loading reviews...
+                                        <TableCell colSpan={6} align="center" sx={{ py: 12 }}>
+                                            <div className="flex flex-col items-center gap-4">
+                                                <div className="w-12 h-12 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin"></div>
+                                                <Typography sx={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '10px', color: 'rgba(2, 6, 23, 0.3)' }}>Loading Reviews...</Typography>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ) : reviews?.length > 0 ? (
@@ -156,30 +140,64 @@ const ReviewsTable = () => {
                                             <TableRow
                                                 key={review._id}
                                                 sx={{
-                                                    transition: 'all 0.3s ease',
-                                                    '&:hover': { background: 'rgba(255, 255, 255, 0.03)' },
-                                                    '& td': { borderBottom: '1px solid rgba(255, 255, 255, 0.03)', py: 2 }
+                                                    transition: 'all 0.4s ease',
+                                                    '&:hover': { background: '#f0fdf4' },
+                                                    '& td': { borderBottom: '1px solid #f8fafc', py: 2.5 }
                                                 }}
                                             >
-                                                <TableCell align="center">
-                                                    <Typography variant="body2" sx={{ fontSize: '12px', color: '#94a3b8', fontFamily: 'monospace' }}>{review._id}</Typography>
+                                                <TableCell align="left">
+                                                    <Typography sx={{ fontSize: '12px', color: '#020617', fontWeight: 800 }}>
+                                                        {new Date(review.createdAt || Date.now()).toLocaleDateString('en-GB')}
+                                                    </Typography>
+                                                    <Typography sx={{ fontSize: '10px', color: 'rgba(2, 6, 23, 0.4)', fontWeight: 700 }}>
+                                                        {new Date(review.createdAt || Date.now()).toLocaleTimeString()}
+                                                    </Typography>
                                                 </TableCell>
-                                                <TableCell align="center">
-                                                    <Typography variant="body2" sx={{ fontSize: '14px', color: '#f8fafc', fontWeight: 700 }}>{review.name}</Typography>
+                                                
+                                                <TableCell align="left">
+                                                    <Typography sx={{ fontSize: '13px', color: '#16a34a', fontWeight: 800 }}>
+                                                        {review.productName}
+                                                    </Typography>
+                                                    <Typography sx={{ fontSize: '10px', color: '#64748b', fontWeight: 600, fontFamily: 'monospace' }}>
+                                                        {review.productId}
+                                                    </Typography>
                                                 </TableCell>
-                                                <TableCell align="center">
-                                                    <Rating readOnly value={review.rating} size="small" precision={0.5} sx={{ color: '#fbbf24' }} />
+                                                
+                                                <TableCell align="left">
+                                                    <Typography sx={{ fontSize: '13px', color: '#020617', fontWeight: 800 }}>
+                                                        {review.name}
+                                                    </Typography>
                                                 </TableCell>
+                                                
                                                 <TableCell align="center">
-                                                    <Typography variant="body2" sx={{ fontSize: '13px', color: '#94a3b8', fontStyle: 'italic' }}>"{review.comment}"</Typography>
+                                                    <Rating 
+                                                        readOnly 
+                                                        value={review.rating} 
+                                                        size="small" 
+                                                        precision={0.5} 
+                                                        sx={{ 
+                                                            color: '#fbbf24',
+                                                            '& .MuiRating-iconFilled': { color: '#fbbf24' },
+                                                            '& .MuiRating-iconEmpty': { color: '#e2e8f0' }
+                                                        }} 
+                                                    />
                                                 </TableCell>
+                                                
+                                                <TableCell align="left">
+                                                    <Typography sx={{ fontSize: '13px', color: '#64748b', fontStyle: 'italic', fontWeight: 500 }}>
+                                                        "{review.comment}"
+                                                    </Typography>
+                                                </TableCell>
+                                                
                                                 <TableCell align="center">
                                                     <IconButton
-                                                        onClick={() => handleDelete(review._id)}
+                                                        onClick={() => handleDelete(review._id, review.productId)}
                                                         sx={{
-                                                            color: '#ff4d4d',
-                                                            background: 'rgba(255, 77, 77, 0.1)',
-                                                            '&:hover': { background: 'rgba(255, 77, 77, 0.2)' }
+                                                            color: '#ef4444',
+                                                            background: '#fef2f2',
+                                                            borderRadius: '10px',
+                                                            '&:hover': { background: '#ef4444', color: '#fff' },
+                                                            transition: 'all 0.3s ease'
                                                         }}
                                                     >
                                                         <DeleteIcon sx={{ fontSize: 18 }} />
@@ -189,8 +207,12 @@ const ReviewsTable = () => {
                                         ))
                                 ) : (
                                     <TableRow>
-                                        <TableCell colSpan={5} align="center">
-                                            {productId ? "No reviews found for this product." : "Enter a Product ID to view reviews."}
+                                        <TableCell colSpan={6} align="center" sx={{ py: 12 }}>
+                                            <div className="flex flex-col items-center gap-4 opacity-30">
+                                                <Typography sx={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '11px', color: '#020617' }}>
+                                                    No Customer Reviews Found
+                                                </Typography>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 )}
@@ -202,19 +224,23 @@ const ReviewsTable = () => {
                         component="div"
                         count={reviews?.length || 0}
                         page={page}
-                        onPageChange={(event, newPage) => setPage(newPage)}
+                        onPageChange={(e, newPage) => setPage(newPage)}
                         rowsPerPage={rowsPerPage}
-                        onRowsPerPageChange={(event) => {
-                            setRowsPerPage(parseInt(event.target.value, 10));
+                        onRowsPerPageChange={(e) => {
+                            setRowsPerPage(parseInt(e.target.value, 10));
                             setPage(0);
                         }}
-                        rowsPerPageOptions={[5, 10, 25, 50]}
+                        rowsPerPageOptions={[15, 30, 50]}
                         sx={{
-                            color: '#94a3b8',
-                            borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-                            '& .MuiTablePagination-selectIcon': { color: '#94a3b8' },
-                            '& .MuiTablePagination-actions': { color: '#94a3b8' },
-                            mt: 2
+                            borderTop: '1px solid #f1f5f9',
+                            px: 4,
+                            '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': {
+                                fontWeight: 900,
+                                textTransform: 'uppercase',
+                                fontSize: '10px',
+                                color: 'rgba(2, 6, 23, 0.3)',
+                                letterSpacing: '0.1em'
+                            }
                         }}
                     />
                 </CardContent>

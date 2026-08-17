@@ -20,6 +20,7 @@ export const addItemsToCart = (id, quantity = 1, productData = null) => async (d
                 stock: productData.stock,
                 subCategoryType: productData.subCategoryType,
                 prescriptionUrl: productData.prescriptionUrl,
+                gst: productData.gst || 0,
                 quantity,
             };
         } else {
@@ -47,6 +48,7 @@ export const addItemsToCart = (id, quantity = 1, productData = null) => async (d
                         stock: product.stock,
                         subCategoryType: product.subCategoryType,
                         prescriptionUrl: product.prescriptionUrl,
+                        gst: product.gst || 0,
                         quantity,
                     };
                 }
@@ -80,6 +82,7 @@ export const addItemsToCart = (id, quantity = 1, productData = null) => async (d
                 stock: ci.stock || 0,
                 subCategoryType: (ci.product && ci.product.subCategoryType) || "",
                 prescriptionUrl: ci.prescriptionUrl,
+                gst: (ci.product && ci.product.gst) || ci.gst || 0,
                 quantity: ci.quantity,
             }));
 
@@ -113,6 +116,7 @@ export const fetchCart = () => async (dispatch, getState) => {
             stock: ci.stock || 0,
             subCategoryType: (ci.product && ci.product.subCategoryType) || "",
             prescriptionUrl: ci.prescriptionUrl,
+            gst: (ci.product && ci.product.gst) || ci.gst || 0,
             quantity: ci.quantity,
         }));
 

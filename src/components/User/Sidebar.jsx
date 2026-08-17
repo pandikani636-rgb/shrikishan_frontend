@@ -37,7 +37,7 @@ const Sidebar = ({ activeTab }) => {
                         </div>
                         <div className="flex-1">
                             <p className="text-white/80 text-sm font-medium">Welcome back,</p>
-                            <h2 className="text-white font-bold text-lg truncate">{user.name}</h2>
+                            <h2 className="text-white font-semibold text-lg truncate">{user.name}</h2>
                             <div className="flex items-center gap-2 mt-1">
                                 <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
                                 <span className="text-white/80 text-xs font-medium">Online Now</span>
@@ -196,9 +196,9 @@ const Sidebar = ({ activeTab }) => {
                 <div className="bg-gradient-to-br from-blue-50 via-white to-green-50 rounded-2xl shadow-lg border border-gray-100 p-6">
                     <div className="flex items-center gap-3 mb-4">
                         <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
-                            <span className="text-white text-sm font-bold">⚡</span>
+                            <span className="text-white text-sm font-semibold">⚡</span>
                         </div>
-                        <h3 className="font-bold text-gray-800">Quick Actions</h3>
+                        <h3 className="font-semibold text-gray-800">Quick Actions</h3>
                     </div>
                     <div className="space-y-3">
                         <Link to="/password/update" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white hover:shadow-md transition-all duration-300 group">

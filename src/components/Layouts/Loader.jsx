@@ -21,10 +21,10 @@ const Loader = () => {
         <div className="flex flex-col items-center gap-4">
           <div className="flex items-center gap-3">
             <span className="w-10 h-1 bg-blue-600 rounded-full"></span>
-            <h2 className="text-sm font-black text-blue-900/40 uppercase tracking-[0.4em]">Resource Initialization</h2>
+            <h2 className="text-sm font-semibold text-blue-900/40 uppercase tracking-[0.4em]">Resource Initialization</h2>
             <span className="w-10 h-1 bg-blue-600 rounded-full"></span>
           </div>
-          <p className="text-[10px] font-black text-blue-950 uppercase tracking-[0.2em] italic opacity-80 animate-pulse">Synchronizing Data Streams...</p>
+          <p className="text-[10px] font-semibold text-blue-950 uppercase tracking-[0.2em] italic opacity-80 animate-pulse">Synchronizing Data Streams...</p>
         </div>
       </div>
 
