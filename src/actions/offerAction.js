@@ -32,7 +32,7 @@ export const getAdminOffers = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: ALL_OFFERS_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -55,7 +55,7 @@ export const createOffer = (offerData) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: NEW_OFFER_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -78,7 +78,7 @@ export const updateOffer = (id, offerData) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: UPDATE_OFFER_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -97,7 +97,7 @@ export const deleteOffer = (id) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: DELETE_OFFER_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -116,7 +116,7 @@ export const getOfferDetails = (id) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: OFFER_DETAILS_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };

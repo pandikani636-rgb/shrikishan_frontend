@@ -20,7 +20,7 @@ export const getAllLogs = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: ALL_LOGS_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };

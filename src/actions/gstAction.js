@@ -29,7 +29,7 @@ export const getAdminGsts = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: ALL_GST_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -50,7 +50,7 @@ export const createGst = (gstData) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: NEW_GST_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -71,7 +71,7 @@ export const updateGst = (id, gstData) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: UPDATE_GST_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -90,7 +90,7 @@ export const deleteGst = (id) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: DELETE_GST_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };

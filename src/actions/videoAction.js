@@ -26,7 +26,7 @@ export const getVideos = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: GET_VIDEOS_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -52,7 +52,7 @@ export const addVideo = (videoData) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: NEW_VIDEO_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -71,7 +71,7 @@ export const deleteVideo = (id) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: DELETE_VIDEO_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };

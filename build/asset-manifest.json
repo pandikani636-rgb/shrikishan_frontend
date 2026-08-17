@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.d40288db.css",
-    "main.js": "/static/js/main.63cc8540.js",
+    "main.css": "/static/css/main.cbe874ec.css",
+    "main.js": "/static/js/main.fef75082.js",
     "static/media/ayurveda.png": "/static/media/ayurveda.91fde256facf2f8adbfe.png",
     "static/media/logo.jpg": "/static/media/logo.1b742d9a3ced8a46803f.jpg",
     "static/media/logo1.jpg": "/static/media/logo1.544ce6ddc46eaf01e7f3.jpg",
@@ -18,10 +18,12 @@
     "static/media/delivery.svg": "/static/media/delivery.4b2d33e3b0b1efb9db13a9bb9d4be539.svg",
     "static/media/health-tips.svg": "/static/media/health-tips.45dcd02ef10541c7757915ab09fbed85.svg",
     "static/media/expert.svg": "/static/media/expert.4cac7c579d94d68cdff7dcaad13ec9b5.svg",
-    "static/media/brand.svg": "/static/media/brand.2ee440aec514d180c74a0b43c71ba753.svg"
+    "static/media/brand.svg": "/static/media/brand.2ee440aec514d180c74a0b43c71ba753.svg",
+    "main.cbe874ec.css.map": "/static/css/main.cbe874ec.css.map",
+    "main.fef75082.js.map": "/static/js/main.fef75082.js.map"
   },
   "entrypoints": [
-    "static/css/main.d40288db.css",
-    "static/js/main.63cc8540.js"
+    "static/css/main.cbe874ec.css",
+    "static/js/main.fef75082.js"
   ]
 }

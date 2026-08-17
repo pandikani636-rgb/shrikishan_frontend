@@ -35,7 +35,7 @@ export const getBanners = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: ALL_BANNERS_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -54,7 +54,7 @@ export const getAdminBanners = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: ADMIN_BANNERS_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -79,7 +79,7 @@ export const createBanner = (bannerData) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: NEW_BANNER_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -104,7 +104,7 @@ export const updateBanner = (id, bannerData) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: UPDATE_BANNER_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -123,7 +123,7 @@ export const deleteBanner = (id) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: DELETE_BANNER_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -142,7 +142,7 @@ export const getBannerDetails = (id) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: BANNER_DETAILS_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };

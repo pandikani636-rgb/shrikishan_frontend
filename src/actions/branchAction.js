@@ -32,7 +32,7 @@ export const getAllBranches = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: ALL_BRANCHES_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -53,7 +53,7 @@ export const createBranch = (branchData) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: NEW_BRANCH_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -74,7 +74,7 @@ export const updateBranch = (id, branchData) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: UPDATE_BRANCH_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -93,7 +93,7 @@ export const deleteBranch = (id) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: DELETE_BRANCH_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
@@ -112,7 +112,7 @@ export const getBranchDetails = (id) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: BRANCH_DETAILS_FAIL,
-            payload: error.response.data.message,
+            payload: error.response?.data?.message || error.message,
         });
     }
 };
