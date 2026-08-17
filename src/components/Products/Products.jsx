@@ -292,7 +292,7 @@ const Products = () => {
                                         <div key={i} className="card-premium h-96 animate-pulse opacity-50 bg-white/50"></div>
                                     ))}
                                 </div>
-                            ) : products?.length === 0 ? (
+                            ) : !products || products.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center py-24 bg-white/50 backdrop-blur-3xl rounded-[2.5rem] border border-blue-100 shadow-2xl shadow-blue-900/5">
                                     <div className="w-40 h-40 bg-blue-50 rounded-full flex items-center justify-center mb-8 border border-blue-100 animate-pulse">
                                         <SearchIcon sx={{ fontSize: 60, color: 'rgba(15,82,186,0.1)' }} />
@@ -303,7 +303,7 @@ const Products = () => {
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                                    {(filteredProducts.length > 0 ? filteredProducts : products).map((product) => <Product key={product._id} {...product} />)}
+                                    {(filteredProducts.length > 0 ? filteredProducts : products || []).map((product) => <Product key={product?._id} {...product} />)}
                                 </div>
                             )}
 

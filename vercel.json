@@ -2,15 +2,15 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "destination": "https://shrikishan-backend-ixkbog16f-pandikani636-7594s-projects.vercel.app/api/$1"
     },
     {
       "source": "/admin/(.*)",
-      "destination": "/admin/$1"
+      "destination": "https://shrikishan-backend-ixkbog16f-pandikani636-7594s-projects.vercel.app/admin/$1"
     },
     {
       "source": "/uploads/(.*)",
-      "destination": "/uploads/$1"
+      "destination": "https://shrikishan-backend-ixkbog16f-pandikani636-7594s-projects.vercel.app/uploads/$1"
     },
     {
       "source": "/(.*)",

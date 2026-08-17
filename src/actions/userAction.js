@@ -105,8 +105,13 @@ export const loadUser = () => async (dispatch) => {
 
         const { data } = await axios.get('/api/v1/me');
 
-        if (!data.user) {
-            throw new Error('API returned invalid JSON');
+        if (typeof data === 'string' || !data.user) {
+            // If the API returns HTML (like a Vercel 500 crash page due to missing DB),
+            // fail silently using the standard unauthenticated message so the UI ignores it.
+            return dispatch({
+                type: LOAD_USER_FAIL,
+                payload: "Please Login to Access",
+            });
         }
 
         dispatch({
