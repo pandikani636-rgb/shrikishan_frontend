@@ -87,7 +87,7 @@ const PrimaryDropDownMenu = ({ setTogglePrimaryDropDown, user }) => {
 
             <div className="px-5 py-4 mb-2 bg-blue-50/50 rounded-[1.8rem] border border-blue-100/50">
                 <p className="text-[9px] font-semibold text-blue-900/30 uppercase tracking-[0.2em] mb-1">Authenticated Asset</p>
-                <p className="text-[13px] font-semibold text-blue-950 uppercase truncate">{user.name}</p>
+                <p className="text-[13px] font-semibold text-blue-950 uppercase truncate">{user?.name}</p>
             </div>
 
             <div className="flex flex-col gap-1">

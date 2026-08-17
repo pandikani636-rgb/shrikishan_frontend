@@ -58,7 +58,7 @@ export const loginUser = (email, password) => async (dispatch) => {
 
         dispatch({
             type: LOGIN_USER_SUCCESS,
-            payload: data.user,
+            payload: data.user || null,
         });
 
     } catch (error) {
@@ -88,7 +88,7 @@ export const registerUser = (userData) => async (dispatch) => {
 
         dispatch({
             type: REGISTER_USER_SUCCESS,
-            payload: data.user,
+            payload: data.user || null,
         });
     } catch (error) {
         dispatch({
@@ -105,9 +105,13 @@ export const loadUser = () => async (dispatch) => {
 
         const { data } = await axios.get('/api/v1/me');
 
+        if (!data.user) {
+            throw new Error('API returned invalid JSON');
+        }
+
         dispatch({
             type: LOAD_USER_SUCCESS,
-            payload: data.user,
+            payload: data.user || null,
         });
 
     } catch (error) {
@@ -284,7 +288,7 @@ export const getUserDetails = (id) => async (dispatch) => {
 
         dispatch({
             type: USER_DETAILS_SUCCESS,
-            payload: data.user,
+            payload: data.user || null,
         });
 
     } catch (error) {

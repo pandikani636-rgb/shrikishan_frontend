@@ -124,7 +124,7 @@ const Header = () => {
                   <PersonIcon sx={{ fontSize: "16px" }} />
                 </div>
                 <div className="flex flex-col pr-1">
-                  <span className="text-white font-semibold text-base leading-none">{user.name && user.name.split(" ", 1)}</span>
+                  <span className="text-white font-semibold text-base leading-none">{user?.name && user.name.split(" ", 1)}</span>
                 </div>
                 {togglePrimaryDropDown ? <ExpandLessIcon sx={{ fontSize: 16, color: '#fff' }} /> : <ExpandMoreIcon sx={{ fontSize: 16, color: '#fff' }} />}
               </div>
