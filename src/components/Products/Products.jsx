@@ -75,13 +75,15 @@ const Products = () => {
 
     useEffect(() => {
         if (error) {
-            if (error !== "Please Login to Access") {
-                enqueueSnackbar(error, { variant: "error" });
-            }
+            enqueueSnackbar(error, { variant: "error" });
             dispatch(clearErrors());
         }
+    }, [dispatch, error, enqueueSnackbar]);
+
+    useEffect(() => {
         dispatch(getProducts(keyword, category, price, ratings, currentPage));
-    }, [dispatch, keyword, category, price, ratings, currentPage, error, enqueueSnackbar]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, keyword, category, price[0], price[1], ratings, currentPage]);
 
     // Real-time search filter
     useEffect(() => {

@@ -56,6 +56,10 @@ export const loginUser = (email, password) => async (dispatch) => {
             config
         );
 
+        if (data.token) {
+            localStorage.setItem('token', data.token);
+        }
+
         dispatch({
             type: LOGIN_USER_SUCCESS,
             payload: data.user || null,
@@ -85,6 +89,10 @@ export const registerUser = (userData) => async (dispatch) => {
             userData,
             config
         );
+
+        if (data.token) {
+            localStorage.setItem('token', data.token);
+        }
 
         dispatch({
             type: REGISTER_USER_SUCCESS,
@@ -131,6 +139,7 @@ export const loadUser = () => async (dispatch) => {
 export const logoutUser = () => async (dispatch) => {
     try {
         await axios.get('/api/v1/logout');
+        localStorage.removeItem('token');
         dispatch({ type: LOGOUT_USER_SUCCESS });
     } catch (error) {
         dispatch({
@@ -188,6 +197,10 @@ export const updatePassword = (passwords) => async (dispatch) => {
             passwords,
             config
         );
+
+        if (data.token) {
+            localStorage.setItem('token', data.token);
+        }
 
         dispatch({
             type: UPDATE_PASSWORD_SUCCESS,
@@ -251,6 +264,10 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
             passwords,
             config
         );
+
+        if (data.token) {
+            localStorage.setItem('token', data.token);
+        }
 
         dispatch({
             type: RESET_PASSWORD_SUCCESS,

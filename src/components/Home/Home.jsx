@@ -33,8 +33,11 @@ const Home = () => {
       }
       dispatch(clearErrors());
     }
-    dispatch(getSliderProducts());
   }, [dispatch, error, enqueueSnackbar]);
+
+  useEffect(() => {
+    dispatch(getSliderProducts());
+  }, [dispatch]);
 
   return (
     <>

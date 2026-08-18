@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts } from '../../actions/productAction';
+import { getSliderProducts } from '../../actions/productAction';
 import { getVideos } from '../../actions/videoAction';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
@@ -18,7 +18,7 @@ const LandingPage = () => {
   const videoScrollRef = useRef(null);
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getSliderProducts());
     dispatch(getVideos());
   }, [dispatch]);
 

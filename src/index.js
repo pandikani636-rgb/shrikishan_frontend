@@ -8,6 +8,18 @@ import store from './store';
 import { SnackbarProvider } from 'notistack';
 import { UserProvider } from './context/UserContext';
 import { replaceAlert } from './utils/sweetAlert';
+import axios from 'axios';
+
+// Global Axios Interceptor for Bearer Token
+axios.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+}, (error) => {
+    return Promise.reject(error);
+});
 
 // Custom Icons for Grand Toasts
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
