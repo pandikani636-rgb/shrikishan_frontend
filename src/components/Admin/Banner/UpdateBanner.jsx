@@ -41,7 +41,7 @@ const UpdateBanner = () => {
             setTitle(banner.title);
             setSubtitle(banner.subtitle);
             setIsActive(banner.isActive);
-            setImagePreview(banner.image ? `/${banner.image.url}` : '');
+            setImagePreview(banner.image ? `/${banner.image.url.replace(/\\/g, '/')}` : '');
         }
 
         if (error) {

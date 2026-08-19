@@ -72,7 +72,7 @@ const Product = (props) => {
                         images && images.length > 0 && images[0].url
                             ? (images[0].url.startsWith('http') || images[0].url.startsWith('https')
                                 ? images[0].url
-                                : `${BASE_URL}admin/product/${images[0].url}`)
+                                : `${BASE_URL}admin/product/${images[0].url.replace(/\\/g, '/')}`)
                             : "/default.png"
                     }
                     alt={name}

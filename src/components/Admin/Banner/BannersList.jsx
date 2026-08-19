@@ -226,7 +226,7 @@ const BannersList = () => {
                                                 <TableCell align="center">
                                                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                                         <img 
-                                                            src={`/${banner.image.url}`} 
+                                                            src={`/${banner.image.url.replace(/\\/g, '/')}`} 
                                                             alt={banner.title} 
                                                             style={{ width: '120px', height: '60px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #e2e8f0' }} 
                                                         />

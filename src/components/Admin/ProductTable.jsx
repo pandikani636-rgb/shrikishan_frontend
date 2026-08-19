@@ -139,7 +139,7 @@ const ProductTable = () => {
                 subCategoryType: productDetails.subCategoryType || 'Non-Prescription',
                 gst: productDetails.gst || 0
             });
-            setImagesPreview(productDetails.images?.map(img => img.url?.startsWith('http') ? img.url : `/admin/product/${img.url}`) || []);
+            setImagesPreview(productDetails.images?.map(img => img.url?.startsWith('http') ? img.url : `/admin/product/${img.url.replace(/\\/g, '/')}`) || []);
         }
     }, [dispatch, error, deleteError, isDeleted, createSuccess, createError, isUpdated, updateError, productDetails, openEditModal]);
 
@@ -449,7 +449,7 @@ const ProductTable = () => {
                                                             onClick={() => handleOpenImageModal(
                                                                 product.images?.[0]?.url?.startsWith('http')
                                                                     ? product.images[0].url
-                                                                    : `/admin/product/${product.images?.[0]?.url}`
+                                                                    : `/admin/product/${product.images?.[0]?.url?.replace(/\\/g, '/')}`
                                                             )}
                                                             sx={{
                                                                 color: '#64748b',

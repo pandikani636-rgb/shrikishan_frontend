@@ -194,7 +194,7 @@ const ProductDetails = () => {
                                             <img
                                                 draggable="false"
                                                 className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
-                                                src={item.url.startsWith('http') ? item.url : `${BASE_URL}admin/product/${item.url}`}
+                                                src={item.url.startsWith('http') ? item.url : `${BASE_URL}admin/product/${item.url.replace(/\\/g, '/')}`}
                                                 alt={product.name}
                                             />
                                         </div>

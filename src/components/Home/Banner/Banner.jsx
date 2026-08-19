@@ -83,7 +83,7 @@ const Banner = () => {
               <img
                 draggable="false"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-[40s] ease-out group-hover:scale-105"
-                src={banner._id === 'default' ? banner.image?.url : (banner.image?.url ? `/${banner.image.url}` : (banner.url || (banner.media && banner.media[0]?.url) || ''))}
+                src={banner._id === 'default' ? banner.image?.url : (banner.image?.url ? `/${banner.image.url.replace(/\\/g, '/')}` : (banner.url || (banner.media && banner.media[0]?.url) || ''))}
                 alt={banner.title || "Banner"}
               />
               

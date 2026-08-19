@@ -302,7 +302,7 @@ const LandingPage = () => {
                       product.images && product.images.length > 0 && product.images[0].url
                           ? (product.images[0].url.startsWith('http') || product.images[0].url.startsWith('https')
                               ? product.images[0].url
-                              : `/admin/product/${product.images[0].url}`)
+                              : `/admin/product/${product.images[0].url.replace(/\\/g, '/')}`)
                           : "/default.png"
                   }
                   alt={product.name} 
