@@ -9,6 +9,10 @@ import { SnackbarProvider } from 'notistack';
 import { UserProvider } from './context/UserContext';
 import { replaceAlert } from './utils/sweetAlert';
 import axios from 'axios';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 
 // Global Axios Interceptor for Bearer Token
 axios.interceptors.request.use((config) => {
@@ -22,10 +26,6 @@ axios.interceptors.request.use((config) => {
 });
 
 // Custom Icons for Grand Toasts
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 
 // Replace all alert functions with SweetAlert
 replaceAlert();
