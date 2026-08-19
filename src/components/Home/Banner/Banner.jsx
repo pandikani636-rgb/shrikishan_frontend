@@ -83,8 +83,8 @@ const Banner = () => {
               <img
                 draggable="false"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-[40s] ease-out group-hover:scale-105"
-                src={banner._id === 'default' ? banner.image.url : `/${banner.image.url}`}
-                alt={banner.title}
+                src={banner._id === 'default' ? banner.image?.url : (banner.image?.url ? `/${banner.image.url}` : (banner.url || (banner.media && banner.media[0]?.url) || ''))}
+                alt={banner.title || "Banner"}
               />
               
               {/* Ultra-Premium Cinematic Vignette Overlay */}
@@ -101,7 +101,7 @@ const Banner = () => {
                   </div>
 
                   <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-6 leading-tight tracking-tight drop-shadow-xl">
-                    {banner.title && banner.title.split(' ').map((word, idx) => (
+                    {typeof banner.title === 'string' && banner.title.split(' ').map((word, idx) => (
                       <span key={idx} className={idx === 1 ? "text-primary-orange inline-block" : "text-white inline-block"}>
                         {word}{' '}
                       </span>
